@@ -1,0 +1,60 @@
+
+server:
+  port: 8780
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 2
+    appname: ALTANTIS-ZULL-SERVICES
+  client:
+    serviceUrl:
+      defaultZone: http://186.101.220.187:8761/eureka/
+
+zuul:
+  routes:
+    atlantis:
+      path: /emot/**
+      serviceId: atlantis-service
+      stripPrefix: true
+      url: http://172.19.0.6:8724/
+    media:
+      path: /emot-media/**
+      serviceId: media-service
+      stripPrefix: true
+      url: http://172.19.0.7:8725/
+    transitcontrol:
+      path: /transit-control/**
+      serviceId: transit-control
+      stripPrefix: true
+      url: http://190.63.168.153:8080/
+    origamigt:
+      path: /origami-gt-rest/**
+      serviceId: origami-gt
+      stripPrefix: true
+      url: http://186.101.220.187:8084/
+    emotdinardap:
+      path: /datos-dinardap/**
+      serviceId: emot-dinardap
+      stripPrefix: true
+      url: http://172.27.44.100:8785/
+    qrservices:
+      path: /qrservices/**
+      serviceId: qr-webservices
+      stripPrefix: true
+      url: http://172.19.0.4:8726/
+    email-ws:
+      path: /email-webservices/**
+      serviceId: atlantis-email-webservices
+      stripPrefix: true
+      url: http://172.19.0.9:8727/
+
+  sensitiveHeaders: Cookie,Set-Cookie
+
+hystrix:
+  command:
+    atlantis-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 12000

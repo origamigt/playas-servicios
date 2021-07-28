@@ -1,0 +1,54 @@
+server:
+  port: 8770
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 2
+    appname: ALTANTIS-ZULL-SERVICES
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+
+
+zuul:
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+  routes:
+    xipi:
+      path: /xipi/**
+      serviceId: xipi-service
+      stripPrefix: true
+      url: http://127.0.0.1:8724/
+    media:
+      path: /xipi-media/**
+      serviceId: media-service
+      stripPrefix: true
+      url: http://127.0.0.1:8725/
+    qrservices:
+      path: /qrservices/**
+      serviceId: qr-webservices
+      stripPrefix: true
+      url: http://127.0.0.1:8726/
+    dinardap:
+      path: /datos-dinardap/**
+      serviceId: dinardap
+      stripPrefix: true
+      url: http://127.0.0.1:8785/
+    email-ws:
+      path: /email-webservices/**
+      serviceId: email-webservices
+      stripPrefix: true
+      url: http://127.0.0.1:8727/
+
+  sensitiveHeaders: Cookie,Set-Cookie
+
+hystrix:
+  command:
+    atlantis-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 12000
