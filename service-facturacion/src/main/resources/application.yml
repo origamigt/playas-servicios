@@ -1,0 +1,40 @@
+server:
+  port: 8780
+
+spring:
+  application:
+    name: FACTURACION-ELECTRONICA
+  
+  datasource:
+    url: jdbc:postgresql://192.168.200.3:5432/rpm_playas
+    username: sisapp
+    password: sisapp98
+    platform: postgres
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 5
+      pool-name: BancaServicePoolWS
+      max-lifetime: 1800
+
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: facturacion
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        temp:
+          use_jdbc_metadata_defaults: false
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 80
+    leaseExpirationDurationInSeconds: 80
+    appname: FACTURACION-ELECTRONICA
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+logging:
+  file: D:/servers-files/logs/facturacion.log 
+  #file: /servers-files/logs/facturacion.log 
