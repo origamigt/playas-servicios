@@ -1,0 +1,14 @@
+asgard:
+  url_media: http://200.124.240.62/ws-media/asgard/api/resource/pdf/
+  rutaArchivos: /servers_files/archivos/
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 3
+    appname: ASGARD-FIRMAEC-ZERVICES
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.100.10:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false

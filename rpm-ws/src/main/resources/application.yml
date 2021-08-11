@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ws-server
+
+server:
+  port: 8085
+
+jwt:
+  secret: ventanillaws
+  time: 216000 # Tiempo: 60 * 60 * 60 (1h) ...... 30 * 60 * 60 (30 min)
