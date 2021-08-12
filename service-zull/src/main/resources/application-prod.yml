@@ -1,47 +1,40 @@
 server:
-  port: 8770
+  port: 8780
 
 eureka:
   instance:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 2
-    appname: ALTANTIS-ZULL-SERVICES
+    appname: ZULL-SERVICES
   client:
     register-with-eureka: false
     fetch-registry: false
-
-
 
 zuul:
   host:
     connect-timeout-millis: 60000
     socket-timeout-millis: 60000
   routes:
-    xipi:
-      path: /xipi/**
-      serviceId: xipi-service
+    ventanilla-ws:
+      path: /ventanilla-ws/**
+      serviceId: ventanilla-ws
       stripPrefix: true
-      url: http://127.0.0.1:8724/
-    media:
-      path: /xipi-media/**
-      serviceId: media-service
+      url: http://127.0.0.1:8721/
+    media-ws:
+      path: /media-ws/**
+      serviceId: media-ws
       stripPrefix: true
-      url: http://127.0.0.1:8725/
-    qrservices:
-      path: /qrservices/**
-      serviceId: qr-webservices
-      stripPrefix: true
-      url: http://127.0.0.1:8726/
+      url: http://127.0.0.1:8722/
     dinardap:
-      path: /datos-dinardap/**
+      path: /dinardap/**
       serviceId: dinardap
       stripPrefix: true
       url: http://127.0.0.1:8785/
-    email-ws:
-      path: /email-webservices/**
-      serviceId: email-webservices
+    facturacion:
+      path: /facturacion/**
+      serviceId: facturacion
       stripPrefix: true
-      url: http://127.0.0.1:8727/
+      url: http://127.0.0.1:8786/
 
   sensitiveHeaders: Cookie,Set-Cookie
 
