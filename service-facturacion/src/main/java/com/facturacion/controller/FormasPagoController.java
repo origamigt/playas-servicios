@@ -3,7 +3,6 @@ package com.facturacion.controller;
 import com.facturacion.RestAPI;
 import com.facturacion.entites.FormasPago;
 import com.facturacion.repository.FormasPagoRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,7 @@ public class FormasPagoController {
 
     @RequestMapping(value = RestAPI.formasPagoControllerFacturacionPOST, method = RequestMethod.POST)
     public FormasPago formasPagoControllerFacturacionPOST(@Valid @RequestBody FormasPago formasPago){
-        formasPago.set_id(ObjectId.get());
+        //formasPago.set_id(ObjectId.get());
         formasPagoRepository.save(formasPago);
         return formasPago;
     }

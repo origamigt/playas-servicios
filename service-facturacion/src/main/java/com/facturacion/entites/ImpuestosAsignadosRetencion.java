@@ -1,25 +1,34 @@
 package com.facturacion.entites;
 
-import com.facturacion.CollectionsNames;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Document(collection = CollectionsNames.IMPUESTOS_ASIGNADOS_RETENCION)
-public class ImpuestosAsignadosRetencion {
+@Entity
+@Table(name = "ambiente")
+public class ImpuestosAsignadosRetencion implements Serializable{
 
+    private static final long serialVersionUID = 1L;
     @Id
-    public ObjectId _id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
     private String descripcion;
     private String codigo;
 
-    public String get_id() {
-        return _id.toHexString();
+    public ImpuestosAsignadosRetencion() {
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getDescripcion() {
@@ -36,5 +45,10 @@ public class ImpuestosAsignadosRetencion {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    @Override
+    public String toString() {
+        return "ImpuestosAsignadosRetencion{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigo + '}';
     }
 }

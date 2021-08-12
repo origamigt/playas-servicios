@@ -1,66 +1,87 @@
 package com.facturacion.entites;
 
-import com.facturacion.CollectionsNames;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import javax.persistence.*;
+import java.io.Serializable;
 
-@Document(collection = CollectionsNames.PORCENTAJES)
-public class Porcentajes {
+@Entity
+@Table(name = "porcentaje_impuesto")
+public class Porcentajes implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
-    private ObjectId _id;
-    private Impuesto impuesto;
-    @Indexed(unique = true)
-    @Field(value = "descripcion")
-    private String descripcion;
-    @Indexed(unique = true)
-    @Field(value = "codigo")
-    private String codigo;
-    private Double valorPorcentaje;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+    @Column
+    private String impuesto;
+    @Column(name = "codigo_impuesto")
+    private String codigoImpuesto;
+    @Column(name = "codigo_tarifa")
+    private String codigoTarifa;
+    @Column
+    private Double porcentaje;
+    @Transient
+    private Impuesto impuestos;
 
     public Porcentajes() {
     }
 
-    public String get_id() {
-        return _id.toHexString();
+    public Integer getId() {
+        return id;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public Double getValorPorcentaje() {
-        return valorPorcentaje;
-    }
-
-    public void setValorPorcentaje(Double valorPorcentaje) {
-        this.valorPorcentaje = valorPorcentaje;
-    }
-
-    public Impuesto getImpuesto() {
+    public String getImpuesto() {
         return impuesto;
     }
 
-    public void setImpuesto(Impuesto impuesto) {
+    public void setImpuesto(String impuesto) {
         this.impuesto = impuesto;
+    }
+
+    public String getCodigoImpuesto() {
+        return codigoImpuesto;
+    }
+
+    public void setCodigoImpuesto(String codigoImpuesto) {
+        this.codigoImpuesto = codigoImpuesto;
+    }
+
+    public String getCodigoTarifa() {
+        return codigoTarifa;
+    }
+
+    public void setCodigoTarifa(String codigoTarifa) {
+        this.codigoTarifa = codigoTarifa;
+    }
+
+    public Double getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(Double porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
+    public Impuesto getImpuestos() {
+        return impuestos;
+    }
+
+    public void setImpuestos(Impuesto impuestos) {
+        this.impuestos = impuestos;
+    }
+
+    @Override
+    public String toString() {
+        return "Porcentajes{" +
+                "id=" + id +
+                ", impuesto='" + impuesto + '\'' +
+                ", codigoImpuesto='" + codigoImpuesto + '\'' +
+                ", codigoTarifa='" + codigoTarifa + '\'' +
+                ", porcentaje=" + porcentaje +
+                '}';
     }
 }

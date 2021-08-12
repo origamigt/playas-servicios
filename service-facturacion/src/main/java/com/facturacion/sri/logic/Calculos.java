@@ -269,7 +269,7 @@ public class Calculos {
     private static Impuesto getImpuestoComprobante(Detalle detalle, Porcentajes porcentajes) {
         Impuesto impuesto = new Impuesto();
         baseImponible = detalle.getValorTotal(); // - detalle.getDescuento();
-        impuesto.setCodigo(porcentajes.getImpuesto().getCodigo());
+        impuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
         impuesto.setCodigoPorcentaje(detalle.getCodigoTarifa());
         impuesto.setBaseImponible(new BigDecimal(baseImponible).setScale(2, RoundingMode.HALF_UP));
         Map<String, BigDecimal> tarifaValor = tarifaValor(detalle, porcentajes);
@@ -298,7 +298,7 @@ public class Calculos {
         //IVA CODIGO SEGUN TABLA  6 DEL SRI
         totalImpuesto.setCodigo(detalle.getCodigoTarifa());
         totalImpuesto.setBaseImponible(new BigDecimal(baseImponible).setScale(2, RoundingMode.HALF_UP));
-        totalImpuesto.setCodigo(porcentajes.getImpuesto().getCodigo());
+        totalImpuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
         totalImpuesto.setCodigoPorcentaje(detalle.getCodigoTarifa());
         Map<String, BigDecimal> tarifaValor = tarifaValor(detalle, porcentajes);
         totalImpuesto.setTarifa(tarifaValor.get("TARIFA"));
@@ -315,7 +315,7 @@ public class Calculos {
         //IVA CODIGO SEGUN TABLA  6 DEL SRI
         totalImpuesto.setCodigo(detalle.getCodigoTarifa());
         totalImpuesto.setBaseImponible(new BigDecimal(baseImponible).setScale(2, RoundingMode.HALF_UP));
-        totalImpuesto.setCodigo(porcentajes.getImpuesto().getCodigo());
+        totalImpuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
         totalImpuesto.setCodigoPorcentaje(detalle.getCodigoTarifa());
         Map<String, BigDecimal> tarifaValor = tarifaValor(detalle, porcentajes);
         totalImpuesto.setValor(tarifaValor.get("VALOR"));
@@ -327,7 +327,8 @@ public class Calculos {
         BigDecimal tarifa, valor;
         if (detalle.getIva() > 0) {
             porcentajeIva = detalle.getIva() / 100;
-            tarifa = new BigDecimal(porcentajes.getValorPorcentaje()).setScale(2, RoundingMode.HALF_UP);
+            //tarifa = new BigDecimal(porcentajes.getValorPorcentaje()).setScale(2, RoundingMode.HALF_UP);
+            tarifa = new BigDecimal(porcentajes.getPorcentaje()).setScale(2, RoundingMode.HALF_UP);
             valor = new BigDecimal(baseImponible * porcentajeIva).setScale(2, RoundingMode.HALF_UP);
         } else {
             tarifa = BigDecimal.ZERO;

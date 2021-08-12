@@ -1,10 +1,10 @@
 package com.facturacion.repository;
 
 import com.facturacion.entites.Porcentajes;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface PorcentajeRepository extends MongoRepository<Porcentajes, String> {
+public interface PorcentajeRepository extends CrudRepository<Porcentajes, Long> {
 
-    Porcentajes findByCodigoAndValorPorcentaje(String codigo, Double valorPorcentaje);
+    Porcentajes findByCodigoTarifaAndPorcentaje(String codigo, Double valorPorcentaje);
 
 }

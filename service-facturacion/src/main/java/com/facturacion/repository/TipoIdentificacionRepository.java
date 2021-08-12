@@ -1,9 +1,9 @@
 package com.facturacion.repository;
 
 import com.facturacion.entites.TipoIdentificacion;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface TipoIdentificacionRepository extends MongoRepository<TipoIdentificacion, String> {
+public interface TipoIdentificacionRepository extends CrudRepository<TipoIdentificacion, String> {
 
     TipoIdentificacion findByTamanio(Integer tamanio);
 

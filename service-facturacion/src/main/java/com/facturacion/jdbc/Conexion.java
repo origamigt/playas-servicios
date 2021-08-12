@@ -1,7 +1,6 @@
 package com.facturacion.jdbc;
 
 import com.facturacion.entites.comprobanterespuestasri.ComprobanteSRI;
-import com.facturacion.modelcomprobante.ComprobanteElectronico;
 import com.facturacion.sri.util.Constantes;
 import java.sql.*;
 import java.text.ParseException;
@@ -16,15 +15,14 @@ public class Conexion {
 
     static SimpleDateFormat formatComprobante = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-
     public static void updateLiquidacionClaveAcceso(Long idLiquidacion, String claveAcceso) {
         Connection conn = getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE flow.regp_liquidacion SET  clave_acceso = ? WHERE id = ?;");
-            ps.setString(1, claveAcceso);
-            ps.setLong(2, idLiquidacion);
-            ps.executeUpdate();
-            ps.close();
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE flow.regp_liquidacion SET  clave_acceso = ? WHERE id = ?;")) {
+                ps.setString(1, claveAcceso);
+                ps.setLong(2, idLiquidacion);
+                ps.executeUpdate();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -38,12 +36,12 @@ public class Conexion {
     public static void updateReenvioLiquidacion(Long idLiquidacion, String infoReenvio) {
         Connection conn = getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement
-                    ("UPDATE flow.regp_liquidacion SET  parentesco_solicitante = ? WHERE id = ?;");
-            ps.setString(1, infoReenvio);
-            ps.setLong(2, idLiquidacion);
-            ps.executeUpdate();
-            ps.close();
+            try (PreparedStatement ps = 
+                    conn.prepareStatement("UPDATE flow.regp_liquidacion SET  parentesco_solicitante = ? WHERE id = ?;")) {
+                ps.setString(1, infoReenvio);
+                ps.setLong(2, idLiquidacion);
+                ps.executeUpdate();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -58,11 +56,11 @@ public class Conexion {
     public static void updateRenFacturaClaveAcceso(Long idRenFactura, String claveAcceso) {
         Connection conn = getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE financiero.ren_factura SET  clave_acceso = ? WHERE id = ?;");
-            ps.setString(1, claveAcceso);
-            ps.setLong(2, idRenFactura);
-            ps.executeUpdate();
-            ps.close();
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE financiero.ren_factura SET  clave_acceso = ? WHERE id = ?;")) {
+                ps.setString(1, claveAcceso);
+                ps.setLong(2, idRenFactura);
+                ps.executeUpdate();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -78,12 +76,12 @@ public class Conexion {
         Connection conn = getConnection();
         try {
             System.out.println("updateNotaCreditoClaveAcceso: "  + claveAcceso + " idNotaCredito " + idNotaCredito);
-            PreparedStatement ps = conn.prepareStatement("UPDATE financiero.ren_nota_credito "
-                    + "SET  clave_acceso = ? WHERE id = ?;");
-            ps.setString(1, claveAcceso);
-            ps.setLong(2, idNotaCredito);
-            System.out.println("ps.executeUpdate(): " + ps.executeUpdate());
-            ps.close();
+            try (PreparedStatement ps = 
+                    conn.prepareStatement("UPDATE financiero.ren_nota_credito " + "SET  clave_acceso = ? WHERE id = ?;")) {
+                ps.setString(1, claveAcceso);
+                ps.setLong(2, idNotaCredito);
+                System.out.println("ps.executeUpdate(): " + ps.executeUpdate());
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -133,24 +131,22 @@ public class Conexion {
         Connection conn = getConnection();
         try {
             Map<String, Object> datosAutorizacion = getDatosAutorizacion(comprobanteSRI);
-            PreparedStatement ps = conn.prepareStatement("UPDATE flow.regp_liquidacion "
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE flow.regp_liquidacion "
                     + "SET numero_autorizacion = ?, estado_ws = ? , "
                     + "mensaje_ws = ?  , fecha_autorizacion = ? "
-                    + "WHERE id = ?;");
-
-            ps.setString(1, comprobanteSRI.getNumAutorizacion());
-            ps.setString(2, datosAutorizacion.get("estadoWS").toString());
-            ps.setString(3, datosAutorizacion.get("mensajeWS").toString());
-            if (comprobanteSRI.getFechaAutorizacion() != null) {
-                ps.setTimestamp(4,
-                        new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
-            } else {
-                ps.setTimestamp(4, null);
+                    + "WHERE id = ?;")) {
+                ps.setString(1, comprobanteSRI.getNumAutorizacion());
+                ps.setString(2, datosAutorizacion.get("estadoWS").toString());
+                ps.setString(3, datosAutorizacion.get("mensajeWS").toString());
+                if (comprobanteSRI.getFechaAutorizacion() != null) {
+                    ps.setTimestamp(4,
+                            new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
+                } else {
+                    ps.setTimestamp(4, null);
+                }
+                ps.setLong(5, idLiquidacion);
+                ps.executeUpdate();
             }
-            ps.setLong(5, idLiquidacion);
-            ps.executeUpdate();
-            ps.close();
-
         } catch (SQLException | ParseException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -166,26 +162,24 @@ public class Conexion {
         Connection conn = getConnection();
         try {
             Map<String, Object> datosAutorizacion = getDatosAutorizacion(comprobanteSRI);
-            // Now insert the row into table
-            PreparedStatement ps = conn.prepareStatement("UPDATE financiero.ren_factura "
-                    + "SET numero_autorizacion = ?, estado_ws = ? , "
-                    + "mensaje_ws = ?  , fecha_autorizacion = ? "
-                    + "WHERE id = ?;");
-
-            ps.setString(1, comprobanteSRI.getNumAutorizacion());
-            ps.setString(2, datosAutorizacion.get("estadoWS").toString());
-            ps.setString(3, datosAutorizacion.get("mensajeWS").toString());
-            if (comprobanteSRI.getFechaAutorizacion() != null) {
-                ps.setTimestamp(4,
-                        new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
-            } else {
-                ps.setTimestamp(4, null);
+            try ( // Now insert the row into table
+                    PreparedStatement ps = conn.prepareStatement("UPDATE financiero.ren_factura "
+                            + "SET numero_autorizacion = ?, estado_ws = ? , "
+                            + "mensaje_ws = ?  , fecha_autorizacion = ? "
+                            + "WHERE id = ?;")) {
+                ps.setString(1, comprobanteSRI.getNumAutorizacion());
+                ps.setString(2, datosAutorizacion.get("estadoWS").toString());
+                ps.setString(3, datosAutorizacion.get("mensajeWS").toString());
+                if (comprobanteSRI.getFechaAutorizacion() != null) {
+                    ps.setTimestamp(4,
+                            new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
+                } else {
+                    ps.setTimestamp(4, null);
+                }
+                
+                ps.setLong(5, idRenFactura);
+                ps.executeUpdate();
             }
-
-            ps.setLong(5, idRenFactura);
-            ps.executeUpdate();
-            ps.close();
-
         } catch (SQLException | ParseException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -201,23 +195,22 @@ public class Conexion {
         Connection conn = getConnection();
         try {
             Map<String, Object> datosAutorizacion = getDatosAutorizacion(comprobanteSRI);
-            // Now insert the row into table
-            PreparedStatement ps = conn.prepareStatement("UPDATE financiero.ren_nota_credito "
-                    + "SET  numero_autorizacion = ?, estado  = ?, mensaje = ?, "
-                    + "fecha_autorizacion = ?  WHERE id = ?;");
-
-            ps.setString(1, comprobanteSRI.getNumAutorizacion());
-            ps.setString(2, datosAutorizacion.get("estadoWS").toString());
-            ps.setString(3, datosAutorizacion.get("mensajeWS").toString());
-            if (comprobanteSRI.getFechaAutorizacion() != null) {
-                ps.setTimestamp(4,
-                        new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
-            } else {
-                ps.setTimestamp(4, null);
+            try ( // Now insert the row into table
+                    PreparedStatement ps = conn.prepareStatement("UPDATE financiero.ren_nota_credito "
+                            + "SET  numero_autorizacion = ?, estado  = ?, mensaje = ?, "
+                            + "fecha_autorizacion = ?  WHERE id = ?;")) {
+                ps.setString(1, comprobanteSRI.getNumAutorizacion());
+                ps.setString(2, datosAutorizacion.get("estadoWS").toString());
+                ps.setString(3, datosAutorizacion.get("mensajeWS").toString());
+                if (comprobanteSRI.getFechaAutorizacion() != null) {
+                    ps.setTimestamp(4,
+                            new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
+                } else {
+                    ps.setTimestamp(4, null);
+                }
+                ps.setLong(5, idNotaCredito);
+                ps.executeUpdate();
             }
-            ps.setLong(5, idNotaCredito);
-            ps.executeUpdate();
-            ps.close();
 
         } catch (SQLException | ParseException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
@@ -231,20 +224,16 @@ public class Conexion {
     }
 
     public static Map getDatosAutorizacion(ComprobanteSRI comprobanteSRI) {
-        Map<String, Object> datosAutorizacion = new HashMap<String, Object>();
-
+        Map<String, Object> datosAutorizacion = new HashMap<>();
         String estado = "", mensaje = "";
-
         if (comprobanteSRI.getRespuestaSolicitudSRI() != null && !comprobanteSRI.getRespuestaSolicitudSRI().isEmpty()) {
             estado = (comprobanteSRI.getRespuestaSolicitudSRI().get(0).getEstado() != null
                     ? comprobanteSRI.getRespuestaSolicitudSRI().get(0).getEstado() : "");
 
             mensaje = (comprobanteSRI.getRespuestaSolicitudSRI().get(0).getMensaje() != null
                     ? comprobanteSRI.getRespuestaSolicitudSRI().get(0).getMensaje() : "");
-
         }
         if (comprobanteSRI.getRespuestaAutorizacionSRI() != null && !comprobanteSRI.getRespuestaAutorizacionSRI().isEmpty()) {
-
             estado = estado + ";" + (comprobanteSRI.getRespuestaAutorizacionSRI().get(0).getEstado() != null
                     ? comprobanteSRI.getRespuestaAutorizacionSRI().get(0).getEstado() : "");
 
@@ -253,7 +242,6 @@ public class Conexion {
         }
         datosAutorizacion.put("estadoWS", estado);
         datosAutorizacion.put("mensajeWS", mensaje);
-
         return datosAutorizacion;
     }
 

@@ -6,7 +6,7 @@ spring:
     name: FACTURACION-ELECTRONICA
   
   datasource:
-    url: jdbc:postgresql://192.168.200.3:5432/rpm_playas
+    url: jdbc:postgresql://192.168.100.3:5432/rpm_playas
     username: sisapp
     password: sisapp98
     platform: postgres
@@ -36,5 +36,6 @@ eureka:
     fetch-registry: false
 
 logging:
-  file: D:/servers-files/logs/facturacion.log 
-  #file: /servers-files/logs/facturacion.log 
+  file:
+    name: D:/servers-files/logs/facturacion.log
+    #name: /servers-files/logs/facturacion.log

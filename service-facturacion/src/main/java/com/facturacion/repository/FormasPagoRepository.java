@@ -1,9 +1,9 @@
 package com.facturacion.repository;
 
 import com.facturacion.entites.FormasPago;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface FormasPagoRepository extends MongoRepository<FormasPago, String> {
+public interface FormasPagoRepository extends CrudRepository<FormasPago, Long> {
 
     FormasPago findByCodigo(String codigo);
 

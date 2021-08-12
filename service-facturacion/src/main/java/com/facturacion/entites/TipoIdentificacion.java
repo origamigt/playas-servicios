@@ -1,30 +1,42 @@
 package com.facturacion.entites;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-@Document
-public class TipoIdentificacion {
+@Entity
+@Table(name = "tipo_identificacion")
+public class TipoIdentificacion implements Serializable{
 
+    private static final long serialVersionUID = 1L;
     @Id
-    private ObjectId _id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column
     private String descripcion;
+    @Column
     private String codigo;
+    @Column
     private Integer tamanio;
+    @Transient
     private Date createdAt;
 
     public TipoIdentificacion() {
     }
 
-    public String get_id() {
-        return _id.toHexString();
+    public Long getId() {
+        return id;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescripcion() {
@@ -58,4 +70,10 @@ public class TipoIdentificacion {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "TipoIdentificacion{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigo + ", tamanio=" + tamanio + ", createdAt=" + createdAt + '}';
+    }
+
 }

@@ -1,29 +1,48 @@
 package com.facturacion.entites;
 
-import com.facturacion.CollectionsNames;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import java.util.Date;
+@Entity
+@Table(schema = "comprobantes_electronicos", name = "tipo_emision")
+public class TipoEmision implements Serializable{
 
-//@Document(collection = CollectionsNames.TIPO_EMISION)
-public class TipoEmision {
-
-    /*@Idprivate ObjectId _id;*/
-//    @Indexed
-  //  @Field(value = "descripcion")
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column
     private String descripcion;
-    //@Indexed
-    ///@Field(value = "codigo")
+    @Column
     private String codigo;
-    /*private Date createdAt;private Date updatedAt;@Fieldprivate Date deleteAt;*/
+    @Column(name = "es_online")
+    private Boolean esOnline;
+    
     public TipoEmision() {
     }
 
-   /* public String get_id() {return _id.toHexString();}public void set_id(ObjectId _id) {this._id = _id;}*/
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getEsOnline() {
+        return esOnline;
+    }
+
+    public void setEsOnline(Boolean esOnline) {
+        this.esOnline = esOnline;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -40,5 +59,9 @@ public class TipoEmision {
         this.codigo = codigo;
     }
 
-/*    public Date getCreatedAt() {return createdAt;}public void setCreatedAt(Date createdAt) {this.createdAt = createdAt;}public Date getUpdatedAt() {return updatedAt;}public void setUpdatedAt(Date updatedAt) {this.updatedAt = updatedAt;}public Date getDeleteAt() {return deleteAt;}public void setDeleteAt(Date deleteAt) {this.deleteAt = deleteAt;}*/
+    @Override
+    public String toString() {
+        return "TipoEmision{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigo + ", esOnline=" + esOnline + '}';
+    }
+
 }

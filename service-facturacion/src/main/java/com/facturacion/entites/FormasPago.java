@@ -1,35 +1,45 @@
 package com.facturacion.entites;
 
-import com.facturacion.CollectionsNames;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-@Document(collection = CollectionsNames.FORMAS_PAGO)
-public class FormasPago {
+@Entity
+@Table(name = "formas_pago")
+public class FormasPago implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
-    public ObjectId _id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column
     private String descripcion;
+    @Column
     private String codigo;
+    @Transient
     private Date createdAt;
+    @Transient
     private Date updatedAt;
+    @Transient
     private Date deleteAt;
 
     public FormasPago() {
     }
 
-    public String get_id() {
-        return _id.toHexString();
+    public Long getId() {
+        return id;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescripcion() {
@@ -71,4 +81,10 @@ public class FormasPago {
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
     }
+
+    @Override
+    public String toString() {
+        return "FormasPago{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigo + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deleteAt=" + deleteAt + '}';
+    }
+    
 }

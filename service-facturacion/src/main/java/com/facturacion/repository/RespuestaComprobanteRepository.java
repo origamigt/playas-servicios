@@ -1,7 +1,7 @@
 package com.facturacion.repository;
 
 import com.facturacion.entites.RespuestaComprobante;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface RespuestaComprobanteRepository extends MongoRepository<RespuestaComprobante, String> {
+public interface RespuestaComprobanteRepository extends CrudRepository<RespuestaComprobante, Long> {
 }

@@ -1,14 +1,12 @@
 package com.facturacion.entites;
 
-import com.facturacion.CollectionsNames;
 import com.facturacion.sri.model.autorizacion.Autorizacion;
-import com.facturacion.sri.model.autorizacion.Autorizacion;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -17,45 +15,87 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "respuestaComprobante", propOrder = {"claveAccesoConsultada", "numeroComprobantes", "autorizaciones"})
-@Document(collection = CollectionsNames.RESPUESTA_COMPROBANTE_SRI)
-public class RespuestaComprobante {
+@Entity
+@Table(name = "respuesta_comprobante")
+public class RespuestaComprobante implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     @XmlTransient
-    public ObjectId _id;
+    private Long id;
+    @XmlTransient
+    private Long tramite;
+    @XmlTransient
+    private String response;
+    @XmlTransient
+    @Column(name = "fecha_ingreso")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaIngreso;
+    @Transient
     protected String claveAccesoConsultada;
+    @Transient
     protected String numeroComprobantes;
+    @Transient
     protected Autorizaciones autorizaciones;
 
-    public String get_id() {
-        return _id.toHexString();
+    public RespuestaComprobante() {
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getTramite() {
+        return tramite;
+    }
+
+    public void setTramite(Long tramite) {
+        this.tramite = tramite;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public Date getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(Date fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
     }
 
     public String getClaveAccesoConsultada() {
-        return this.claveAccesoConsultada;
+        return claveAccesoConsultada;
     }
 
-    public void setClaveAccesoConsultada(String value) {
-        this.claveAccesoConsultada = value;
+    public void setClaveAccesoConsultada(String claveAccesoConsultada) {
+        this.claveAccesoConsultada = claveAccesoConsultada;
     }
 
     public String getNumeroComprobantes() {
-        return this.numeroComprobantes;
+        return numeroComprobantes;
     }
 
-    public void setNumeroComprobantes(String value) {
-        this.numeroComprobantes = value;
+    public void setNumeroComprobantes(String numeroComprobantes) {
+        this.numeroComprobantes = numeroComprobantes;
     }
 
     public Autorizaciones getAutorizaciones() {
-        return this.autorizaciones;
+        return autorizaciones;
     }
 
-    public void setAutorizaciones(Autorizaciones value) {
-        this.autorizaciones = value;
+    public void setAutorizaciones(Autorizaciones autorizaciones) {
+        this.autorizaciones = autorizaciones;
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -77,13 +117,4 @@ public class RespuestaComprobante {
         }
     }
 
-    @Override
-    public String toString() {
-        return "RespuestaComprobante{" +
-                "_id=" + _id +
-                ", claveAccesoConsultada='" + claveAccesoConsultada + '\'' +
-                ", numeroComprobantes='" + numeroComprobantes + '\'' +
-                ", autorizaciones=" + autorizaciones +
-                '}';
-    }
 }
