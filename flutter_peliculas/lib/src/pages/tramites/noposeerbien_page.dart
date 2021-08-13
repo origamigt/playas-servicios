@@ -36,9 +36,26 @@ class NoposeerBienPage extends StatelessWidget {
   }
 
   Widget body() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        print(constraints.maxWidth);
+        if (constraints.maxWidth > 600) {
+          return FractionallySizedBox(
+            widthFactor: 0.7,
+            child: bodyDetail(),
+          );
+        } else {
+          return bodyDetail();
+        }
+      },
+    );
+  }
+
+  Widget bodyDetail() {
     return Container(
         margin: EdgeInsets.only(top: 10),
         child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10),
           width: MediaQuery.of(context!).size.width,
           child: SingleChildScrollView(
             child: Column(
@@ -51,6 +68,5 @@ class NoposeerBienPage extends StatelessWidget {
             ),
           ),
         ));
-    ;
   }
 }

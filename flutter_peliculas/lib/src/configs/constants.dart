@@ -20,8 +20,6 @@ List<Menu> menusConfiguraciones = [
   Menu('Cerrar sesión', ScanQrpage().route, Colors.tealAccent, Icons.logout),
 ];
 
-String SERVER_IP = '@127.0.0.1:8085';
-
 String language = 'es-ES';
 
 String qrCertificate = '';

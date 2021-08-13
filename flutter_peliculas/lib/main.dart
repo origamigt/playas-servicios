@@ -32,23 +32,16 @@ class AppComponentState extends State<AppComponent> {
 
   @override
   Widget build(BuildContext context) {
-    final app = Consumer<ThemeNotifier>(
-        builder: (context, theme, _) => MaterialApp(
-              theme: theme.getTheme(),
-              title: 'Registro de la Propiedad de Playas',
-              debugShowCheckedModeBanner: false,
-              onGenerateRoute: RpmApplication.router.generator,
-              //onGenerateInitialRoutes: ,
-              //initialRoute: HomePage().route,
-              /*routes: {
-                '/': (context) => LoginPage(),
-                HomePage().route: (BuildContext context) => HomePage(),
-                ScanQrpage().route: (BuildContext context) => HomePage(),
-                TramitesPage().route: (BuildContext context) => TramitesPage(),
-                AjustesPage().route: (BuildContext context) => AjustesPage(),
-              },*/
-            ));
-
-    return app;
+    return Consumer<ThemeNotifier>(builder: (context, theme, _) {
+      final material = MaterialApp(
+        theme: theme.getTheme(),
+        title:
+            'Registro Municipal de la Propiedad y Mercantil del Cantón de Playas',
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: RpmApplication.router.generator,
+      );
+      print("initial route = ${material.initialRoute}");
+      return material;
+    });
   }
 }

@@ -2,17 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/providers/ws.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ActosProvider {
-  int _actosPage = 0;
-  bool _cargando = false;
-
-  List<Acto> _actos = [];
-
   final _actosStreamController = PublishSubject<List<Acto>>();
 
   Stream<List<Acto>> get actosStream => _actosStreamController.stream;
@@ -31,14 +25,16 @@ class ActosProvider {
   }
 
   findActosPopulares() async {
-    final url = Uri.http(SERVER_IP, '/rpm-ventanilla/api/actosPopulares');
-    List<Acto>? actos = await _procesarRespuesta(url);
-    _actosStreamController.add(actos!);
+    List<dynamic>? collection =
+        await findAll('/rpm-ventanilla/api/actosPopulares', true);
+    List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
+    _actosStreamController.add(actos);
   }
 
   findActos() async {
-    final url = Uri.http(SERVER_IP, '/rpm-ventanilla/api/actos');
-    List<Acto>? actos = await _procesarRespuesta(url);
-    _actosStreamController.add(actos!);
+    List<dynamic>? collection =
+        await findAll('/rpm-ventanilla/api/actos', true);
+    List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
+    _actosStreamController.add(actos);
   }
 }

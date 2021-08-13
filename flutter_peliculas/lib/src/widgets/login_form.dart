@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:playas/src/pages/home_page.dart';
+import 'package:playas/src/providers/iniciosesion_provider.dart';
 import 'package:playas/src/routes/rpm_application.dart';
+import 'package:provider/provider.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
 
   final paddingTopForm,
       fontSizeTextField,
@@ -35,12 +35,20 @@ class LoginForm extends StatelessWidget {
       this.errorFormMessage);
 
   @override
+  LoginFormState createState() => LoginFormState();
+}
+
+class LoginFormState extends State<LoginForm> {
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     final double widthSize = MediaQuery.of(context).size.width;
     final double heightSize = MediaQuery.of(context).size.height;
 
     return Form(
-        key: _formKey,
+        key: widget._formKey,
         child: Padding(
             padding: EdgeInsets.only(
               left: widthSize * 0.05,
@@ -51,7 +59,7 @@ class LoginForm extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text('Identificación',
                       style: GoogleFonts.sourceCodePro(
-                        fontSize: widthSize * fontSizeTextField,
+                        fontSize: widthSize * widget.fontSizeTextField,
                       ))),
               TextFormField(
                 controller: _usernameController,
@@ -61,26 +69,27 @@ class LoginForm extends StatelessWidget {
                   }
                 },
                 style: TextStyle(
-                    color: Colors.white, fontSize: fontSizeTextFormField),
+                    color: Colors.white,
+                    fontSize: widget.fontSizeTextFormField),
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.person,
-                    size: widthSize * iconFormSize,
+                    size: widthSize * widget.iconFormSize,
                   ),
                   labelStyle: TextStyle(color: Colors.white),
                   errorStyle: TextStyle(
                       color: Colors.white,
-                      fontSize: widthSize * errorFormMessage),
+                      fontSize: widthSize * widget.errorFormMessage),
                 ),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: heightSize * spaceBetweenFields),
+              SizedBox(height: heightSize * widget.spaceBetweenFields),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text('Contraseña',
                       style: GoogleFonts.sourceCodePro(
-                        fontSize: widthSize * fontSizeTextField,
+                        fontSize: widthSize * widget.fontSizeTextField,
                       ))),
               TextFormField(
                   controller: _passwordController,
@@ -94,19 +103,19 @@ class LoginForm extends StatelessWidget {
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.lock,
-                      size: widthSize * iconFormSize,
+                      size: widthSize * widget.iconFormSize,
                     ),
                     labelStyle: TextStyle(color: Colors.white),
                     errorStyle: TextStyle(
                         color: Colors.white,
-                        fontSize: widthSize * errorFormMessage),
+                        fontSize: widthSize * widget.errorFormMessage),
                   ),
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                    fontSize: fontSizeTextFormField,
+                    fontSize: widget.fontSizeTextFormField,
                     color: Colors.white,
                   )),
-              SizedBox(height: heightSize * spaceBetweenFieldAndButton),
+              SizedBox(height: heightSize * widget.spaceBetweenFieldAndButton),
               Container(
                 height: 45,
                 width: MediaQuery.of(context).size.width,
@@ -120,7 +129,7 @@ class LoginForm extends StatelessWidget {
                       )),
                     ),
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
+                      if (widget._formKey.currentState!.validate()) {
                         /*Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => HomePage()),
@@ -128,11 +137,12 @@ class LoginForm extends StatelessWidget {
                         //Navigator.pushNamed(context, HomePage.route);
                         RpmApplication.router
                             .navigateTo(context, HomePage.route);
+                        iniciarSesion();
                       }
                     },
                     child: Text('Ingresar',
                         style: GoogleFonts.sourceCodePro(
-                          fontSize: widthSize * fontSizeButton,
+                          fontSize: widthSize * widget.fontSizeButton,
                         ))),
               ),
               SizedBox(height: heightSize * 0.01),
@@ -142,7 +152,8 @@ class LoginForm extends StatelessWidget {
                       onPressed: () {},
                       child: Text('Registrarse',
                           style: GoogleFonts.sourceCodePro(
-                              fontSize: widthSize * fontSizeForgotPassword,
+                              fontSize:
+                                  widthSize * widget.fontSizeForgotPassword,
                               fontWeight: FontWeight.w900,
                               color: Theme.of(context)
                                   .textTheme
@@ -154,7 +165,7 @@ class LoginForm extends StatelessWidget {
                     onPressed: () {},
                     child: Text('Recuperar contraseña',
                         style: GoogleFonts.sourceCodePro(
-                            fontSize: widthSize * fontSizeForgotPassword,
+                            fontSize: widthSize * widget.fontSizeForgotPassword,
                             fontWeight: FontWeight.w900,
                             color: Theme.of(context)
                                 .textTheme
@@ -162,5 +173,18 @@ class LoginForm extends StatelessWidget {
                                 .color!))),
               ),
             ])));
+  }
+
+  void iniciarSesion() async {
+    InicioSesionState _providerState =
+        Provider.of<InicioSesionState>(context, listen: false);
+    try {
+      if (await _providerState.LoginUser(
+          _usernameController.text, _passwordController.text)) {
+        RpmApplication.router.navigateTo(context, HomePage.route);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
