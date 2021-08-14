@@ -24,25 +24,37 @@ class _DesktopModeState extends State<DesktopMode> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     elevation: 5,
-                    child: Row(children: [
-                      playasBG(heightSize, widthSize),
-                      Expanded(
-                          child: Container(
-                              padding: EdgeInsets.only(top: 25),
-                              decoration: boxDecorationLogin,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset('assets/images/logo.png',
-                                          height: heightSize * 0.2,
-                                          width: widthSize * 0.15),
-                                      SizedBox(height: 20),
-                                      LoginForm(0, 0.009, 18, 0.04, 0.01, 0.03,
-                                          75, 0.01, 0.009, 0.01, 0.006)
-                                    ]),
-                              )))
-                    ])))));
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          playasBG(heightSize, widthSize),
+                          Expanded(
+                              child: Container(
+                                  padding: EdgeInsets.only(top: 25),
+                                  decoration: boxDecorationLogin,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset('assets/images/logo.png',
+                                              height: heightSize * 0.2,
+                                              width: widthSize * 0.15),
+                                          SizedBox(height: 20),
+                                          LoginForm(
+                                              0,
+                                              0.009,
+                                              18,
+                                              0.04,
+                                              0.01,
+                                              0.03,
+                                              75,
+                                              0.01,
+                                              0.009,
+                                              0.01,
+                                              0.006)
+                                        ]),
+                                  )))
+                        ])))));
   }
 }

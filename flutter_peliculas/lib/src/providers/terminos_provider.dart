@@ -13,12 +13,6 @@ class TerminosProvider {
     terminosStreamController.close();
   }
 
-  Future<String?> _procesarRespuesta(Uri url) async {
-    Map<String, String> header = await mapHeaderAuth();
-    http.Response response = await http.get(url, headers: header);
-    return response.body;
-  }
-
   Future<String?> findTerminosCondiciones() async {
     Map<String, dynamic> map = await find('/api/terminosCondicion/', true);
     String? terminos = map as String?;

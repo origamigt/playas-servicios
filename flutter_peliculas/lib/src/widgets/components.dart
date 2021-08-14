@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/routes/rpm_application.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 Color colorPrimary = Color(0xFF2D2E74);
 
@@ -102,6 +104,15 @@ Widget menuCard(BuildContext context, Menu menu) {
           ),
         ),
       ),
+    ),
+  );
+}
+
+mensajeError(BuildContext context, String mensaje) {
+  showTopSnackBar(
+    context,
+    CustomSnackBar.error(
+      message: mensaje,
     ),
   );
 }

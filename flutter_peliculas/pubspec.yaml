@@ -25,6 +25,7 @@ dependencies:
   flutter_custom_clippers: ^2.0.0
   responsive_property: ^0.0.6
   fluro: ^2.0.3
+  top_snackbar_flutter: ^1.0.0
 
 
 dev_dependencies:

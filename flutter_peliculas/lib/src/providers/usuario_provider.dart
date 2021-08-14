@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/ws.dart';

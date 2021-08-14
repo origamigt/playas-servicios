@@ -47,7 +47,7 @@ Future<bool> spSaveValue(String key, String value) async {
   return await PrefencesRPM.saveValue(key, value);
 }
 
-userLogged() async {
+Future<User?> userLogged() async {
   var result = await PrefencesRPM.getValue(kUser);
   try {
     if (result != null && result != 'value') {
