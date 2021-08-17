@@ -14,7 +14,13 @@ import com.facturacion.entites.FirmaDocElectronico;
 import com.facturacion.entites.Porcentajes;
 import com.facturacion.RestAPI;
 import com.facturacion.async.EmailService;
+import com.facturacion.entites.Ambiente;
+import com.facturacion.entites.Cajero;
 import com.facturacion.entites.ClaveAcceso;
+import com.facturacion.entites.Comprobante;
+import com.facturacion.entites.DocElectronico;
+import com.facturacion.entites.Entidad;
+import com.facturacion.entites.Firma;
 import com.facturacion.entites.MsgFormatoNotificacion;
 import com.facturacion.entites.RespuestaSolicitud;
 import com.facturacion.entites.comprobanterespuestasri.ComprobanteDetalleSRI;
@@ -29,7 +35,12 @@ import com.facturacion.sri.logic.Calculos;
 import com.facturacion.sri.logic.ComprobantesCode;
 import com.facturacion.sri.model.InfoTributaria;
 import com.facturacion.entites.RespuestaComprobante;
+import com.facturacion.entites.TipoEmision;
+import com.facturacion.repository.AmbienteRepository;
+import com.facturacion.repository.CajeroRepository;
 import com.facturacion.repository.ClaveAccesoRepository;
+import com.facturacion.repository.ComprobanteRepository;
+import com.facturacion.repository.EntidadRepository;
 import com.facturacion.sri.model.factura.Factura;
 import com.facturacion.sri.model.notacredito.NotaCredito;
 import com.facturacion.sri.model.notacredito.TotalConImpuestos;
@@ -83,13 +94,21 @@ public class FacturacionElectronicaController {
     //private MsgFormatoNotificacionRepository msgFormatoNotificacionRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private EntidadRepository entidadRepository;
+    @Autowired
+    private AmbienteRepository ambienteRepository;
+    @Autowired
+    private ComprobanteRepository comprobanteRepository;
+    @Autowired
+    private CajeroRepository cajeroRepository;
 
     private ComprobanteSRI comprobanteSRI = null;
 
     private String archivoACrear, claveAcceso, secuencial;
 
     private Boolean continuar = Boolean.TRUE;
-    
+
     private Gson gson;
 
     /*@RequestMapping(value = RestAPI.facturacionElectronicaGET, method = RequestMethod.GET)
@@ -98,7 +117,6 @@ public class FacturacionElectronicaController {
                 .findByContribuyente_IdemtificacionAndNumAutorizacionIsNotNullOrderByFechaAutorizacionDesc(
                         identificacion);
     }*/
-
     @Async
     @RequestMapping(value = RestAPI.enviarCorreoFacturacionElectronicaPOST, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> enviarCorreoFacturaElectronicaSRI(@Valid @RequestBody ComprobanteSRI sri) {
@@ -113,8 +131,10 @@ public class FacturacionElectronicaController {
     @Async
     public ResponseEntity<?> enviarFacturaElectronicaSRI(
             @Valid @RequestBody ComprobanteElectronico comprobanteElectronico) {
+        System.out.println("// prueba 1");
         FirmaDocElectronico firmaDocElectronico = validarComprobanteRest(comprobanteElectronico);
         if (firmaDocElectronico != null) {
+            System.out.println("// prueba 3");
             Factura factura = createXML(firmaDocElectronico, comprobanteElectronico);
             if (factura != null) {
                 //archivoACrear = directoriosRepository.findByCodigo(1).getRutaDirectorio()
@@ -269,19 +289,30 @@ public class FacturacionElectronicaController {
 
     private FirmaDocElectronico validarComprobanteRest(ComprobanteElectronico comprobanteElectronico) {
         if (Calculos.validarCamposComprobanteElectronico(comprobanteElectronico)) {
-            FirmaDocElectronico firmaDocElectronico = null;
-            /*FirmaDocElectronico firmaDocElectronico = firmaDocElectronicoRepository
-                    .findByPuntoEmisionAndDocElectronico_Entidad_RucEntidadAndDocElectronico_Comprobante_CodigoAndDocElectronico_Ambiente_CodigoAndFirma_EstadoAndIsOnline(
-                            comprobanteElectronico.getPuntoEmision(), comprobanteElectronico.getRucEntidad(),
-                            comprobanteElectronico.getComprobanteCodigo(), comprobanteElectronico.getAmbiente(),
-                            "abierto", comprobanteElectronico.getIsOnline());*/
+            FirmaDocElectronico firmaDocElectronico = this.getFirmaDocElectronico(comprobanteElectronico);
+            System.out.println("// prueba 2");
             if (firmaDocElectronico != null) {
+                System.out.println("validacion de comprobante rest: " + DocumentosUtil.validarPasswordCertificado(firmaDocElectronico));
                 if (DocumentosUtil.validarPasswordCertificado(firmaDocElectronico)) {
                     return firmaDocElectronico;
                 }
             }
         }
         return null;
+    }
+
+    private FirmaDocElectronico getFirmaDocElectronico(ComprobanteElectronico comprobanteElectronico) {
+        System.out.println("//punto emision --> " + comprobanteElectronico.getPuntoEmision());
+        Cajero cajero = cajeroRepository.findByPuntoEmision(comprobanteElectronico.getPuntoEmision());
+        Entidad entidad = entidadRepository.findByRucEntidad(comprobanteElectronico.getRucEntidad());
+        Comprobante comprobante = comprobanteRepository.findByCodigo(comprobanteElectronico.getComprobanteCodigo());
+        Ambiente ambiente = ambienteRepository.findByCodigo(comprobanteElectronico.getAmbiente());
+        Firma firma = new Firma(cajero.getArchivo(), cajero.getClave(), "A");
+        TipoEmision tipoEmision = new TipoEmision();
+        tipoEmision.setEsOnline(comprobanteElectronico.getIsOnline());
+        DocElectronico doc = new DocElectronico(entidad, comprobante, tipoEmision, ambiente, "A");
+        return new FirmaDocElectronico(firma, doc, entidad.getEstablecimiento(),
+                comprobanteElectronico.getPuntoEmision(), comprobanteElectronico.getIsOnline());
     }
 
     void enviarSRIAutoriacion(FirmaDocElectronico firmaDocElectronico,
@@ -723,11 +754,10 @@ public class FacturacionElectronicaController {
     }
 
     private String secuencialComprobante(FirmaDocElectronico firmaDocElectronico, ComprobanteElectronico comprobanteElectronico) {
-        /// SET VALUES SECUENCIA <secuencial>000000005</secuencial>
-        // secuenciaComprobante =
-        /// secuenciaComprobanteRepository.findFirstByComprobante_CodigoOrderBySecuenciaDesc(firmaDocElectronico.getDocElectronico().getComprobante().getCodigo());
-        /// System.out.println("secuenciaComprobante " +
-        /// secuenciaComprobante.toString());
+        // SET VALUES SECUENCIA <secuencial>000000005</secuencial>
+         /*secuenciaComprobante = secuenciaComprobanteRepository.findFirstByComprobante_CodigoOrderBySecuenciaDesc
+                 (firmaDocElectronico.getDocElectronico().getComprobante().getCodigo());
+         System.out.println("secuenciaComprobante " + secuenciaComprobante.toString());*/
 
         if (comprobanteElectronico.getNumComprobante() != null && !comprobanteElectronico.getNumComprobante().isEmpty()) {
             return String.format("%09d", new BigInteger(comprobanteElectronico.getNumComprobante()).longValue());

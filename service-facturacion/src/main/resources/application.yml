@@ -37,5 +37,5 @@ eureka:
 
 logging:
   file:
-    name: D:/servers-files/logs/facturacion.log
-    #name: /servers-files/logs/facturacion.log
+    name: D:/servers_files/logs/facturacion.log
+    #name: /servers_files/logs/facturacion.log

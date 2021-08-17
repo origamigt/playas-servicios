@@ -10,9 +10,17 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Value;
 
 public class Conexion {
 
+    @Value("${spring.datasource.url}")
+    private static String urldb;
+    @Value("${spring.datasource.username}")
+    private static String userdb;
+    @Value("${spring.datasource.password}")
+    private static String passdb;
+    
     static SimpleDateFormat formatComprobante = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     public static void updateLiquidacionClaveAcceso(Long idLiquidacion, String claveAcceso) {
@@ -247,20 +255,19 @@ public class Conexion {
 
     public static Connection getConnection() {
         try {
-            Class.forName(Constantes.docDriverClass);
+            Class.forName(Constantes.DRIVERCLASS);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         Properties props = new Properties();
-        props.setProperty("user", Constantes.docUserName);
-        props.setProperty("password", Constantes.docPassword);
-        Connection conn = null;
+        props.setProperty("user", userdb);
+        props.setProperty("password", passdb);
         try {
-            conn = DriverManager.getConnection(Constantes.docUrl, props);
+            return DriverManager.getConnection(urldb, props);
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return conn;
     }
 
 }

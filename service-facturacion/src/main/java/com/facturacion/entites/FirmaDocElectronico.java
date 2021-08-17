@@ -17,6 +17,15 @@ public class FirmaDocElectronico {
 
     }
 
+    public FirmaDocElectronico(Firma firma, DocElectronico docElectronico, String establecimiento, 
+            String puntoEmision, Boolean isOnline) {
+        this.firma = firma;
+        this.docElectronico = docElectronico;
+        this.establecimiento = establecimiento;
+        this.puntoEmision = puntoEmision;
+        this.isOnline = isOnline;
+    }
+
     public Firma getFirma() {
         return firma;
     }

@@ -269,7 +269,8 @@ public class Calculos {
     private static Impuesto getImpuestoComprobante(Detalle detalle, Porcentajes porcentajes) {
         Impuesto impuesto = new Impuesto();
         baseImponible = detalle.getValorTotal(); // - detalle.getDescuento();
-        impuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
+        //impuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
+        impuesto.setCodigo(porcentajes.getCodigoImpuesto());
         impuesto.setCodigoPorcentaje(detalle.getCodigoTarifa());
         impuesto.setBaseImponible(new BigDecimal(baseImponible).setScale(2, RoundingMode.HALF_UP));
         Map<String, BigDecimal> tarifaValor = tarifaValor(detalle, porcentajes);
@@ -289,16 +290,17 @@ public class Calculos {
     }
 
     public static Factura.InfoFactura.TotalConImpuestos.TotalImpuesto generaTotalImpuesto(Detalle detalle, Porcentajes porcentajes) {
-
+        System.out.println("// porcentajes: " + porcentajes);
         ///TOTALES CON IMPUESTOS
         Factura.InfoFactura.TotalConImpuestos.TotalImpuesto totalImpuesto = new Factura.InfoFactura.TotalConImpuestos.TotalImpuesto();
         //baseImponible = detalle.getValorTotal() - detalle.getDescuento();
         baseImponible = detalle.getValorTotal(); // - detalle.getDescuento();
 
         //IVA CODIGO SEGUN TABLA  6 DEL SRI
-        totalImpuesto.setCodigo(detalle.getCodigoTarifa());
+        //totalImpuesto.setCodigo(detalle.getCodigoTarifa());
+        //totalImpuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
         totalImpuesto.setBaseImponible(new BigDecimal(baseImponible).setScale(2, RoundingMode.HALF_UP));
-        totalImpuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
+        totalImpuesto.setCodigo(porcentajes.getCodigoImpuesto());
         totalImpuesto.setCodigoPorcentaje(detalle.getCodigoTarifa());
         Map<String, BigDecimal> tarifaValor = tarifaValor(detalle, porcentajes);
         totalImpuesto.setTarifa(tarifaValor.get("TARIFA"));
@@ -315,7 +317,8 @@ public class Calculos {
         //IVA CODIGO SEGUN TABLA  6 DEL SRI
         totalImpuesto.setCodigo(detalle.getCodigoTarifa());
         totalImpuesto.setBaseImponible(new BigDecimal(baseImponible).setScale(2, RoundingMode.HALF_UP));
-        totalImpuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
+        //totalImpuesto.setCodigo(porcentajes.getImpuestos().getCodigo());
+        totalImpuesto.setCodigo(porcentajes.getCodigoImpuesto());
         totalImpuesto.setCodigoPorcentaje(detalle.getCodigoTarifa());
         Map<String, BigDecimal> tarifaValor = tarifaValor(detalle, porcentajes);
         totalImpuesto.setValor(tarifaValor.get("VALOR"));

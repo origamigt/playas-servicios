@@ -9,4 +9,6 @@ public interface AmbienteRepository extends CrudRepository<Ambiente, Long> {
     @Override
     List<Ambiente> findAll();
     
+    Ambiente findByCodigo(String codigo);
+    
 }
