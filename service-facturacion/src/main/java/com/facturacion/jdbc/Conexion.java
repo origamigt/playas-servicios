@@ -10,23 +10,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Value;
 
 public class Conexion {
 
-    @Value("${spring.datasource.url}")
-    private static String urldb;
-    @Value("${spring.datasource.username}")
-    private static String userdb;
-    @Value("${spring.datasource.password}")
-    private static String passdb;
-    
     static SimpleDateFormat formatComprobante = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     public static void updateLiquidacionClaveAcceso(Long idLiquidacion, String claveAcceso) {
         Connection conn = getConnection();
         try {
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE flow.regp_liquidacion SET  clave_acceso = ? WHERE id = ?;")) {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE flow.regp_liquidacion SET clave_acceso = ? WHERE id = ?;")) {
                 ps.setString(1, claveAcceso);
                 ps.setLong(2, idLiquidacion);
                 ps.executeUpdate();
@@ -116,8 +108,7 @@ public class Conexion {
         }
     }
 
-    public static void updateClaveAcceso(Long id, String tipoLiquidacion,
-                                   String claveAccesoTipoLiquidacionSGR) {
+    public static void updateClaveAcceso(Long id, String tipoLiquidacion, String claveAccesoTipoLiquidacionSGR) {
         System.out.println("updateClaveAcceso ");
         switch (tipoLiquidacion) {
             case "RL":
@@ -127,8 +118,7 @@ public class Conexion {
                 Conexion.updateRenFacturaClaveAcceso(id, claveAccesoTipoLiquidacionSGR);
                 break;
             case "RN":
-                Conexion.updateNotaCreditoClaveAcceso(id,
-                        claveAccesoTipoLiquidacionSGR);
+                Conexion.updateNotaCreditoClaveAcceso(id, claveAccesoTipoLiquidacionSGR);
                 break;
             default:
                 break;
@@ -141,14 +131,12 @@ public class Conexion {
             Map<String, Object> datosAutorizacion = getDatosAutorizacion(comprobanteSRI);
             try (PreparedStatement ps = conn.prepareStatement("UPDATE flow.regp_liquidacion "
                     + "SET numero_autorizacion = ?, estado_ws = ? , "
-                    + "mensaje_ws = ?  , fecha_autorizacion = ? "
-                    + "WHERE id = ?;")) {
+                    + "mensaje_ws = ?  , fecha_autorizacion = ? " + "WHERE id = ?;")) {
                 ps.setString(1, comprobanteSRI.getNumAutorizacion());
                 ps.setString(2, datosAutorizacion.get("estadoWS").toString());
                 ps.setString(3, datosAutorizacion.get("mensajeWS").toString());
                 if (comprobanteSRI.getFechaAutorizacion() != null) {
-                    ps.setTimestamp(4,
-                            new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
+                    ps.setTimestamp(4, new Timestamp(formatComprobante.parse(comprobanteSRI.getFechaAutorizacion()).getTime()));
                 } else {
                     ps.setTimestamp(4, null);
                 }
@@ -260,10 +248,10 @@ public class Conexion {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         Properties props = new Properties();
-        props.setProperty("user", userdb);
-        props.setProperty("password", passdb);
+        props.setProperty("user", Constantes.USERDB);
+        props.setProperty("password", Constantes.PASSDB);
         try {
-            return DriverManager.getConnection(urldb, props);
+            return DriverManager.getConnection(Constantes.URLDB, props);
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
             return null;

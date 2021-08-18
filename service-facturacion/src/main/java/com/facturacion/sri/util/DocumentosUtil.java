@@ -53,7 +53,7 @@ public class DocumentosUtil {
             Random r = new Random();
             int numero = r.nextInt(firmaDocElectronico.getDocElectronico().getEntidad().getValorMax())
                     + firmaDocElectronico.getDocElectronico().getEntidad().getValorMin();
-
+            System.out.println("// numero: " + numero);
             claveAcceso = fechaEmision(comprobanteElectronico.getCabecera().getFechaEmision(), "ddMMyyyy")
                     + firmaDocElectronico.getDocElectronico().getComprobante().getCodigo()
                     + firmaDocElectronico.getDocElectronico().getEntidad().getRucEntidad()
@@ -63,7 +63,9 @@ public class DocumentosUtil {
                     + secuencialComprobante
                     + numero
                     + firmaDocElectronico.getDocElectronico().getTipoEmision().getCodigo();
+            System.out.println("// temporal: " + claveAcceso);
             String verificador = mo.digitoVerificador(claveAcceso).toString();
+            System.out.println("// verificador: " + verificador);
             claveAcceso = claveAcceso + verificador;
 
             if (claveAcceso.length() == 49) {

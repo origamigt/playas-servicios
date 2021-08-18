@@ -117,4 +117,21 @@ public class InfoTributaria {
     public void setDirMatriz(String value) {
         this.dirMatriz = value;
     }
+
+    @Override
+    public String toString() {
+        return "InfoTributaria{" +
+                "ambiente='" + ambiente + '\'' +
+                ", tipoEmision='" + tipoEmision + '\'' +
+                ", razonSocial='" + razonSocial + '\'' +
+                ", nombreComercial='" + nombreComercial + '\'' +
+                ", ruc='" + ruc + '\'' +
+                ", claveAcceso='" + claveAcceso + '\'' +
+                ", codDoc='" + codDoc + '\'' +
+                ", estab='" + estab + '\'' +
+                ", ptoEmi='" + ptoEmi + '\'' +
+                ", secuencial='" + secuencial + '\'' +
+                ", dirMatriz='" + dirMatriz + '\'' +
+                '}';
+    }
 }

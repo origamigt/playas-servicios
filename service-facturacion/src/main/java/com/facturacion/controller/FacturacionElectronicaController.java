@@ -1,15 +1,8 @@
 package com.facturacion.controller;
 
-import com.facturacion.repository.RespuestaComprobanteRepository;
-import com.facturacion.repository.DirectoriosRepository;
-import com.facturacion.repository.TipoIdentificacionRepository;
+import com.facturacion.repository.*;
 //import com.facturacion.repository.MsgFormatoNotificacionRepository;
-import com.facturacion.repository.FormasPagoRepository;
-import com.facturacion.repository.PorcentajeRepository;
-import com.facturacion.repository.ImpuestosAsignadosRetencionRepository;
 //import com.facturacion.repository.FirmaDocElectronicoRepository;
-import com.facturacion.repository.RespuestaSolicitudRepository;
-import com.facturacion.repository.ComprobanteSRIRepository;
 import com.facturacion.entites.FirmaDocElectronico;
 import com.facturacion.entites.Porcentajes;
 import com.facturacion.RestAPI;
@@ -36,11 +29,6 @@ import com.facturacion.sri.logic.ComprobantesCode;
 import com.facturacion.sri.model.InfoTributaria;
 import com.facturacion.entites.RespuestaComprobante;
 import com.facturacion.entites.TipoEmision;
-import com.facturacion.repository.AmbienteRepository;
-import com.facturacion.repository.CajeroRepository;
-import com.facturacion.repository.ClaveAccesoRepository;
-import com.facturacion.repository.ComprobanteRepository;
-import com.facturacion.repository.EntidadRepository;
 import com.facturacion.sri.model.factura.Factura;
 import com.facturacion.sri.model.notacredito.NotaCredito;
 import com.facturacion.sri.model.notacredito.TotalConImpuestos;
@@ -102,6 +90,8 @@ public class FacturacionElectronicaController {
     private ComprobanteRepository comprobanteRepository;
     @Autowired
     private CajeroRepository cajeroRepository;
+    @Autowired
+    private TipoEmisionRepository tipoEmisionRepository;
 
     private ComprobanteSRI comprobanteSRI = null;
 
@@ -137,11 +127,13 @@ public class FacturacionElectronicaController {
             System.out.println("// prueba 3");
             Factura factura = createXML(firmaDocElectronico, comprobanteElectronico);
             if (factura != null) {
+                System.out.println("// factura: " + factura);
+                System.out.println("// directorio: " + directoriosRepository.findByCodigo(1).getRuta());
+                System.out.println("// claveacceso: " + factura.getInfoTributaria().getClaveAcceso());
                 //archivoACrear = directoriosRepository.findByCodigo(1).getRutaDirectorio()
                 archivoACrear = directoriosRepository.findByCodigo(1).getRuta()
                         + factura.getInfoTributaria().getClaveAcceso() + ".xml";
                 if (DocumentosUtil.crearArchivo(factura, archivoACrear)) {
-
                     claveAcceso = factura.getInfoTributaria().getClaveAcceso();
                     secuencial = factura.getInfoTributaria().getSecuencial();
                     System.out.println("enviarFacturaElectronicaSRI");
@@ -308,8 +300,8 @@ public class FacturacionElectronicaController {
         Comprobante comprobante = comprobanteRepository.findByCodigo(comprobanteElectronico.getComprobanteCodigo());
         Ambiente ambiente = ambienteRepository.findByCodigo(comprobanteElectronico.getAmbiente());
         Firma firma = new Firma(cajero.getArchivo(), cajero.getClave(), "A");
-        TipoEmision tipoEmision = new TipoEmision();
-        tipoEmision.setEsOnline(comprobanteElectronico.getIsOnline());
+        TipoEmision tipoEmision = tipoEmisionRepository.findByCodigo("1");
+        //tipoEmision.setEsOnline(comprobanteElectronico.getIsOnline());
         DocElectronico doc = new DocElectronico(entidad, comprobante, tipoEmision, ambiente, "A");
         return new FirmaDocElectronico(firma, doc, entidad.getEstablecimiento(),
                 comprobanteElectronico.getPuntoEmision(), comprobanteElectronico.getIsOnline());
@@ -658,8 +650,7 @@ public class FacturacionElectronicaController {
         Factura.Detalles detalles = generarDetalleFactura(comprobanteElectronico);
         Factura.InfoAdicional informacion = Calculos.generarInformacionAdicionalFactura(comprobanteElectronico);
         factura = new Factura();
-        factura.setInfoTributaria(
-                getInfoTributaria(secuencialComprobante, firmaDocElectronico, comprobanteElectronico));
+        factura.setInfoTributaria(this.getInfoTributaria(secuencialComprobante, firmaDocElectronico, comprobanteElectronico));
         factura.setInfoFactura(infoFactura);
         if (detalles != null) {
             factura.setDetalles(detalles);
@@ -771,12 +762,12 @@ public class FacturacionElectronicaController {
     private InfoTributaria getInfoTributaria(String secuencialComprobante, FirmaDocElectronico firmaDocElectronico,
             ComprobanteElectronico comprobanteElectronico) {
         InfoTributaria infoTributaria = Calculos.loadInfoTributaria(secuencialComprobante, firmaDocElectronico);
+        System.out.println("// infotributaria: " + infoTributaria);
         if (comprobanteElectronico.getClaveAcceso() != null) {
             System.out.println("comprobanteElectronico.getClaveAcceso() " + comprobanteElectronico.getClaveAcceso());
             infoTributaria.setClaveAcceso(comprobanteElectronico.getClaveAcceso());
         } else {
-            infoTributaria
-                    .setClaveAcceso(claveAcceso(firmaDocElectronico, comprobanteElectronico, secuencialComprobante));
+            infoTributaria.setClaveAcceso(this.claveAcceso(firmaDocElectronico, comprobanteElectronico, secuencialComprobante));
             if (infoTributaria.getClaveAcceso() == null) {
                 return null;
             } else {
@@ -792,11 +783,10 @@ public class FacturacionElectronicaController {
         return infoTributaria;
     }
 
-    private String claveAcceso(FirmaDocElectronico firmaDocElectronico, ComprobanteElectronico comprobanteElectronico,
-            String secuencialComprobante) {
+    private String claveAcceso(FirmaDocElectronico firmaDocElectronico, ComprobanteElectronico comprobanteElectronico, String secuencialComprobante) {
         gson = new Gson();
-        String claveAcceso = DocumentosUtil.generarClaveAcceso(firmaDocElectronico, comprobanteElectronico,
-                secuencialComprobante);
+        String claveAcceso = DocumentosUtil.generarClaveAcceso(firmaDocElectronico, comprobanteElectronico, secuencialComprobante);
+        System.out.println("// claveAcceso: " + claveAcceso);
         if (claveAcceso != null) {
             ClaveAcceso comprobanteElectronicoJsonClaveAcceso = claveAccesoRepository.findByClaveAcceso(claveAcceso);
             do {

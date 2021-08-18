@@ -3,6 +3,10 @@ package com.facturacion.sri.util;
 public class Constantes {
 
     public final static String DRIVERCLASS = "org.postgresql.Driver";
+    public final static String URLDB = "jdbc:postgresql://192.168.100.3:5432/rpm_playas";
+    public final static String USERDB = "sisapp";
+    public final static String PASSDB = "sisapp98";
+
     public final static String DIRECCION = "Dirección";
     public final static String TELEFONO = "Teléfono";
     public final static String CORREO = "Email";
