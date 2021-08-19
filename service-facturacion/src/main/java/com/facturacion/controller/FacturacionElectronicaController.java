@@ -1,8 +1,6 @@
 package com.facturacion.controller;
 
 import com.facturacion.repository.*;
-//import com.facturacion.repository.MsgFormatoNotificacionRepository;
-//import com.facturacion.repository.FirmaDocElectronicoRepository;
 import com.facturacion.entites.FirmaDocElectronico;
 import com.facturacion.entites.Porcentajes;
 import com.facturacion.RestAPI;
@@ -78,8 +76,8 @@ public class FacturacionElectronicaController {
     private FormasPagoRepository formasPagoRepository;
     @Autowired
     private ImpuestosAsignadosRetencionRepository impuestosAsignadosRetencionRepository;
-    //@Autowired
-    //private MsgFormatoNotificacionRepository msgFormatoNotificacionRepository;
+    @Autowired
+    private MsgFormatoNotificacionRepository msgFormatoNotificacionRepository;
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -111,9 +109,8 @@ public class FacturacionElectronicaController {
     @RequestMapping(value = RestAPI.enviarCorreoFacturacionElectronicaPOST, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> enviarCorreoFacturaElectronicaSRI(@Valid @RequestBody ComprobanteSRI sri) {
         //emailService.sendMailContribuyente(msgFormatoNotificacionRepository.findTopByAsuntoIsNotNull(),
-        emailService.sendMailContribuyente(new MsgFormatoNotificacion(),
-                sri.getXmlPath(), sri.getPdfPath(),
-                sri.getContribuyente().getEmail());
+        emailService.sendMailContribuyente(msgFormatoNotificacionRepository.findByTipo(1L),
+                sri.getXmlPath(), sri.getPdfPath(), sri.getContribuyente().getEmail());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -131,8 +128,7 @@ public class FacturacionElectronicaController {
                 System.out.println("// directorio: " + directoriosRepository.findByCodigo(1).getRuta());
                 System.out.println("// claveacceso: " + factura.getInfoTributaria().getClaveAcceso());
                 //archivoACrear = directoriosRepository.findByCodigo(1).getRutaDirectorio()
-                archivoACrear = directoriosRepository.findByCodigo(1).getRuta()
-                        + factura.getInfoTributaria().getClaveAcceso() + ".xml";
+                archivoACrear = directoriosRepository.findByCodigo(1).getRuta() + factura.getInfoTributaria().getClaveAcceso() + ".xml";
                 if (DocumentosUtil.crearArchivo(factura, archivoACrear)) {
                     claveAcceso = factura.getInfoTributaria().getClaveAcceso();
                     secuencial = factura.getInfoTributaria().getSecuencial();
@@ -310,12 +306,12 @@ public class FacturacionElectronicaController {
     void enviarSRIAutoriacion(FirmaDocElectronico firmaDocElectronico,
             ComprobanteElectronico comprobanteElectronico) {
         continuar = Boolean.TRUE;
-        RespuestaSolicitud rs = getRespuestaSolicitud(firmaDocElectronico);
+        RespuestaSolicitud rs = getRespuestaSolicitud(firmaDocElectronico, comprobanteElectronico.getTramite());
         System.out.println("rs: " + rs.toString());
         RespuestaComprobante rc = null;
         if (rs != null && rs.getEstado() != null) {
             if (rs.getEstado().equals(Constantes.RECIBIDA)) {
-                rc = getRespuestaComprobante(firmaDocElectronico);
+                rc = getRespuestaComprobante(firmaDocElectronico, comprobanteElectronico.getTramite());
                 if (comprobanteElectronico.getReenvioVerificacion()) {
                     Conexion.updateReenvioLiquidacion(comprobanteElectronico.getIdLiquidacion(), "REENVIADA");
                 }
@@ -324,7 +320,7 @@ public class FacturacionElectronicaController {
                     if (rs.getCodigoError().equals(Constantes.CODE_CLAVE_ACCESO_REGISTRADA)) {
                         if (!comprobanteElectronico.getReenvioVerificacion()) {
                             rs.setEstado("RECIBIDA");
-                            rc = getRespuestaComprobante(firmaDocElectronico);
+                            rc = getRespuestaComprobante(firmaDocElectronico, comprobanteElectronico.getTramite());
                             continuar = Boolean.TRUE;
                         } else {
                             continuar = Boolean.FALSE;
@@ -340,7 +336,7 @@ public class FacturacionElectronicaController {
         }
     }
 
-    private RespuestaSolicitud getRespuestaSolicitud(FirmaDocElectronico firmaDocElectronico) {
+    private RespuestaSolicitud getRespuestaSolicitud(FirmaDocElectronico firmaDocElectronico, Long tramite) {
         System.out.println("getRespuestaSolicitud ");
         RespuestaSolicitud rsRespuesta = DocumentosUtil.firmarXMLRecepcion(
                 directoriosRepository.findByCodigo(-1).getRuta(), archivoACrear,
@@ -348,13 +344,14 @@ public class FacturacionElectronicaController {
                 firmaDocElectronico.getIsOnline());
         if (rsRespuesta != null) {
             //rsRespuesta.set_id(ObjectId.get());
+            rsRespuesta.setTramite(tramite);
             rsRespuesta.setFechaIngreso(new Date());
             respuestaSolicitudRepository.save(rsRespuesta);
         }
         return rsRespuesta;
     }
 
-    private RespuestaComprobante getRespuestaComprobante(FirmaDocElectronico firmaDocElectronico) {
+    private RespuestaComprobante getRespuestaComprobante(FirmaDocElectronico firmaDocElectronico, Long tramite) {
 
         RespuestaComprobante respuestaComprobante = DocumentosUtil.autorizacionXMLSRI(claveAcceso,
                 directoriosRepository.findByCodigo(3).getRuta(),
@@ -365,6 +362,9 @@ public class FacturacionElectronicaController {
         // respuestaComprobante.toString());
         if (respuestaComprobante != null) {
             //respuestaComprobante.set_id(ObjectId.get());
+            respuestaComprobante.setResponse(gson.toJson(respuestaComprobante.getAutorizaciones().getAutorizacion()));
+            respuestaComprobante.setTramite(tramite);
+            respuestaComprobante.setFechaIngreso(new Date());
             respuestaComprobanteRepository.save(respuestaComprobante);
         }
         return respuestaComprobante;
@@ -573,6 +573,8 @@ public class FacturacionElectronicaController {
             this.comprobanteSRI.setValorTotal(totalRetenidoAcum);
         }
         this.comprobanteSRI.setTramite(comprobanteElectronico.getTramite());
+        this.comprobanteSRI.setFecha(new Date());
+        this.comprobanteSRI.setResponse(gson.toJson(respuestaComprobante));
         /// SI EXISTE NUMERO DE AUTORIZACION
         if (this.comprobanteSRI.getNumAutorizacion() != null) {
             //String pathAutorizados = directoriosRepository.findByCodigo(3).getRutaDirectorio();
@@ -591,8 +593,7 @@ public class FacturacionElectronicaController {
             this.comprobanteSRI.getEntidad().setLogo(firmaDocElectronico.getDocElectronico().getEntidad().getLogo());
 
             this.comprobanteSRI.setXmlPath(xmlPath);
-            this.comprobanteSRI
-                    .setPdfPath(pathAutorizados + initNombreReporte + this.comprobanteSRI.getNumFactura() + ".pdf");
+            this.comprobanteSRI.setPdfPath(pathAutorizados + initNombreReporte + this.comprobanteSRI.getNumFactura() + ".pdf");
             //DocumentosUtil.generarPDFFacturacionElectronica(comprobanteSRI, directoriosRepository.findByCodigo(-2).getRutaDirectorio());
             DocumentosUtil.generarPDFFacturacionElectronica(comprobanteSRI, directoriosRepository.findByCodigo(-2).getRuta());
             // secuenciaComprobanteRepository.save(secuenciaComprobante);
@@ -601,11 +602,10 @@ public class FacturacionElectronicaController {
             if (comprobanteElectronico.getCabecera().getCorreo() != null
                     && comprobanteElectronico.getCabecera().getCorreo().length() > 0) {
                 //emailService.sendMailContribuyente(msgFormatoNotificacionRepository.findTopByAsuntoIsNotNull(),
-                emailService.sendMailContribuyente(new MsgFormatoNotificacion(),
+                emailService.sendMailContribuyente(msgFormatoNotificacionRepository.findByTipo(1L),
                         this.comprobanteSRI.getXmlPath(), this.comprobanteSRI.getPdfPath(),
                         comprobanteElectronico.getCabecera().getCorreo());
             }
-
         }
         if (comprobanteElectronico.getNumComprobante() == null) {
             this.comprobanteSRI.setNumComprobante(firmaDocElectronico.getSecuencial());

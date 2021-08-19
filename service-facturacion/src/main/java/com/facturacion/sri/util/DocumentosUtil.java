@@ -141,6 +141,7 @@ public class DocumentosUtil {
                     System.out.println("respuestaSolicitud " + respuestaSolicitud);
                     if (respuestaSolicitud != null) {
                         try {
+                            respuestaSolicitud.setResponse(respuestaSolicitud.getComprobantes().toString());
                             System.out.println("respuestaSolicitud try {" + respuestaSolicitud);
                             if (respuestaSolicitud.getComprobantes() != null && respuestaSolicitud.getComprobantes().getComprobante() != null) {
                                 if (!respuestaSolicitud.getComprobantes().getComprobante().isEmpty() && respuestaSolicitud.getComprobantes().getComprobante().get(0) != null) {
@@ -354,7 +355,8 @@ public class DocumentosUtil {
             parametros.put("TELEFONO", comprobanteSRI.getContribuyente().getTelefono());
             parametros.put("CORREO", comprobanteSRI.getContribuyente().getEmail());
             parametros.put("TRAMITE", comprobanteSRI.getTramite());
-            parametros.put("LOGO", comprobanteSRI.getEntidad().getLogo());
+            //parametros.put("LOGO", comprobanteSRI.getEntidad().getLogo());
+            parametros.put("LOGO", rutaReporte + comprobanteSRI.getEntidad().getLogo());
             parametros.put("subTotal12", comprobanteSRI.getSubTotal12());
             parametros.put("subTotalIva", comprobanteSRI.getSubTotalIva());
             parametros.put("subTotalNoObjetoIva", comprobanteSRI.getSubTotalNoObjetoIva());

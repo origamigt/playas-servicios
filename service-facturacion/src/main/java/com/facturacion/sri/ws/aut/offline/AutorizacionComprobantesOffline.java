@@ -17,15 +17,15 @@ import com.facturacion.sri.ws.aut.ObjectFactory;
 public abstract interface AutorizacionComprobantesOffline {
 	@WebMethod
 	@WebResult(name = "RespuestaAutorizacionComprobante", targetNamespace = "")
-	@RequestWrapper(localName = "autorizacionComprobante", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacionelectronicaclient.facturacionelectronicaclient.sri.model.autorizacion.AutorizacionComprobante")
-	@ResponseWrapper(localName = "autorizacionComprobanteResponse", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacionelectronicaclient.facturacionelectronicaclient.sri.ws.aut.AutorizacionComprobanteResponse")
+	@RequestWrapper(localName = "autorizacionComprobante", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacion.sri.model.autorizacion.AutorizacionComprobante")
+	@ResponseWrapper(localName = "autorizacionComprobanteResponse", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacion.sri.ws.aut.AutorizacionComprobanteResponse")
 	public abstract RespuestaComprobante autorizacionComprobante(
 			@WebParam(name = "claveAccesoComprobante", targetNamespace = "") String paramString);
 
 	@WebMethod
 	@WebResult(name = "RespuestaAutorizacionLote", targetNamespace = "")
-	@RequestWrapper(localName = "autorizacionComprobanteLote", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacionelectronicaclient.facturacionelectronicaclient.sri.model.autorizacion.AutorizacionComprobanteLote")
-	@ResponseWrapper(localName = "autorizacionComprobanteLoteResponse", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacionelectronicaclient.facturacionelectronicaclient.sri.ws.aut.AutorizacionComprobanteLoteResponse")
+	@RequestWrapper(localName = "autorizacionComprobanteLote", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacion.sri.model.autorizacion.AutorizacionComprobanteLote")
+	@ResponseWrapper(localName = "autorizacionComprobanteLoteResponse", targetNamespace = "http://ec.gob.sri.ws.autorizacion", className = "com.facturacion.sri.ws.aut.AutorizacionComprobanteLoteResponse")
 	public abstract RespuestaLote autorizacionComprobanteLote(
 			@WebParam(name = "claveAccesoLote", targetNamespace = "") String paramString);
 }

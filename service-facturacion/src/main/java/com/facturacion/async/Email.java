@@ -59,8 +59,9 @@ public class Email implements Serializable {
             //INGRESO DE LAS PROPIEDADES DE LA CONEXION
             Properties props = new Properties();
             props.setProperty("mail.transport.protocol", "smtp");
-            props.setProperty("mail.smtp.host", Constantes.SMTP_HOST);
             props.setProperty("mail.smtp.starttls.enable", "true");
+            props.setProperty("mail.smtp.ssl.trust", Constantes.SMTP_HOST);
+            props.setProperty("mail.smtp.host", Constantes.SMTP_HOST);
             props.setProperty("mail.smtp.port", Constantes.SMTP_PORT);
             props.setProperty("mail.smtp.user", usuarioCorreo);
             props.setProperty("mail.smtp.auth", "true");
@@ -96,11 +97,10 @@ public class Email implements Serializable {
             //AGREGAR MULTIPART EN CUERPO DEL MENSAJE
             mimeMessage.setContent(multipart);
             // ENVIAR MENSAJE
-            Transport transport = session.getTransport("smtp");
-            transport.connect(usuarioCorreo, password);
-            transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-            transport.close();
-
+            try (Transport transport = session.getTransport("smtp")) {
+                transport.connect(usuarioCorreo, password);
+                transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+            }
         } catch (MessagingException | IOException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
             return false;
