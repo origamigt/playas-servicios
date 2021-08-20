@@ -75,12 +75,12 @@ public class Conexion {
     public static void updateNotaCreditoClaveAcceso(Long idNotaCredito, String claveAcceso) {
         Connection conn = getConnection();
         try {
-            System.out.println("updateNotaCreditoClaveAcceso: "  + claveAcceso + " idNotaCredito " + idNotaCredito);
+            //System.out.println("updateNotaCreditoClaveAcceso: "  + claveAcceso + " idNotaCredito " + idNotaCredito);
             try (PreparedStatement ps = 
                     conn.prepareStatement("UPDATE financiero.ren_nota_credito " + "SET  clave_acceso = ? WHERE id = ?;")) {
                 ps.setString(1, claveAcceso);
                 ps.setLong(2, idNotaCredito);
-                System.out.println("ps.executeUpdate(): " + ps.executeUpdate());
+                //System.out.println("ps.executeUpdate(): " + ps.executeUpdate());
             }
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,7 +94,7 @@ public class Conexion {
     }
 
     public static void updateAutorizacion(String tipo, Long id, ComprobanteSRI comprobanteSRI) {
-        System.out.println("tipo: " + tipo + ", id: " + id + ", comprobanteSRI: " + comprobanteSRI);
+        //System.out.println("tipo: " + tipo + ", id: " + id + ", comprobanteSRI: " + comprobanteSRI);
         switch (tipo) {
             case "RL":
                 updateLiquidacion(id, comprobanteSRI);
@@ -109,7 +109,7 @@ public class Conexion {
     }
 
     public static void updateClaveAcceso(Long id, String tipoLiquidacion, String claveAccesoTipoLiquidacionSGR) {
-        System.out.println("updateClaveAcceso ");
+        //System.out.println("updateClaveAcceso ");
         switch (tipoLiquidacion) {
             case "RL":
                 Conexion.updateLiquidacionClaveAcceso(id, claveAccesoTipoLiquidacionSGR);

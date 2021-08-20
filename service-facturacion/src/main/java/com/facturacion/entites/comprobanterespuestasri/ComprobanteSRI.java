@@ -543,4 +543,10 @@ public class ComprobanteSRI implements Serializable {
         result.add(respuesta);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "ComprobanteSRI{" + "id=" + id + ", idOrdenPago=" + idOrdenPago + ", tramite=" + tramite + ", response=" + response + ", fecha=" + fecha + ", tipoComprobante=" + tipoComprobante + ", codigoTipoComprobante=" + codigoTipoComprobante + ", numFactura=" + numFactura + ", numFacturaFormato=" + numFacturaFormato + ", numComprobante=" + numComprobante + ", numAutorizacion=" + numAutorizacion + ", fechaAutorizacion=" + fechaAutorizacion + ", ambiente=" + ambiente + ", emision=" + emision + ", claveAcceso=" + claveAcceso + ", fechaEmision=" + fechaEmision + ", subTotal12=" + subTotal12 + ", subTotalIva=" + subTotalIva + ", subTotalNoObjetoIva=" + subTotalNoObjetoIva + ", subTotalExcentoIva=" + subTotalExcentoIva + ", subTotalSinImpuetos=" + subTotalSinImpuetos + ", descuento=" + descuento + ", ice=" + ice + ", iva=" + iva + ", irbpnr=" + irbpnr + ", propina=" + propina + ", valorTotal=" + valorTotal + ", valorSinSubSidio=" + valorSinSubSidio + ", ahorroPorSubSidio=" + ahorroPorSubSidio + ", descuentoAdicional=" + descuentoAdicional + ", pagoDetalle=" + pagoDetalle + ", numComprobanteModifica=" + numComprobanteModifica + ", motivoNotaCredito=" + motivoNotaCredito + ", fechaEmisionDocumentoModifica=" + fechaEmisionDocumentoModifica + ", tipoDocumentoModifica=" + tipoDocumentoModifica + ", descripcionComprobanteModifica=" + descripcionComprobanteModifica + ", periodo=" + periodo + ", xmlPath=" + xmlPath + ", pdfPath=" + pdfPath + '}';
+    }
+    
 }

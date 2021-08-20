@@ -53,7 +53,7 @@ public class DocumentosUtil {
             Random r = new Random();
             int numero = r.nextInt(firmaDocElectronico.getDocElectronico().getEntidad().getValorMax())
                     + firmaDocElectronico.getDocElectronico().getEntidad().getValorMin();
-            System.out.println("// numero: " + numero);
+            //System.out.println("// numero: " + numero);
             claveAcceso = fechaEmision(comprobanteElectronico.getCabecera().getFechaEmision(), "ddMMyyyy")
                     + firmaDocElectronico.getDocElectronico().getComprobante().getCodigo()
                     + firmaDocElectronico.getDocElectronico().getEntidad().getRucEntidad()
@@ -63,9 +63,9 @@ public class DocumentosUtil {
                     + secuencialComprobante
                     + numero
                     + firmaDocElectronico.getDocElectronico().getTipoEmision().getCodigo();
-            System.out.println("// temporal: " + claveAcceso);
+            //System.out.println("// temporal: " + claveAcceso);
             String verificador = mo.digitoVerificador(claveAcceso).toString();
-            System.out.println("// verificador: " + verificador);
+            //System.out.println("// verificador: " + verificador);
             claveAcceso = claveAcceso + verificador;
 
             if (claveAcceso.length() == 49) {
@@ -82,7 +82,7 @@ public class DocumentosUtil {
     public static Boolean validarPasswordCertificado(FirmaDocElectronico firmaDocElectronico) {
         try {
             KeyStore p12 = KeyStore.getInstance("pkcs12");
-            System.out.println("// firmaDocElectronico.getFirma().getArchivo() " + firmaDocElectronico.getFirma().getArchivo());
+            //System.out.println("// firmaDocElectronico.getFirma().getArchivo() " + firmaDocElectronico.getFirma().getArchivo());
             FileInputStream fileInputStream = new FileInputStream(firmaDocElectronico.getFirma().getArchivo());
             p12.load(fileInputStream, firmaDocElectronico.getFirma().getPassword().toCharArray());
             return true;
@@ -108,8 +108,7 @@ public class DocumentosUtil {
     public static RespuestaSolicitud firmarXMLRecepcion(String pathJarFirmarXML, String pathCompletoArchivoAFirmar,
             String pathDirFirmados, FirmaDocElectronico firmaDocElectronico, String claveAcceso, Boolean isOnline) {
 
-        System.out.println("// cmd");
-
+        //System.out.println("// cmd");
         String cmd = "java -jar " + valueSeparator(pathJarFirmarXML) + "firmar_xml.jar "
                 + valueSeparator(firmaDocElectronico.getFirma().getArchivo()) + " "
                 + firmaDocElectronico.getFirma().getPassword() + " " + valueSeparator(pathCompletoArchivoAFirmar) + " "
@@ -126,7 +125,7 @@ public class DocumentosUtil {
              */
             int resultCMD = Runtime.getRuntime().exec(cmd).waitFor();
             if (resultCMD == 0) {
-                System.out.println("resultCMD " + resultCMD);
+                //System.out.println("resultCMD " + resultCMD);
                 String archivoFirmado = valueSeparator(pathDirFirmados) + File.separator + claveAcceso + ".xml";
                 /*
                  * C:\sriComprobantes\comprobantes\firmados\
@@ -138,11 +137,11 @@ public class DocumentosUtil {
                 try {
                     respuestaSolicitud = EnvioComprobantesWs.enviarArchivoXMLSRI(archivoFirmado,
                             firmaDocElectronico.getDocElectronico().getAmbiente().getWsUrlRecepcion(), isOnline);
-                    System.out.println("respuestaSolicitud " + respuestaSolicitud);
+                    //System.out.println("respuestaSolicitud " + respuestaSolicitud);
                     if (respuestaSolicitud != null) {
                         try {
                             respuestaSolicitud.setResponse(respuestaSolicitud.getComprobantes().toString());
-                            System.out.println("respuestaSolicitud try {" + respuestaSolicitud);
+                            //System.out.println("respuestaSolicitud try {" + respuestaSolicitud);
                             if (respuestaSolicitud.getComprobantes() != null && respuestaSolicitud.getComprobantes().getComprobante() != null) {
                                 if (!respuestaSolicitud.getComprobantes().getComprobante().isEmpty() && respuestaSolicitud.getComprobantes().getComprobante().get(0) != null) {
                                     if (respuestaSolicitud.getComprobantes().getComprobante().get(0).getMensajes() != null) {

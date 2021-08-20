@@ -290,7 +290,7 @@ public class Calculos {
     }
 
     public static Factura.InfoFactura.TotalConImpuestos.TotalImpuesto generaTotalImpuesto(Detalle detalle, Porcentajes porcentajes) {
-        System.out.println("// porcentajes: " + porcentajes);
+        //System.out.println("// porcentajes: " + porcentajes);
         ///TOTALES CON IMPUESTOS
         Factura.InfoFactura.TotalConImpuestos.TotalImpuesto totalImpuesto = new Factura.InfoFactura.TotalConImpuestos.TotalImpuesto();
         //baseImponible = detalle.getValorTotal() - detalle.getDescuento();
@@ -495,7 +495,7 @@ public class Calculos {
 
     public static InfoTributaria loadInfoTributaria(String secuencialComprobante, FirmaDocElectronico firmaDocElectronico) {
         InfoTributaria infoTributaria = new InfoTributaria();
-        System.out.println("loadInfoTributaria secuencialComprobante " + secuencialComprobante);
+        //System.out.println("loadInfoTributaria secuencialComprobante " + secuencialComprobante);
         infoTributaria.setSecuencial(secuencialComprobante);
         //ambiente
         infoTributaria.setAmbiente(firmaDocElectronico.getDocElectronico().getAmbiente().getCodigo());
@@ -550,7 +550,7 @@ public class Calculos {
 
         ///SE FORMATEA EL NUMERO DE COMPROBANTE PARA QUE SE
         String numDocModifica = comprobanteElectronico.getNumComprobanteModifica().substring(0, 3) + "-" + comprobanteElectronico.getNumComprobanteModifica().substring(3, 6) + "-" + comprobanteElectronico.getNumComprobanteModifica().substring(6);
-        System.out.println("numDocModifica " + numDocModifica);
+        //System.out.println("numDocModifica " + numDocModifica);
         infoNotaCredito.setNumDocModificado(numDocModifica);
 
         infoNotaCredito.setFechaEmisionDocSustento((DocumentosUtil.fechaEmision(comprobanteElectronico.getFechaEmisionDocumentoModifica(), "dd/MM/yyyy")));
