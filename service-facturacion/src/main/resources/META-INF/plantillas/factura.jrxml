@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a90b5cc6-9a35-48d7-a2d0-ef67a99b13b8">
 	<property name="ireport.zoom" value="1.6105100000000052"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="432"/>
+	<property name="ireport.y" value="252"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -236,7 +236,7 @@
 				<text><![CDATA[Razón Social / Nombres y Apellidos:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="negrita" mode="Transparent" x="282" y="299" width="65" height="12" uuid="01eebb49-c6e9-4913-a3a1-9dfc22f724fe"/>
+				<reportElement style="negrita" mode="Transparent" x="282" y="299" width="85" height="12" uuid="01eebb49-c6e9-4913-a3a1-9dfc22f724fe"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
@@ -257,7 +257,7 @@
 				<textFieldExpression><![CDATA[$P{RS_COMPRADOR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="347" y="299" width="203" height="12" uuid="6b3d40d1-1cd3-4005-9137-d10025cceb0a"/>
+				<reportElement mode="Transparent" x="368" y="299" width="182" height="12" uuid="6b3d40d1-1cd3-4005-9137-d10025cceb0a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
