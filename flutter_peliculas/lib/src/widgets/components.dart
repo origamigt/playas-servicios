@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
+import 'package:playas/src/pages/ajustes/cerrar_sesion_page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:vrouter/vrouter.dart';
@@ -73,8 +74,13 @@ Widget menuCard(BuildContext context, Menu menu) {
           //RpmApplication.router.navigateTo(context, menu.route);
           //ConnectedRoutes.to(context, menu.route);
           if (menu.route != '/cerrarSesion') {
-          } else {}
-          context.vRouter.to(menu.route);
+            context.vRouter.to(menu.route);
+          } else {
+            Navigator.of(context).push(PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (BuildContext context, _, __) =>
+                    CerrarSesionPage()));
+          }
         },
         child: Container(
           padding: EdgeInsets.only(bottom: 16, right: 16, left: 16),
@@ -177,36 +183,4 @@ Widget tituloPagina(BuildContext? context, String txt) {
         maxLines: 3,
         style: Theme.of(context!).textTheme.headline1,
       ));
-}
-
-dlgCerrarSesion() {
-  showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-          title: new Text("Cerrar Sesión"),
-          content: new Text("Esta seguro?"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("SI"),
-              onPressed: () async {
-                if (await signOut()) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login', (Route<dynamic> route) => false);
-                }
-              },
-            ),
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("NO"),
-              onPressed: () async {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      });
 }

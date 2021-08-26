@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/menu.dart';
@@ -51,3 +54,7 @@ String qrCertificate = '';
 const kMobileBreakpoint = 576;
 const kTabletBreakpoint = 1024;
 const kDesktopBreakPoint = 1366;
+
+String generateMd5(String input) {
+  return md5.convert(utf8.encode(input)).toString();
+}

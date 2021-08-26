@@ -6,7 +6,9 @@ import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
 import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/pages/login/login_page.dart';
+import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
+import 'package:playas/src/pages/tramites/tramites_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/ws.dart';
 import 'package:provider/provider.dart';
@@ -71,11 +73,11 @@ class _VRouterAppState extends State<VRouterApp> {
               widget: LoginPage(),
               buildTransition: (animation, _, child) =>
                   FadeTransition(opacity: animation, child: child)),
-          /*VWidget(
-              path: '/register',
-              widget: RegisterScreen(),
+          VWidget(
+              path: RegistrarsePage.route,
+              widget: RegistrarsePage(),
               buildTransition: (animation, _, child) =>
-                  FadeTransition(opacity: animation, child: child)),*/
+                  FadeTransition(opacity: animation, child: child)),
           //VWidget(path: r':_(.confirmarPago)', widget: PagoPage()),
           VGuard(
               beforeEnter: (vRedirector) async {
@@ -91,30 +93,37 @@ class _VRouterAppState extends State<VRouterApp> {
                 VNester(
                     path: '/',
                     widgetBuilder: (child) => Scaffold(body: child),
-                    buildTransition: (animation, _, child) =>
-                        FadeTransition(opacity: animation, child: child),
+                    buildTransition: (animation1, _, child) =>
+                        FadeTransition(opacity: animation1, child: child),
                     nestedRoutes: [
                       VWidget(
-                          path: HomePage.route,
-                          widget: HomePage(),
-                          transitionDuration: Duration(milliseconds: 0)),
+                        path: HomePage.route,
+                        widget: HomePage(),
+                      ),
                       VWidget(
-                          path: NoposeerBienPage.route,
-                          widget: NoposeerBienPage(),
-                          transitionDuration: Duration(milliseconds: 0)),
+                        path: TramitesPage.route,
+                        widget: TramitesPage(),
+                      ),
+                      VWidget(
+                        path: NoposeerBienPage.route,
+                        widget: NoposeerBienPage(),
+                      ),
                       VWidget(
                         path: AjustesPage.route,
                         widget: AjustesPage(),
-                        transitionDuration: Duration(milliseconds: 0),
                       ),
                       VWidget(
-                          path: PerfilPage.route,
-                          widget: PerfilPage(),
-                          transitionDuration: Duration(milliseconds: 0)),
+                        path: PerfilPage.route,
+                        widget: PerfilPage(),
+                      ),
                       VWidget(
-                          path: ContraseniaPage.route,
-                          widget: ContraseniaPage(),
-                          transitionDuration: Duration(milliseconds: 0)),
+                        path: ContraseniaPage.route,
+                        widget: ContraseniaPage(),
+                      ),
+                      VWidget(
+                        path: ContraseniaPage.route,
+                        widget: ContraseniaPage(),
+                      ),
                     ])
               ])
         ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/acto.dart';
-import 'package:responsive_property/responsive_property.dart';
 
 class TramitesCard extends StatelessWidget {
   final List<Acto>? actos;
@@ -14,27 +13,23 @@ class TramitesCard extends StatelessWidget {
         child: GridView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: Responsive({
-              mobileScreenScope: 2,
-              tabletScreenScope: 2,
-              desktopScreenScope: 2
-            }).resolve(context)!,
-            childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 1.4),
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-          ),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 3 / 2,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20),
           itemCount: actos!.length,
           itemBuilder: (context, index) {
             Acto acto = actos![index];
-            return Row(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
+                  height: 200,
                   child: acto.urlImage != null
                       ? FadeInImage(
+                          height: 150,
                           image: NetworkImage(actos![index].urlImage!),
                           placeholder: AssetImage('assets/images/no-image.jpg'),
                           imageErrorBuilder: (context, error, stackTrace) {
@@ -43,8 +38,11 @@ class TramitesCard extends StatelessWidget {
                           },
                           fit: BoxFit.cover,
                         )
-                      : Image.asset('assets/images/no-image.jpg',
-                          fit: BoxFit.cover),
+                      : Image.asset(
+                          'assets/images/no-image.jpg',
+                          fit: BoxFit.cover,
+                          height: 150,
+                        ),
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.0),
                   ),
