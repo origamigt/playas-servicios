@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/ws.dart';
+import 'package:provider/provider.dart';
 
-class UsuarioProvider with ChangeNotifier {
+class UsuarioProvider extends ChangeNotifier implements ReassembleHandler {
   User? user; //an instance of a user
   String? errorMessage; //error message
   bool loading = false; //loading the page
+
+  @override
+  void reassemble() {
+    print('Did hot-reload');
+  }
 
   Future<bool> fetchUser(String usuario, String clave) async {
     setLoading(true);
@@ -66,5 +72,12 @@ class UsuarioProvider with ChangeNotifier {
   Future<User?> initialize() async {
     var u = await userLogged();
     return u;
+  }
+
+  Future<void> cerrarSesion() async {
+    setLoading(true);
+    user = null;
+    await signOut();
+    setLoading(false);
   }
 }

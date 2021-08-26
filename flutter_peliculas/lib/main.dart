@@ -1,4 +1,4 @@
-import 'package:fluro/fluro.dart';
+/*import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/home_page.dart';
@@ -8,8 +8,10 @@ import 'package:playas/src/providers/user_provider.dart';
 import 'package:playas/src/providers/ws.dart';
 import 'package:playas/src/routes/rpm_application.dart';
 import 'package:playas/src/routes/rpm_routes.dart';
+import 'package:playas/src/routes/rpm_vroutes.dart';
 import 'package:playas/src/widgets/theme-manager.dart';
 import 'package:provider/provider.dart';
+import 'package:vrouter/vrouter.dart';
 
 void main() {
   //window.document.onContextMenu.listen((evt) => evt.preventDefault());
@@ -24,8 +26,53 @@ void main() {
       ChangeNotifierProvider(create: (_) => AuthProvider()),
       ChangeNotifierProvider(create: (_) => UserProvider()),
     ],
-    child: AppComponent(),
+    child: Builder(
+      builder: (context) {
+        final themeNotifier = Provider.of<ThemeNotifier>(context);
+        Future<User?> getUserData() => userLogged();
+        return VRouter(
+          theme: themeNotifier.getTheme(),
+          debugShowCheckedModeBanner: false,
+          // VRouter acts as a MaterialApp
+          mode: VRouterMode.history,
+          // Remove the '#' from the url
+          logs: VLogs.info,
+          // Defines which logs to show, info is the default
+          routes: [
+            VWidget(
+              path: LoginPage.route,
+              widget: LoginPage(),
+            ),
+            VRouteRedirector(
+              redirectTo: LoginPage.route,
+              path: r'*',
+            ),
+            VGuard(
+                beforeEnter: (vRedirector) async {
+                  User? check = await getUserData();
+                  return check == null ? null : vRedirector.to(LoginPage.route);
+                },
+                stackedRoutes: [
+                  ConnectedRoutes(), // Custom VRouteElement
+                ]),
+          ],
+        );
+      },
+    ),
   ));
+}
+
+class MyScaffold extends StatelessWidget {
+  final Widget child;
+
+  const MyScaffold(this.child);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: child,
+    );
+  }
 }
 
 class AppComponent extends StatefulWidget {
@@ -70,5 +117,40 @@ class AppComponentState extends State<AppComponent> {
             }
           }),
     );
+  }
+}
+*/
+
+import 'package:flutter/material.dart';
+import 'package:playas/src/providers/auth_provider.dart';
+import 'package:playas/src/providers/persona_provider.dart';
+import 'package:playas/src/providers/usuario_provider.dart';
+import 'package:playas/src/widgets/theme-manager.dart';
+import 'package:playas/vrouter_app.dart';
+import 'package:provider/provider.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+          ChangeNotifierProvider(create: (_) => AuthProvider()),
+          ChangeNotifierProvider(create: (_) => UsuarioProvider()),
+          ChangeNotifierProvider(create: (_) => PersonaProvider()),
+        ],
+        child: Builder(
+          builder: (context) {
+            final themeNotifier = Provider.of<ThemeNotifier>(context);
+            return VRouterApp(
+              themeData: themeNotifier.getTheme(),
+            );
+          },
+        ));
   }
 }

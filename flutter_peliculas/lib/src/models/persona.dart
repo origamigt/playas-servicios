@@ -1,6 +1,6 @@
 import 'user.dart';
 
-part 'pub-persona.g.dart';
+part 'persona.g.dart';
 
 class PubPersona {
   int? id;

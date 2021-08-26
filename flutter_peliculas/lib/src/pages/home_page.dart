@@ -3,6 +3,7 @@ import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/widgets/acto_widget.dart';
+import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/menu-card.dart';
 import 'package:playas/src/widgets/page_component.dart';
 
@@ -19,20 +20,11 @@ class HomePage extends StatelessWidget {
         height: 0,
       ),
       body: PageComponent(
-        header: title(),
+        header: tituloPagina(context,
+            'Registro Municipal de la\nPropiedad y Mercantil del Cantón Playas'),
         body: _swiperTarjetas(),
         footer: _footer(context),
       ),
-    );
-  }
-
-  Widget title() {
-    return Text(
-      'Registro Municipal de la\nPropiedad y Mercantil del Cantón Playas',
-      overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.center,
-      softWrap: true,
-      maxLines: 3,
     );
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
-import 'package:playas/src/routes/rpm_application.dart';
+import 'package:vrouter/vrouter.dart';
 
 class ActoCard extends StatelessWidget {
   final List<Acto>? actos;
@@ -32,8 +32,7 @@ class ActoCard extends StatelessWidget {
               onTap: () {
                 switch (acto.abrv) {
                   case 'CERT-NO':
-                    RpmApplication.router
-                        .navigateTo(context, NoposeerBienPage.route);
+                    context.vRouter.to(NoposeerBienPage.route);
                     break;
                 }
               },

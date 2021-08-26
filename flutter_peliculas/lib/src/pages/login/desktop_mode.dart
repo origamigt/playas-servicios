@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/login_form.dart';
+import 'package:playas/src/widgets/registro_form.dart';
 
-class DesktopMode extends StatefulWidget {
-  @override
+class DesktopMode extends StatelessWidget {
+  String? tipo;
+
+  DesktopMode({this.tipo});
+
+  /*@override
   _DesktopModeState createState() => _DesktopModeState();
 }
 
-class _DesktopModeState extends State<DesktopMode> {
+class _DesktopModeState extends State<DesktopMode> {*/
   @override
   Widget build(BuildContext context) {
     final double widthSize = MediaQuery.of(context).size.width;
@@ -30,7 +35,7 @@ class _DesktopModeState extends State<DesktopMode> {
                           playasBG(heightSize, widthSize),
                           Expanded(
                               child: Container(
-                                  padding: EdgeInsets.only(top: 25),
+                                  padding: EdgeInsets.only(top: 10),
                                   decoration: boxDecorationLogin,
                                   child: SingleChildScrollView(
                                     child: Column(
@@ -38,23 +43,26 @@ class _DesktopModeState extends State<DesktopMode> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           Image.asset('assets/images/logo.png',
-                                              height: heightSize * 0.2,
+                                              height: heightSize * 0.15,
                                               width: widthSize * 0.15),
                                           SizedBox(height: 20),
-                                          LoginForm(
-                                              0,
-                                              0.009,
-                                              18,
-                                              0.04,
-                                              0.01,
-                                              0.03,
-                                              75,
-                                              0.01,
-                                              0.009,
-                                              0.01,
-                                              0.006)
+                                          body()
                                         ]),
                                   )))
                         ])))));
+  }
+
+  Widget body() {
+    if (tipo == 'LOGIN') {
+      return LoginForm(
+          0, 0.009, 18, 0.04, 0.01, 0.03, 75, 0.01, 0.009, 0.01, 0.006);
+    }
+    if (tipo == 'REGISTRARSE') {
+      return RegistrarseForm(
+          0, 0.009, 18, 0.04, 0.01, 0.03, 75, 0.01, 0.009, 0.01, 0.006);
+    }
+    if (tipo == 'ENVIO_MENSAJE') {}
+    if (tipo == 'CLAVE') {}
+    return Container();
   }
 }

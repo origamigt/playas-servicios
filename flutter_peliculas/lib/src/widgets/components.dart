@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
-import 'package:playas/src/routes/rpm_application.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:vrouter/vrouter.dart';
 
 Color colorPrimary = Color(0xFF2D2E74);
+Color colorSecond = Color(0xFF189247);
 
 BoxDecoration boxDecorationBG = BoxDecoration(
   image: DecorationImage(
@@ -69,7 +70,11 @@ Widget menuCard(BuildContext context, Menu menu) {
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(16)),
         onTap: () {
-          RpmApplication.router.navigateTo(context, menu.route);
+          //RpmApplication.router.navigateTo(context, menu.route);
+          //ConnectedRoutes.to(context, menu.route);
+          if (menu.route != '/cerrarSesion') {
+          } else {}
+          context.vRouter.to(menu.route);
         },
         child: Container(
           padding: EdgeInsets.only(bottom: 16, right: 16, left: 16),
@@ -115,4 +120,93 @@ mensajeError(BuildContext context, String mensaje) {
       message: mensaje,
     ),
   );
+}
+
+mensajeInfo(BuildContext context, String mensaje) {
+  showTopSnackBar(
+    context,
+    CustomSnackBar.error(
+      message: mensaje,
+    ),
+  );
+}
+
+Widget loading(String txt) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[CircularProgressIndicator(), Text(txt)],
+  );
+}
+
+Widget datosWidget(BuildContext? context, String txt, Widget child) {
+  return Container(
+    margin: EdgeInsets.only(top: 5),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          txt,
+          style: Theme.of(context!).textTheme.headline5,
+        ),
+        child
+      ],
+    ),
+  );
+}
+
+Widget tituloWidget(BuildContext? context, String txt) {
+  return Container(
+    alignment: Alignment.center,
+    margin: EdgeInsets.symmetric(vertical: 10),
+    child: Text(
+      txt,
+      style: Theme.of(context!).textTheme.headline1,
+    ),
+  );
+}
+
+Widget tituloPagina(BuildContext? context, String txt) {
+  return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Text(
+        txt,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+        softWrap: true,
+        maxLines: 3,
+        style: Theme.of(context!).textTheme.headline1,
+      ));
+}
+
+dlgCerrarSesion() {
+  showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          title: new Text("Cerrar Sesión"),
+          content: new Text("Esta seguro?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("SI"),
+              onPressed: () async {
+                if (await signOut()) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login', (Route<dynamic> route) => false);
+                }
+              },
+            ),
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("NO"),
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      });
 }

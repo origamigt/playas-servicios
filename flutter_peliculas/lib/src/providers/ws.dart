@@ -14,6 +14,7 @@ String kUser = "_KUser";
 String kThereUser = '_KThere_User';
 String kThereUserOK = 'KThere_User_OK';
 String kThereUserNOTOK = 'KThere_User_NOT_OK';
+String kJWT = 'jwt';
 
 Map<String, String> headerNoAuth = {
   'Content-type': 'application/json',
@@ -29,10 +30,8 @@ mapHeaderAuth() async {
 }
 
 tokenAuth() async {
-  //User u = await userLogged();
-  //return 'Basic ' + base64Encode(utf8.encode(u.usuario + ':' + u.clave));
-  //String jwt = await spGetValue(kJWT);
-  return 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwOTUzMjU1OTU3IiwiZXhwIjoxNjI4ODU1NTU5LCJpYXQiOjE2Mjg2Mzk1NTl9.-Novm9mIsP7V75n9Cqx9kR8A3RCa2Ua12F6TgXujovImIyZ9u7POrBD5gUCdrHRw8dNmjtApWayFogdzdN9AIg';
+  String jwt = await spGetValue(kJWT);
+  return 'Bearer $jwt';
 }
 
 Future<bool> spDelete(String key) async {
@@ -66,12 +65,12 @@ signOut() async {
   return true;
 }
 
-Future<User?> loginAPP(String user, String pass) async {
+Future<User?> loginAPP(String user, String clave) async {
   try {
     Map<String, String>? header = await mapHeaderAuth();
     User usr = User();
-    usr.pass = pass;
-    usr.username = user;
+    usr.clave = clave;
+    usr.usuario = user;
     usr.habilitado = true;
     http.Response response = await http.post(
         Uri.http(SERVER_IP, '/api/usuario/loginUser'),
@@ -84,7 +83,7 @@ Future<User?> loginAPP(String user, String pass) async {
             as Map<String, dynamic>;
 
         User u = User().fromJson(map);
-        u.pass = pass;
+        u.clave = clave;
         var uJS = json.encode(u);
         await PrefencesRPM.saveValue(kUser, uJS);
         await PrefencesRPM.saveValue(kThereUser, kThereUserOK);
@@ -158,29 +157,19 @@ findParameters(
   }
 }
 
-save(String url, Object data, bool auth, bool list) async {
+save(String url, Object data, bool auth) async {
+  http.Response? response;
   try {
     print(Uri.http(SERVER_IP, url).toString());
     print(jsonEncode(data));
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
-    http.Response response = await http
+    response = await http
         .post(Uri.http(SERVER_IP, url), body: jsonEncode(data), headers: header)
         .timeout(const Duration(seconds: 30));
-
-    if (!list) {
-      var jsTask = response.bodyBytes;
-      if (jsTask.length > 0) {
-        Map<String, dynamic> map =
-            json.decode(utf8.decode(jsTask)) as Map<String, dynamic>;
-        return map;
-      }
-    } else {
-      return json.decode(utf8.decode(response.bodyBytes));
-    }
   } catch (e) {
     print(e);
-    return null;
   }
+  return response;
 }
 
 update(String url, Object data, bool auth) async {
@@ -194,6 +183,28 @@ update(String url, Object data, bool auth) async {
     if (jsTask.length > 0) {
       Map<String, dynamic> map = jsonDecode(jsTask) as Map<String, dynamic>;
       return map;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+}
+
+Future<String?> updateJWT(String usr, String clave) async {
+  try {
+    String url = '/ws/authenticate';
+    http.Response response = await http.post(Uri.https(SERVER_IP, url),
+        body: json.encode({"usuario": usr, "claveword": clave}),
+        headers: headerNoAuth);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map =
+          jsonDecode(response.body) as Map<String, dynamic>;
+
+      var jwt = map['token'];
+      await spDelete(kJWT);
+      await spSaveValue(kJWT, jwt);
+      return jwt;
     } else {
       return null;
     }

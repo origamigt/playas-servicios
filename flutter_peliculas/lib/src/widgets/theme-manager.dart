@@ -42,12 +42,25 @@ class ThemeNotifier with ChangeNotifier {
   final lightTheme = ThemeData(
       scaffoldBackgroundColor: Colors.white,
       //primarySwatch: Colors.white,
-      primaryColor: Color(0xFF2D2E74),
-      accentColor: Color(0xFF189247),
+      primaryColor: colorPrimary,
+      accentColor: colorSecond,
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       accentIconTheme: IconThemeData(color: Colors.white),
       dividerColor: Colors.white54,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(colorPrimary),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        )),
+      )),
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(color: Colors.black),
+        errorStyle: TextStyle(color: Colors.red, fontSize: 12),
+        hintStyle: TextStyle(fontSize: 12.0, color: Colors.black),
+      ),
       textTheme: TextTheme(
           headline1: GoogleFonts.sourceCodePro(
             //LA USO: tramites_pages
@@ -70,13 +83,17 @@ class ThemeNotifier with ChangeNotifier {
             fontSize: 25,
             color: colorPrimary,
             fontWeight: FontWeight.bold,
+          ),
+          headline5: GoogleFonts.sourceCodePro(
+            fontSize: 12,
+            color: colorPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+          headline6: GoogleFonts.sourceCodePro(
+            fontSize: 12,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           )),
-      inputDecorationTheme: InputDecorationTheme(
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.lightBlue)),
-          hintStyle: TextStyle(fontSize: 12.0, color: Colors.black),
-          errorStyle:
-              TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,

@@ -1,11 +1,11 @@
 import 'dart:core';
 
-import 'pub-persona.dart';
+import 'persona.dart';
 
 class User {
   int? id;
-  String? username;
-  String? pass;
+  String? usuario;
+  String? clave;
   bool? habilitado;
   PubPersona? persona;
   String? token;
@@ -18,9 +18,9 @@ class User {
   User fromJson(Map<String, dynamic> json) {
     return User()
       ..id = json['id'] as int? ?? null
-      ..username = json['username'] as String? ?? null
+      ..usuario = json['usuario'] as String? ?? null
       ..habilitado = json['habilitado'] as bool? ?? null
-      ..pass = json['pass'] as String? ?? null
+      ..clave = json['clave'] as String? ?? null
       ..token = json['token'] as String? ?? null
       ..personaID = json['personaID'] as int? ?? null
       ..persona = json['persona'] == null
@@ -28,11 +28,10 @@ class User {
           : PubPersona().fromJson(json['persona'] as Map<String, dynamic>);
   }
 
-
   Map<String, dynamic> toJson() => {
         'id': id,
-        'username': username,
-        'pass': pass,
+        'usuario': usuario,
+        'clave': clave,
         'habilitado': habilitado,
         'persona': persona,
         'token': token,
@@ -42,8 +41,8 @@ class User {
 
   Map<String, dynamic> json(User instance) => <String, dynamic>{
         'id': instance.id,
-        'username': instance.username,
-        'pass': instance.pass,
+        'usuario': instance.usuario,
+        'clave': instance.clave,
         'habilitado': instance.habilitado,
         'persona': instance.persona != null
             ? PubPersona().json(instance.persona!)
@@ -54,7 +53,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, username: $username, pass: $pass, habilitado: $habilitado, '
+    return 'User{id: $id, usuario: $usuario, clave: $clave, habilitado: $habilitado, '
         'persona: $persona, token: $token, personaID: $personaID}';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/providers/actos_provider.dart';
+import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:playas/src/widgets/tramites_card.dart';
 
@@ -19,24 +20,11 @@ class TramitesPage extends StatelessWidget {
         height: 0,
       ),
       body: PageComponent(
-        header: title(),
+        header: tituloPagina(context, 'Servicios en linea'),
         body: _gridTramites(),
         footer: Container(),
       ),
     );
-  }
-
-  Widget title() {
-    return Container(
-        margin: EdgeInsets.only(top: 10),
-        child: Text(
-          'Servicios en linea',
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          softWrap: true,
-          maxLines: 3,
-          style: Theme.of(context!).textTheme.headline1,
-        ));
   }
 
   Widget _gridTramites() {

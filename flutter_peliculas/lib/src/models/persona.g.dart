@@ -1,4 +1,4 @@
-part of 'pub-persona.dart';
+part of 'persona.dart';
 
 PubPersona _$PubPersonaFromJson(Map<String, dynamic> json) {
   print(json);
