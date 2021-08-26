@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Administrator
  */
 public class Firma {
-    
+
     private Date fechaEmision;
     private Date fechaCaducidad;
     private String archivo;
@@ -22,8 +22,14 @@ public class Firma {
 
     public Firma() {
 
-}
-    
+    }
+
+    public Firma(String archivo, String password, String estado) {
+        this.archivo = archivo;
+        this.password = password;
+        this.estado = estado;
+    }
+
     public Date getFechaEmision() {
         return fechaEmision;
     }
@@ -68,8 +74,7 @@ public class Firma {
         return deleteAt;
     }
 
-  /*  public Date getCreatedAt() {return createdAt;}public void setCreatedAt(Date createdAt) {this.createdAt = createdAt;}public Date getUpdatedAt() {return updatedAt;}public void setUpdatedAt(Date updatedAt) {this.updatedAt = updatedAt;}*/
-
+    /*  public Date getCreatedAt() {return createdAt;}public void setCreatedAt(Date createdAt) {this.createdAt = createdAt;}public Date getUpdatedAt() {return updatedAt;}public void setUpdatedAt(Date updatedAt) {this.updatedAt = updatedAt;}*/
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
     }

@@ -14,6 +14,15 @@ public class DocElectronico {
     public DocElectronico() {
     }
 
+    public DocElectronico(Entidad entidad, Comprobante comprobante, TipoEmision tipoEmision, 
+            Ambiente ambiente, String estado) {
+        this.entidad = entidad;
+        this.comprobante = comprobante;
+        this.tipoEmision = tipoEmision;
+        this.ambiente = ambiente;
+        this.estado = estado;
+    }
+
     public Entidad getEntidad() {
         return entidad;
     }

@@ -1,6 +1,8 @@
 package com.facturacion.sri.util;
 
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import javax.net.ssl.HttpsURLConnection;
@@ -32,7 +34,7 @@ public class CertificadosSSL {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, trustAllCerts, new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (Exception e) {
+        } catch (KeyManagementException | NoSuchAlgorithmException e) {
             return e.getMessage();
         }
         return null;

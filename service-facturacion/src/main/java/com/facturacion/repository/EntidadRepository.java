@@ -9,4 +9,6 @@ public interface EntidadRepository extends CrudRepository<Entidad, Long> {
     @Override
     List<Entidad> findAll();
     
+    Entidad findByRucEntidad(String rucEntidad);
+    
 }

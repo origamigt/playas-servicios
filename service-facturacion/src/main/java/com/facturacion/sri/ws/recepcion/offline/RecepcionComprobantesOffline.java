@@ -17,6 +17,6 @@ public abstract interface RecepcionComprobantesOffline
   @WebMethod
   @WebResult(name="RespuestaRecepcionComprobante", targetNamespace="")
   @RequestWrapper(localName="validarComprobante", targetNamespace="http://ec.gob.sri.ws.recepcion", className="com.facturacion.sri.model.ws.ValidarComprobante")
-  @ResponseWrapper(localName="validarComprobanteResponse", targetNamespace="http://ec.gob.sri.ws.recepcion", className="com..facturacion.sri.model.ws.ValidarComprobanteResponse")
+  @ResponseWrapper(localName="validarComprobanteResponse", targetNamespace="http://ec.gob.sri.ws.recepcion", className="com.facturacion.sri.model.ws.ValidarComprobanteResponse")
   public abstract RespuestaSolicitud validarComprobante(@WebParam(name="xml", targetNamespace="") byte[] paramArrayOfByte);
 }

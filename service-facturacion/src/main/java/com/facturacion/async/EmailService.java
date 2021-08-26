@@ -1,7 +1,6 @@
 package com.facturacion.async;
 
 import com.facturacion.entites.MsgFormatoNotificacion;
-import org.apache.xpath.operations.Bool;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ public class EmailService {
     @Async
     public void sendMailContribuyente(MsgFormatoNotificacion msgFormatoNotificacion, String pathXML, String pathPDF, String correoContribuyente) {
         try {
-
             List<File> files;
             File xml = new File(pathXML);
             File ride = new File(pathPDF);
@@ -28,21 +26,18 @@ public class EmailService {
                 files = new ArrayList<>();
                 files.add(xml);
                 files.add(ride);
-
-                Email correo = new Email(correoContribuyente, msgFormatoNotificacion.getHeader(), msgFormatoNotificacion.getFooter(), files);
+                Email correo = new Email(correoContribuyente, msgFormatoNotificacion.getAsunto(), 
+                        msgFormatoNotificacion.getHeader() + msgFormatoNotificacion.getFooter(), files);
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 Future<Boolean> future = executorService.submit(() -> {
                     //Thread.sleep(2000);
                     return  correo.sendMail();
                 });
-                
                 System.out.println("sended mail");
             }
-
         } catch (Exception e) {
             Logger.getLogger(EmailService.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-
 
 }

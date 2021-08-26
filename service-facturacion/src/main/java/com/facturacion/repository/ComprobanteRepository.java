@@ -9,4 +9,6 @@ public interface ComprobanteRepository extends CrudRepository<Comprobante, Long>
     @Override
     List<Comprobante> findAll();
     
+    Comprobante findByCodigo(String codigo);
+    
 }
