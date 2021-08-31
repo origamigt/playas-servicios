@@ -13,7 +13,7 @@ spring:
     hikari:
       maximum-pool-size: 5
       minimum-idle: 5
-      pool-name: BancaServicePoolWS
+      pool-name: FacturacionServicePoolWS
       max-lifetime: 1800
 
   jpa:
@@ -22,7 +22,7 @@ spring:
     properties:
       hibernate:
         default_schema: facturacion
-        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        #dialect: org.hibernate.dialect.PostgreSQL95Dialect
         temp:
           use_jdbc_metadata_defaults: false
 
