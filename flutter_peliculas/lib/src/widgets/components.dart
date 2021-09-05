@@ -45,9 +45,11 @@ Widget playasBG(heightSize, widthSize) {
 BoxDecoration boxDecorationPlayasBG = BoxDecoration(
   image: DecorationImage(
       image: AssetImage(
-        "assets/images/logo.png",
+        "assets/images/vur.png",
       ),
-      scale: 3,
+      scale: 1.5,
+      colorFilter:
+          ColorFilter.mode(Colors.white.withOpacity(0.9), BlendMode.dstATop),
       alignment: Alignment.topLeft),
 );
 
@@ -163,11 +165,22 @@ Widget datosWidget(BuildContext? context, String txt, Widget child) {
 
 Widget tituloWidget(BuildContext? context, String txt) {
   return Container(
-    alignment: Alignment.center,
+    alignment: Alignment.centerLeft,
     margin: EdgeInsets.symmetric(vertical: 10),
     child: Text(
       txt,
       style: Theme.of(context!).textTheme.headline1,
+    ),
+  );
+}
+
+Widget subTituloWidget(BuildContext? context, String txt) {
+  return Container(
+    alignment: Alignment.center,
+    margin: EdgeInsets.symmetric(vertical: 10),
+    child: Text(
+      txt,
+      style: Theme.of(context!).textTheme.headline2,
     ),
   );
 }

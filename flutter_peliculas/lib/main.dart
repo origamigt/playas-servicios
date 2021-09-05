@@ -123,11 +123,15 @@ class AppComponentState extends State<AppComponent> {
 
 import 'package:flutter/material.dart';
 import 'package:playas/src/providers/auth_provider.dart';
+import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
+import 'package:playas/src/providers/requisitos_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
-import 'package:playas/src/widgets/theme-manager.dart';
+import 'package:playas/src/providers/validardoc_provider.dart';
 import 'package:playas/vrouter_app.dart';
 import 'package:provider/provider.dart';
+
+import 'src/providers/theme-manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -143,6 +147,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => AuthProvider()),
           ChangeNotifierProvider(create: (_) => UsuarioProvider()),
           ChangeNotifierProvider(create: (_) => PersonaProvider()),
+          ChangeNotifierProvider(create: (_) => ValidarDocProvider()),
+          ChangeNotifierProvider(create: (_) => PagoProvider()),
+          ChangeNotifierProvider(create: (_) => RequisitosProvider()),
         ],
         child: Builder(
           builder: (context) {

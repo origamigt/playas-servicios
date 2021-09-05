@@ -1,39 +1,41 @@
+import 'dart:async';
 import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/acto.dart';
-import 'package:playas/src/models/data.dart';
+import 'package:playas/src/models/acto_requisito.dart';
 import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/pagos/pago_page.dart';
+import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
+import 'package:playas/src/providers/requisitos_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class NoposeerBienPage extends StatefulWidget {
-  static const String route = '/noposeerbien';
+class InscripcionesPage extends StatefulWidget {
+  static const String route = '/inscripciones';
 
   @override
-  NoposeerBienState createState() => NoposeerBienState();
+  InscripcionesState createState() => InscripcionesState();
 }
 
-class NoposeerBienState extends State<NoposeerBienPage> {
+class InscripcionesState extends State<InscripcionesPage> {
   bool isWeb = UniversalPlatform.isWeb;
-
+  final _actosProvider = ActosProvider();
   Acto acto = Acto();
+  Acto? inscripcion;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
   PagoProvider? pagoProvider;
-
-  String? identificacion;
-  TextEditingController cantidadCtrl = TextEditingController();
+  RequisitosProvider? requisitoProvider;
 
   TextEditingController identificacionCtrl = TextEditingController();
   TextEditingController datosPersonaCtrl = TextEditingController();
@@ -54,36 +56,39 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   User? usuario;
   final _formKey = GlobalKey<FormState>();
 
-  Data motivo = motivosSolicitud[0];
+  Future<List<Acto?>>? inscripciones;
+  List<ActoRequisto> requistos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    inscripciones = _actosProvider.findActosInscripciones();
+  }
 
   @override
   Widget build(BuildContext context) {
-    acto.id = 1358;
-    acto.valor = 6.0;
-    cantidadCtrl.text = '1';
+    acto.id = 0;
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     pagoProvider = Provider.of<PagoProvider>(context);
-    if (userProvider != null) {
-      userProvider!.initialize().then((value) {
-        usuario = value;
-        PubPersona persona = usuario!.persona!;
-        identificacion = persona.cedRuc;
-        identificacionCtrl.text = identificacion!;
-        var nombres = persona.nombres! + ' ' + persona.apellidos!;
-        datosPersonaCtrl.text = nombres;
-        direccionCtrl.text = persona.direccion!;
-        telefonoCtrl.text = persona.telefono1!;
-        correoCtrl.text = persona.correo1!;
+    requisitoProvider = Provider.of<RequisitosProvider>(context);
+    userProvider!.initialize().then((value) {
+      usuario = value;
+      PubPersona persona = usuario!.persona!;
+      identificacionCtrl.text = persona.cedRuc!;
+      var nombres = persona.nombres! + ' ' + persona.apellidos!;
+      datosPersonaCtrl.text = nombres;
+      direccionCtrl.text = persona.direccion!;
+      telefonoCtrl.text = persona.telefono1!;
+      correoCtrl.text = persona.correo1!;
 
-        identificacionFactCtrl.text = identificacion!;
+      identificacionFactCtrl.text = persona.cedRuc!;
 
-        datosPersonaFactCtrl.text = nombres;
-        direccionFactCtrl.text = persona.direccion!;
-        telefonoFactCtrl.text = persona.telefono1!;
-        correoFactCtrl.text = persona.correo1!;
-      });
-    }
+      datosPersonaFactCtrl.text = nombres;
+      direccionFactCtrl.text = persona.direccion!;
+      telefonoFactCtrl.text = persona.telefono1!;
+      correoFactCtrl.text = persona.correo1!;
+    });
     return Form(
         key: _formKey,
         child: PageComponent(
@@ -118,16 +123,10 @@ class NoposeerBienState extends State<NoposeerBienPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            tituloWidget(context, 'Motivo de la solicitud'),
-            Wrap(
-              children: motivosWidget(),
-            ),
-            motivo.id == 116
-                ? otroMotivoWidget()
-                : SizedBox(
-                    height: 10,
-                  ),
-            cantidadWidget(),
+            tituloWidget(context, 'Contrato a inscribir'),
+            inscripcionesWidget(),
+            tituloWidget(context, 'Requisitos'),
+            requisitosXinscripcion(),
             observacionWidget(),
             tituloWidget(context, 'Datos del solicitante'),
             identificacionWidget(),
@@ -158,49 +157,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
     );
   }
 
-  Widget otroMotivoWidget() {
-    return datosWidget(
-        context,
-        'Escribe aqui el motivo de tu solicitud',
-        TextFormField(
-          controller: otroMotivoCtrl,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.stream,
-            ),
-          ),
-          validator: (value) {
-            if (motivo.id == 116 && value!.isEmpty) {
-              return 'Ingrese el motivo de su solicitud!';
-            }
-          },
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget cantidadWidget() {
-    return datosWidget(
-        context,
-        'Cantidad de certificados',
-        TextFormField(
-          controller: cantidadCtrl,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese su la cantidad de certificados a solicitar!';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.confirmation_num_outlined,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
   Widget observacionWidget() {
     return datosWidget(
         context,
@@ -228,7 +184,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       'Identificación',
       TextFormField(
         controller: identificacionCtrl,
-        onSaved: (value) => identificacion = value,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -335,7 +290,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       'Identificación',
       TextFormField(
         controller: identificacionFactCtrl,
-        onSaved: (value) => identificacion = value,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -483,28 +437,159 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         ));
   }
 
-  doProcesarPago() {
-    final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
-        .procesarPago(
-            motivo,
-            obsCtrl.text,
-            identificacionCtrl.text,
-            datosPersonaCtrl.text,
-            direccionCtrl.text,
-            telefonoCtrl.text,
-            correoCtrl.text,
-            estadoCivilSol,
-            identificacionFactCtrl.text,
-            datosPersonaFactCtrl.text,
-            direccionFactCtrl.text,
-            telefonoFactCtrl.text,
-            correoFactCtrl.text,
-            acto,
-            usuario!.id!,
-            cantidadCtrl.text);
+  Widget inscripcionesWidget() {
+    return FutureBuilder(
+      future: inscripciones,
+      builder: (BuildContext context, AsyncSnapshot<List<Acto?>> snapshot) {
+        if (snapshot.hasData) {
+          return SizedBox(
+              height: 70 + 70,
+              child: GridView.builder(
+                  scrollDirection: Axis.horizontal,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.20,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 3.0,
+                    crossAxisCount: 3,
+                  ),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, i) {
+                    Acto? item = snapshot.data![i];
+                    return Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: FilterChip(
+                        selectedColor: colorSecond.withOpacity(0.8),
+                        label: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            item!.acto!,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                        ),
+                        selected: inscripcion == item,
+                        onSelected: (selected) {
+                          setState(() {
+                            inscripcion = (selected ? item : null)!;
+                            doBuscarRequisitos();
+                          });
+                        },
+                      ),
+                    );
+                  }));
+        } else {
+          return Container(
+              height: 100.0, child: Center(child: CircularProgressIndicator()));
+        }
+      },
+    );
+  }
+
+  Widget requisitosXinscripcion() {
+    switch (requisitoProvider!.status) {
+      case StatusRequisitos.Unknown:
+        return Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Text(
+                'Escoja el acto a inscribir',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        );
+      case StatusRequisitos.Searching:
+        return Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            loading("Cargando requisitos..."),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        );
+      case StatusRequisitos.Found:
+        return requsitosWidget();
+      case StatusRequisitos.NoFound:
+        return Text('No se encontraron requisitos');
+      default:
+        return Container();
+    }
+  }
+
+  Widget requsitosWidget() {
+    return ListView.builder(
+        shrinkWrap: true,
+        //scrollDirection: Axis.horizontal,
+        itemCount: requistos.length,
+        itemBuilder: (context, i) {
+          ActoRequisto item = requistos[i];
+          return Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Card(
+                elevation: 10,
+                color: Colors.amber,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Row(
+                  children: [Text(item.requisito!)],
+                )),
+          );
+        });
+  }
+
+  doBuscarRequisitos() {
+    final Future<Map<String, dynamic>> successfulMessage =
+        requisitoProvider!.requisitosXacto(inscripcion!.id!);
 
     successfulMessage.then((response) async {
-      print(response.toString());
+      if (response['status']) {
+        setState(() {
+          requistos = response['data'];
+        });
+      } else {
+        mensajeError(context, response['message']);
+        setState(() {
+          requistos = [];
+        });
+      }
+    });
+  }
+
+  doProcesarPago() {
+    final Future<Map<String, dynamic>> successfulMessage =
+        pagoProvider!.procesarInscripcion(
+      obsCtrl.text,
+      identificacionCtrl.text,
+      datosPersonaCtrl.text,
+      direccionCtrl.text,
+      telefonoCtrl.text,
+      correoCtrl.text,
+      estadoCivilSol,
+      identificacionFactCtrl.text,
+      datosPersonaFactCtrl.text,
+      direccionFactCtrl.text,
+      telefonoFactCtrl.text,
+      correoFactCtrl.text,
+      acto,
+      usuario!.id!,
+    );
+
+    successfulMessage.then((response) async {
       if (response['status']) {
         Solicitud rest = response['data'];
 
@@ -530,29 +615,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         mensajeError(context, response['message']);
       }
     });
-  }
-
-  List<Widget> motivosWidget() {
-    List<Widget> choices = [];
-    motivosSolicitud.forEach((item) {
-      choices.add(Container(
-        padding: const EdgeInsets.all(2.0),
-        child: ChoiceChip(
-          selectedColor: colorSecond.withOpacity(0.8),
-          label: Text(
-            item.data!,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          selected: motivo == item,
-          onSelected: (selected) {
-            setState(() {
-              motivo = (selected ? item : null)!;
-            });
-          },
-        ),
-      ));
-    });
-    return choices;
   }
 
   buscarPersona(String tipo) {

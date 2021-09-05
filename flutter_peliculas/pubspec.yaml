@@ -15,7 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_swiper_null_safety: ^1.0.2
   http: ^0.13.3
-  shared_preferences: ^2.0.6
+  shared_preferences: ^2.0.7
   google_fonts: ^2.1.0
   provider: ^5.0.0
   rxdart: ^0.27.1
@@ -28,6 +28,8 @@ dependencies:
   file_picker: ^4.0.0
   webview_flutter: ^2.0.12
   crypto: ^3.0.1
+  universal_platform: ^1.0.0+1
+  lint: ^1.6.0
 
 dev_dependencies:
   flutter_test:

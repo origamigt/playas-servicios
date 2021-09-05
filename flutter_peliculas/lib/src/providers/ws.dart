@@ -22,10 +22,11 @@ Map<String, String> headerNoAuth = {
 };
 
 mapHeaderAuth() async {
+  String token = await tokenAuth();
   Map<String, String> map = Map();
   map['Content-type'] = 'application/json';
   map['Accept'] = 'application/json';
-  map['Authorization'] = await tokenAuth();
+  map['Authorization'] = token;
   return map;
 }
 
@@ -103,7 +104,6 @@ Future<User?> loginAPP(String user, String clave) async {
 
 findAll(String url, bool auth) async {
   try {
-    print(Uri.http(SERVER_IP, url).toString());
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response =
         await http.get(Uri.http(SERVER_IP, url), headers: header);
@@ -114,9 +114,20 @@ findAll(String url, bool auth) async {
   }
 }
 
+findAllResponse(String url, bool auth) async {
+  try {
+    Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
+    http.Response response =
+        await http.get(Uri.http(SERVER_IP, url), headers: header);
+    return response;
+  } catch (e) {
+    print(e);
+    return null;
+  }
+}
+
 find(String url, bool auth) async {
   try {
-    print(Uri.http(SERVER_IP, url).toString());
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response =
         await http.get(Uri.http(SERVER_IP, url), headers: header);
@@ -160,8 +171,6 @@ findParameters(
 save(String url, Object data, bool auth) async {
   http.Response? response;
   try {
-    print(Uri.http(SERVER_IP, url).toString());
-    print(jsonEncode(data));
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     response = await http
         .post(Uri.http(SERVER_IP, url), body: jsonEncode(data), headers: header)

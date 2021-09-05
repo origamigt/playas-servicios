@@ -3,7 +3,6 @@ import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
-import 'package:playas/src/widgets/tramites_card.dart';
 
 class TramitesPage extends StatelessWidget {
   static const String route = '/tramites';
@@ -32,17 +31,83 @@ class TramitesPage extends StatelessWidget {
       stream: _actosProvider.actosStream,
       builder: (BuildContext context, AsyncSnapshot<List<Acto>?> snapshot) {
         if (snapshot.hasData) {
-          return Container(
-            margin: EdgeInsets.only(top: 10),
-            child: TramitesCard(
-              actos: snapshot.data!,
-            ),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > 600) {
+                return FractionallySizedBox(
+                  widthFactor: 0.5,
+                  child: tramitesCard(snapshot.data!),
+                );
+              } else {
+                return tramitesCard(snapshot.data!);
+              }
+            },
           );
+          /*return TramitesCard(
+            actos: snapshot.data!,
+          );*/
         } else {
           return Container(
               height: 400.0, child: Center(child: CircularProgressIndicator()));
         }
       },
     );
+  }
+
+  Widget tramitesCard(List<Acto>? actos) {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        child: GridView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200.0,
+            crossAxisSpacing: 20.0,
+            mainAxisSpacing: 30.0,
+          ),
+          itemCount: actos!.length,
+          itemBuilder: (context, index) {
+            Acto acto = actos[index];
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 90,
+                  child: acto.urlImage != null
+                      ? FadeInImage(
+                          height: 100,
+                          image: NetworkImage(actos[index].urlImage!),
+                          placeholder: AssetImage('assets/images/no-image.jpg'),
+                          imageErrorBuilder: (context, error, stackTrace) {
+                            return Image.asset('assets/images/no-image.jpg',
+                                fit: BoxFit.fitWidth);
+                          },
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'assets/images/no-image.jpg',
+                          fit: BoxFit.cover,
+                          height: 100,
+                        ),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    acto.acto!,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(fontSize: 12),
+                  ),
+                )
+              ],
+            );
+          },
+        ));
   }
 }

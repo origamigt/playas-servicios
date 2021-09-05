@@ -17,14 +17,14 @@ import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class NoposeerBienPage extends StatefulWidget {
-  static const String route = '/noposeerbien';
+class PropiedadPage extends StatefulWidget {
+  static const String route = '/propiedad';
 
   @override
-  NoposeerBienState createState() => NoposeerBienState();
+  PropiedadPageState createState() => PropiedadPageState();
 }
 
-class NoposeerBienState extends State<NoposeerBienPage> {
+class PropiedadPageState extends State<PropiedadPage> {
   bool isWeb = UniversalPlatform.isWeb;
 
   Acto acto = Acto();
@@ -32,7 +32,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   PersonaProvider? personaProvider;
   PagoProvider? pagoProvider;
 
-  String? identificacion;
+  String? _tipoPropiedad;
+
   TextEditingController cantidadCtrl = TextEditingController();
 
   TextEditingController identificacionCtrl = TextEditingController();
@@ -50,6 +51,12 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   TextEditingController obsCtrl = TextEditingController();
   TextEditingController otroMotivoCtrl = TextEditingController();
 
+  TextEditingController identificacionPropCtrl = TextEditingController();
+  TextEditingController datosPersonaPropCtrl = TextEditingController();
+  TextEditingController anioInscripcionCtrl = TextEditingController();
+  TextEditingController numeroInscripcionCtrl = TextEditingController();
+  TextEditingController numeroFichaCtrl = TextEditingController();
+
   String estadoCivilSol = '';
   User? usuario;
   final _formKey = GlobalKey<FormState>();
@@ -58,8 +65,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
 
   @override
   Widget build(BuildContext context) {
-    acto.id = 1358;
-    acto.valor = 6.0;
+    acto.id = 1357;
+    acto.valor = 15.0;
     cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
@@ -68,15 +75,15 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       userProvider!.initialize().then((value) {
         usuario = value;
         PubPersona persona = usuario!.persona!;
-        identificacion = persona.cedRuc;
-        identificacionCtrl.text = identificacion!;
+
+        identificacionCtrl.text = persona.cedRuc!;
         var nombres = persona.nombres! + ' ' + persona.apellidos!;
         datosPersonaCtrl.text = nombres;
         direccionCtrl.text = persona.direccion!;
         telefonoCtrl.text = persona.telefono1!;
         correoCtrl.text = persona.correo1!;
 
-        identificacionFactCtrl.text = identificacion!;
+        identificacionFactCtrl.text = persona.cedRuc!;
 
         datosPersonaFactCtrl.text = nombres;
         direccionFactCtrl.text = persona.direccion!;
@@ -87,7 +94,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Certificado de no poseer bienes'),
+          header: tituloPagina(context,
+              'Certificado de Propiedad, Gravámenes y Limitaciones de Dominio'),
           body: body(),
           footer: Container(),
         ));
@@ -135,6 +143,13 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             direccionWidget(),
             telefonoWidget(),
             correoWidget(),
+            tituloWidget(context, 'Datos de la propiedad'),
+            identificacionPropWidget(),
+            nombresPropWidget(),
+            tiposPropiedad(),
+            numeroFichaWidget(),
+            numeroInscripcionWidget(),
+            anioInscripcionWidget(),
             tituloWidget(context, 'Datos de la factura'),
             identificacionFactWidget(),
             nombresFactWidget(),
@@ -228,7 +243,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       'Identificación',
       TextFormField(
         controller: identificacionCtrl,
-        onSaved: (value) => identificacion = value,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -335,7 +349,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       'Identificación',
       TextFormField(
         controller: identificacionFactCtrl,
-        onSaved: (value) => identificacion = value,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -483,6 +496,148 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         ));
   }
 
+  Widget tiposPropiedad() {
+    return datosWidget(
+        context,
+        'Escoja el tipo de propiedad',
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(0.0),
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: _tipoPropiedad,
+            //elevation: 5,
+            style: TextStyle(color: Colors.black),
+            items: <String>[
+              'Terreno',
+              'Casa',
+              'Departamento',
+              'Parqueadero',
+              'Propiedad horizontal',
+            ].map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+
+            hint: Text(
+              'Escoja el tipo de propiedad',
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                _tipoPropiedad = value;
+              });
+            },
+          ),
+        ));
+  }
+
+  Widget identificacionPropWidget() {
+    return datosWidget(
+      context,
+      'Identificación',
+      TextFormField(
+        controller: identificacionPropCtrl,
+        keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Ingrese la identificación del propietario';
+          }
+        },
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.person,
+          ),
+          suffixIcon: personaProvider!.personaStatusPersonProv ==
+                  StatusPersonProv.SearchingFact
+              ? loading("...")
+              : btnBuscarPersona('PROPIETARIO'),
+        ),
+        textAlign: TextAlign.start,
+      ),
+    );
+  }
+
+  Widget nombresPropWidget() {
+    return datosWidget(
+        context,
+        'Datos personales',
+        TextFormField(
+          controller: datosPersonaPropCtrl,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Ingrese los nombres del propietario';
+            }
+          },
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.accessibility,
+            ),
+          ),
+          textAlign: TextAlign.start,
+        ));
+  }
+
+  Widget numeroFichaWidget() {
+    return datosWidget(
+        context,
+        'Ficha registral',
+        TextFormField(
+          controller: numeroFichaCtrl,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.animation,
+            ),
+          ),
+          textAlign: TextAlign.start,
+        ));
+  }
+
+  Widget numeroInscripcionWidget() {
+    return datosWidget(
+        context,
+        'Número de inscripción',
+        TextFormField(
+          controller: numeroInscripcionCtrl,
+          maxLength: 5,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.add_road_sharp,
+            ),
+          ),
+          textAlign: TextAlign.start,
+        ));
+  }
+
+  Widget anioInscripcionWidget() {
+    return datosWidget(
+        context,
+        'Año de inscripción',
+        TextFormField(
+          controller: anioInscripcionCtrl,
+          maxLength: 4,
+          validator: (value) {
+            if (value!.isNotEmpty && value.length != null) {
+              return 'Debe ingresar un año valido';
+            }
+          },
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.calendar_today,
+            ),
+          ),
+          textAlign: TextAlign.start,
+        ));
+  }
+
   doProcesarPago() {
     final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
         .procesarPago(
@@ -567,7 +722,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       print(response.toString());
       if (response['status']) {
         PubPersona persona = response['persona'];
-        print(persona.cedRuc);
         if (tipo == 'SOLICITANTE') {
           identificacionCtrl.text = persona.cedRuc!;
           datosPersonaCtrl.text =

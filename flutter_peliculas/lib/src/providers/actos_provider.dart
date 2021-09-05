@@ -37,4 +37,18 @@ class ActosProvider {
     List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
     _actosStreamController.add(actos);
   }
+
+  Future<List<Acto?>>? findActosInscripciones() async {
+    List<dynamic>? collection =
+        await findAll('/rpm-ventanilla/api/actosInscricipciones', true);
+    List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
+    return actos;
+  }
+
+  Future<List<Acto?>>? findActosRequisitos() async {
+    List<dynamic>? collection =
+        await findAll('/rpm-ventanilla/api/actosInscricipciones', true);
+    List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
+    return actos;
+  }
 }

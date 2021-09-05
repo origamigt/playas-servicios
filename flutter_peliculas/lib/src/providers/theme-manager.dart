@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:playas/src/widgets/components.dart';
-import 'package:playas/src/widgets/storage-manager.dart';
+
+import 'storage-manager.dart';
 
 class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
@@ -67,6 +68,11 @@ class ThemeNotifier with ChangeNotifier {
             fontSize: 20,
             color: colorPrimary,
             fontWeight: FontWeight.bold,
+          ),
+          headline2: GoogleFonts.sourceCodePro(
+            //LA USO: tramites_pages
+            fontSize: 16,
+            color: Colors.black,
           ),
           headline4: GoogleFonts.sourceCodePro(
             fontSize: 30,

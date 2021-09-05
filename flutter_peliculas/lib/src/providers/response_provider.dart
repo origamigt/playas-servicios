@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:playas/src/models/response-create.dart';
 import 'package:playas/src/models/verificar_pago.dart';
 import 'package:playas/src/providers/ws.dart';
@@ -20,9 +22,15 @@ class ResponseProvider {
     verificarPago.id = id;
     verificarPago.clientTxId = clientTransactionId;
 
-    Map<String, dynamic> map =
-        await save('/api/pagos/verificarPago', verificarPago, true);
-    ResponseCreate rc = ResponseCreate.fromJson(map);
-    return rc;
+    http.Response? response = await save(
+        '/rpm-ventanilla/api/pagos/verificarPago', verificarPago, true);
+    if (response != null && response.statusCode == 200) {
+      Map<String, dynamic> map =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      ResponseCreate rest = ResponseCreate.fromJson(map);
+      return rest;
+    } else {
+      return null;
+    }
   }
 }

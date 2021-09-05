@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/ajustes/ajustes_page.dart';
 import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
 import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/pages/login/registrarse_page.dart';
+import 'package:playas/src/pages/pagos/confirmar_pago_page.dart';
+import 'package:playas/src/pages/pagos/pago_page.dart';
+import 'package:playas/src/pages/tramites/inscripciones_page.dart';
 import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
+import 'package:playas/src/pages/tramites/propiedad_page.dart';
 import 'package:playas/src/pages/tramites/tramites_page.dart';
+import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
-import 'package:playas/src/providers/ws.dart';
+import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
 
@@ -34,14 +38,16 @@ class _VRouterAppState extends State<VRouterApp> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      final usuarioProv = context.read<UsuarioProvider>();
       final authProvider = context.read<AuthProvider>();
-      Future<User?> getUserData() => userLogged();
-      User? user = await getUserData();
-      if (user != null) {
-        authProvider.setAuthState(Status.LoggedIn);
-      } else {
-        authProvider.setAuthState(Status.NotLoggedIn);
-      }
+      usuarioProv.initialize().then((value) {
+        if (value != null) {
+          authProvider.setAuthState(Status.LoggedIn);
+        } else {
+          authProvider.setAuthState(Status.NotLoggedIn);
+        }
+      });
+
       //authProvider.
     });
   }
@@ -78,7 +84,9 @@ class _VRouterAppState extends State<VRouterApp> {
               widget: RegistrarsePage(),
               buildTransition: (animation, _, child) =>
                   FadeTransition(opacity: animation, child: child)),
-          //VWidget(path: r':_(.confirmarPago)', widget: PagoPage()),
+          VWidget(
+              path: r':_(.pagos/transaccionExitosa)',
+              widget: ConfirmarPagoPage()),
           VGuard(
               beforeEnter: (vRedirector) async {
                 switch (authProvider.loggedInStatus) {
@@ -121,8 +129,20 @@ class _VRouterAppState extends State<VRouterApp> {
                         widget: ContraseniaPage(),
                       ),
                       VWidget(
-                        path: ContraseniaPage.route,
-                        widget: ContraseniaPage(),
+                        path: VerificarDocPage.route,
+                        widget: VerificarDocPage(),
+                      ),
+                      VWidget(
+                        path: PagoPage.route,
+                        widget: PagoPage(),
+                      ),
+                      VWidget(
+                        path: PropiedadPage.route,
+                        widget: PropiedadPage(),
+                      ),
+                      VWidget(
+                        path: InscripcionesPage.route,
+                        widget: InscripcionesPage(),
                       ),
                     ])
               ])

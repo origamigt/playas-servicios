@@ -82,7 +82,6 @@ class LoginFormState extends State<LoginForm> {*/
                   color: Colors.white, fontSize: fontSizeTextFormField),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              // Only numbers can be entered
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.person,

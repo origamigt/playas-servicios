@@ -18,15 +18,28 @@ class PageComponent extends StatelessWidget {
           children: <Widget>[
             Positioned(
               child: Align(
-                alignment: Alignment.bottomCenter,
-                child: ClipPath(
-                  clipper: WaveClipperTwo(reverse: true),
-                  child: Container(
-                    height: 100,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-              ),
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Opacity(
+                        opacity: 0.5,
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          height: 100,
+                          width: 100,
+                        ),
+                      ),
+                      ClipPath(
+                        clipper: WaveClipperTwo(reverse: true),
+                        child: Container(
+                          height: 60,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                    ],
+                  )),
             ),
             Container(
               decoration: boxDecorationPlayasBG,

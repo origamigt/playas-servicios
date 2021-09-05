@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/response-create.dart';
+import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/response_provider.dart';
 import 'package:playas/src/widgets/components.dart';
+import 'package:vrouter/vrouter.dart';
 
 class ConfirmarPagoPage extends StatefulWidget {
-  final String? url;
+  static const String route = '/pagos/transaccionExitosa';
 
-  ConfirmarPagoPage(this.url);
+  ConfirmarPagoPage();
 
   @override
   ConfirmarPagoPageState createState() => ConfirmarPagoPageState();
@@ -26,20 +27,15 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
   bool loading = true;
   bool connect = false;
 
-  String? code1; //code
-  String? code2; // id
-  String? code3; //clientTransactionId
-  String startCode1 = 'code=';
-  String endCode1 = '&id';
+  List<String> params = [];
 
-  String startCode2 = 'id=';
-  String endCode2 = '&clientTransactionId';
-
-  String startCode3 = 'clientTransactionId=';
+  List<String> param1 = [];
+  List<String> param2 = [];
+  List<String> param3 = [];
 
   @override
   void initState() {
-    load();
+    //load();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
@@ -53,35 +49,16 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
     super.initState();
   }
 
-  void load() {
-    DateTime now = DateTime.now();
-    String hoy = DateFormat('yyyy-MM-dd').format(now);
+  void load(String urlPago) {
+    params = urlPago.split('&');
 
-    String urlPago = ''; //urlVentanilla + confirmarPago;
+    param1 = params[0].split('=');
+    param2 = params[1].split('=');
+    param3 = params[2].split('=');
 
-    int startIndexCode1;
-    int endIndexCode1;
+    String url = dominio + ConfirmarPagoPage.route + param2[1];
 
-    startIndexCode1 = widget.url!.indexOf(startCode1);
-    endIndexCode1 =
-        widget.url!.indexOf(endCode1, startIndexCode1 + startCode1.length);
-    code1 = widget.url!
-        .substring(startIndexCode1 + startCode1.length, endIndexCode1);
-    int startIndexCode2;
-    int endIndexCode2;
-    startIndexCode2 = widget.url!.indexOf(startCode2);
-    endIndexCode2 =
-        widget.url!.indexOf(endCode2, startIndexCode2 + startCode2.length);
-    code2 = widget.url!
-        .substring(startIndexCode2 + startCode2.length, endIndexCode2);
-    int startIndexCode3;
-    int endIndexCode3;
-    startIndexCode3 = widget.url!.indexOf(startCode3);
-    code3 = widget.url!
-        .substring(startIndexCode3 + startCode3.length, widget.url!.length);
-
-    String md5 = generateMd5(hoy + generateMd5(urlPago) + code3!);
-    if (md5 == code1) {
+    if (generateMd5(url) == param1[1]) {
       validos = true;
     }
   }
@@ -90,6 +67,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
 
   @override
   Widget build(BuildContext context) {
+    load(context.vRouter.url.replaceAll('/pagos/transaccionExitosa?', ''));
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -98,8 +76,8 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
             color: Colors.white,
             image: DecorationImage(
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.15), BlendMode.dstATop),
-              image: AssetImage('assets/images/img_registro.png'),
+                  Colors.white.withOpacity(0.15), BlendMode.dstATop),
+              image: AssetImage('assets/images/logo.png'),
               fit: BoxFit.cover,
             ),
           ),
@@ -120,7 +98,8 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
                   height: 20.0,
                 ),
                 FutureBuilder(
-                    future: responseProvider.confirmarPago(code2!, code3!),
+                    future:
+                        responseProvider.confirmarPago(param2[1], param3[1]),
                     builder:
                         (context, AsyncSnapshot<ResponseCreate?> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
@@ -212,8 +191,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
         ),
         child: ElevatedButton(
           onPressed: () async {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                '/home', (Route<dynamic> route) => false);
+            context.vRouter.to(HomePage.route);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
