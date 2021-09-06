@@ -63,43 +63,44 @@ class ThemeNotifier with ChangeNotifier {
         hintStyle: TextStyle(fontSize: 12.0, color: Colors.black),
       ),
       textTheme: TextTheme(
-          headline1: GoogleFonts.sourceCodePro(
-            //LA USO: tramites_pages
-            fontSize: 20,
-            color: colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          headline2: GoogleFonts.sourceCodePro(
-            //LA USO: tramites_pages
-            fontSize: 16,
-            color: Colors.black,
-          ),
-          headline4: GoogleFonts.sourceCodePro(
-            fontSize: 30,
-            color: colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          bodyText2: GoogleFonts.sourceCodePro(
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-            letterSpacing: 0.3,
-            color: colorPrimary,
-          ),
-          bodyText1: GoogleFonts.sourceCodePro(
-            fontSize: 25,
-            color: colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          headline5: GoogleFonts.sourceCodePro(
-            fontSize: 12,
-            color: colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          headline6: GoogleFonts.sourceCodePro(
-            fontSize: 12,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          )),
+        headline1: GoogleFonts.sourceCodePro(
+          //LA USO: tramites_pages
+          fontSize: 20,
+          color: colorPrimary,
+          fontWeight: FontWeight.bold,
+        ),
+        headline2: GoogleFonts.sourceCodePro(
+          //LA USO: tramites_pages
+          fontSize: 16,
+          color: Colors.black,
+        ),
+        headline4: GoogleFonts.sourceCodePro(
+          fontSize: 30,
+          color: colorPrimary,
+          fontWeight: FontWeight.bold,
+        ),
+        bodyText2: GoogleFonts.sourceCodePro(
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+          letterSpacing: 0.3,
+          color: colorPrimary,
+        ),
+        bodyText1: GoogleFonts.sourceCodePro(
+          fontSize: 25,
+          color: colorPrimary,
+          fontWeight: FontWeight.bold,
+        ),
+        headline5: GoogleFonts.sourceCodePro(
+          fontSize: 12,
+          color: colorPrimary,
+          fontWeight: FontWeight.bold,
+        ),
+        headline6: GoogleFonts.sourceCodePro(
+          fontSize: 12,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,

@@ -1,3 +1,5 @@
+import 'package:playas/src/models/acto_requisito.dart';
+
 import 'user.dart';
 
 part 'solicitud.g.dart';
@@ -77,8 +79,6 @@ class Solicitud {
 
   bool? tipoPago; //TRUE: VENTANILLA FALSE: PAGO EN LINEA
   int? cantidad;
-  int? anioUltimaTransferencia;
-  int? anioAntecedenteSolicitado;
 
   String? acto;
   bool? ingresado; //TRUE: ingresado SGR FALSE: NOP
@@ -88,6 +88,8 @@ class Solicitud {
   String? payWithPayPhone;
   String? payWithApp;
   bool? procesando;
+
+  List<ActoRequisito>? requisitos;
 
   Solicitud();
 
@@ -158,8 +160,6 @@ class Solicitud {
         'estado': instance.estado,
         'tipoPago': instance.tipoPago,
         'cantidad': instance.cantidad,
-        'anioUltimaTransferencia': instance.anioUltimaTransferencia,
-        'anioAntecedenteSolicitado': instance.anioAntecedenteSolicitado,
         'acto': instance.acto,
         'ingresado': instance.ingresado,
         'linkPago': instance.linkPago,
@@ -167,5 +167,6 @@ class Solicitud {
         'payWithPayPhone': instance.payWithPayPhone,
         'payWithApp': instance.payWithApp,
         'procesando': instance.procesando,
+        'requisitos': instance.requisitos
       };
 }

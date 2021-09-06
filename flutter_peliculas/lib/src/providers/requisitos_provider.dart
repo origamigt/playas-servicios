@@ -30,15 +30,15 @@ class RequisitosProvider extends ChangeNotifier implements ReassembleHandler {
     _status = StatusRequisitos.Searching;
     notifyListeners();
 
-    http.Response? response = await findAllResponse(
-        '/rpm-ventanilla/api/api/requisitos/$idActo', false);
-
+    http.Response? response =
+        await findAllResponse('/rpm-ventanilla/api/requisitos/$idActo', false);
+    print(response!.body);
     if (response != null && response.statusCode == 200) {
       List<dynamic> collection = json.decode(utf8.decode(response.bodyBytes));
-      print(response.body);
+
       try {
-        List<ActoRequisto> requisitos =
-            collection.map((p) => ActoRequisto().fromJson(p)).toList();
+        List<ActoRequisito> requisitos =
+            collection.map((p) => ActoRequisito().fromJson(p)).toList();
         _status = StatusRequisitos.Found;
         notifyListeners();
 

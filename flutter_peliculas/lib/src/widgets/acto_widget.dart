@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/pages/tramites/inscripciones_page.dart';
+import 'package:playas/src/pages/tramites/mercantil_page.dart';
 import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
+import 'package:playas/src/pages/tramites/personal_page.dart';
 import 'package:playas/src/pages/tramites/propiedad_page.dart';
 import 'package:vrouter/vrouter.dart';
 
@@ -42,11 +44,19 @@ class ActoCard extends StatelessWidget {
                   case 'INS':
                     context.vRouter.to(InscripcionesPage.route);
                     break;
+                  case 'CERT-PERS':
+                    context.vRouter.to(PersonalPage.route);
+                    break;
+                  case 'CERT-MERC':
+                    context.vRouter.to(MercantilPage.route);
+                    break;
                 }
               },
               child: Container(
                 height: 100,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       height: 300,
@@ -69,7 +79,12 @@ class ActoCard extends StatelessWidget {
                                   fit: BoxFit.cover)),
                     ),
                     Container(
-                      child: Text(acto.acto!),
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(top: 5, bottom: 5),
+                      child: Text(
+                        acto.acto!,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ],
                 ),

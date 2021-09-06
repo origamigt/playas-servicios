@@ -9,7 +9,9 @@ import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/pages/pagos/confirmar_pago_page.dart';
 import 'package:playas/src/pages/pagos/pago_page.dart';
 import 'package:playas/src/pages/tramites/inscripciones_page.dart';
+import 'package:playas/src/pages/tramites/mercantil_page.dart';
 import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
+import 'package:playas/src/pages/tramites/personal_page.dart';
 import 'package:playas/src/pages/tramites/propiedad_page.dart';
 import 'package:playas/src/pages/tramites/tramites_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
@@ -143,6 +145,14 @@ class _VRouterAppState extends State<VRouterApp> {
                       VWidget(
                         path: InscripcionesPage.route,
                         widget: InscripcionesPage(),
+                      ),
+                      VWidget(
+                        path: PersonalPage.route,
+                        widget: PersonalPage(),
+                      ),
+                      VWidget(
+                        path: MercantilPage.route,
+                        widget: MercantilPage(),
                       ),
                     ])
               ])

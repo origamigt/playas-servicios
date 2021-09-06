@@ -32,7 +32,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   PersonaProvider? personaProvider;
   PagoProvider? pagoProvider;
 
-  String? identificacion;
   TextEditingController cantidadCtrl = TextEditingController();
 
   TextEditingController identificacionCtrl = TextEditingController();
@@ -64,26 +63,26 @@ class NoposeerBienState extends State<NoposeerBienPage> {
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     pagoProvider = Provider.of<PagoProvider>(context);
-    if (userProvider != null) {
-      userProvider!.initialize().then((value) {
-        usuario = value;
-        PubPersona persona = usuario!.persona!;
-        identificacion = persona.cedRuc;
-        identificacionCtrl.text = identificacion!;
-        var nombres = persona.nombres! + ' ' + persona.apellidos!;
-        datosPersonaCtrl.text = nombres;
-        direccionCtrl.text = persona.direccion!;
-        telefonoCtrl.text = persona.telefono1!;
-        correoCtrl.text = persona.correo1!;
 
-        identificacionFactCtrl.text = identificacion!;
+    userProvider!.initialize().then((value) {
+      usuario = value;
+      PubPersona persona = usuario!.persona!;
 
-        datosPersonaFactCtrl.text = nombres;
-        direccionFactCtrl.text = persona.direccion!;
-        telefonoFactCtrl.text = persona.telefono1!;
-        correoFactCtrl.text = persona.correo1!;
-      });
-    }
+      identificacionCtrl.text = persona.cedRuc!;
+      var nombres = persona.nombres! + ' ' + persona.apellidos!;
+      datosPersonaCtrl.text = nombres;
+      direccionCtrl.text = persona.direccion!;
+      telefonoCtrl.text = persona.telefono1!;
+      correoCtrl.text = persona.correo1!;
+
+      identificacionFactCtrl.text = persona.cedRuc!;
+
+      datosPersonaFactCtrl.text = nombres;
+      direccionFactCtrl.text = persona.direccion!;
+      telefonoFactCtrl.text = persona.telefono1!;
+      correoFactCtrl.text = persona.correo1!;
+    });
+
     return Form(
         key: _formKey,
         child: PageComponent(
@@ -228,7 +227,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       'Identificación',
       TextFormField(
         controller: identificacionCtrl,
-        onSaved: (value) => identificacion = value,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -335,7 +333,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       'Identificación',
       TextFormField(
         controller: identificacionFactCtrl,
-        onSaved: (value) => identificacion = value,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {

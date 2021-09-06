@@ -116,6 +116,7 @@ findAll(String url, bool auth) async {
 
 findAllResponse(String url, bool auth) async {
   try {
+    print(Uri.http(SERVER_IP, url));
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response =
         await http.get(Uri.http(SERVER_IP, url), headers: header);

@@ -1,41 +1,38 @@
-import 'dart:async';
+import 'dart:js' as js;
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/acto.dart';
-import 'package:playas/src/models/acto_requisito.dart';
+import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
-import 'package:playas/src/providers/actos_provider.dart';
+import 'package:playas/src/pages/pagos/pago_page.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
-import 'package:playas/src/providers/requisitos_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-class InscripcionesPage extends StatefulWidget {
-  static const String route = '/inscripciones';
+class MercantilPage extends StatefulWidget {
+  static const String route = '/mercantil';
 
   @override
-  InscripcionesState createState() => InscripcionesState();
+  MercantilState createState() => MercantilState();
 }
 
-class InscripcionesState extends State<InscripcionesPage> {
-  Size? size;
+class MercantilState extends State<MercantilPage> {
   bool isWeb = UniversalPlatform.isWeb;
-  final _actosProvider = ActosProvider();
+
   Acto acto = Acto();
-  Acto? inscripcion;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
   PagoProvider? pagoProvider;
-  RequisitosProvider? requisitoProvider;
+
+  TextEditingController cantidadCtrl = TextEditingController();
 
   TextEditingController identificacionCtrl = TextEditingController();
   TextEditingController datosPersonaCtrl = TextEditingController();
@@ -56,25 +53,21 @@ class InscripcionesState extends State<InscripcionesPage> {
   User? usuario;
   final _formKey = GlobalKey<FormState>();
 
-  Future<List<Acto?>>? inscripciones;
-  List<ActoRequisito> requisitos = [];
-
-  @override
-  void initState() {
-    super.initState();
-    inscripciones = _actosProvider.findActosInscripciones();
-  }
+  Data motivo = motivosSolicitud[0];
 
   @override
   Widget build(BuildContext context) {
-    acto.id = 0;
+    acto.id = 1358;
+    acto.valor = 6.0;
+    cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     pagoProvider = Provider.of<PagoProvider>(context);
-    requisitoProvider = Provider.of<RequisitosProvider>(context);
+
     userProvider!.initialize().then((value) {
       usuario = value;
       PubPersona persona = usuario!.persona!;
+
       identificacionCtrl.text = persona.cedRuc!;
       var nombres = persona.nombres! + ' ' + persona.apellidos!;
       datosPersonaCtrl.text = nombres;
@@ -89,10 +82,11 @@ class InscripcionesState extends State<InscripcionesPage> {
       telefonoFactCtrl.text = persona.telefono1!;
       correoFactCtrl.text = persona.correo1!;
     });
+
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Inscripciones en linea'),
+          header: tituloPagina(context, 'Certificado mercantil'),
           body: body(),
           footer: Container(),
         ));
@@ -101,7 +95,6 @@ class InscripcionesState extends State<InscripcionesPage> {
   Widget body() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        size = MediaQuery.of(context).size;
         if (constraints.maxWidth > 600) {
           return FractionallySizedBox(
             widthFactor: 0.5,
@@ -117,17 +110,23 @@ class InscripcionesState extends State<InscripcionesPage> {
   Widget bodyDetail() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: size!.width,
-      height: size!.height / 1.3,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 1.3,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            tituloWidget(context, 'Contrato a inscribir'),
-            inscripcionesWidget(),
-            tituloWidget(context, 'Requisitos'),
-            requisitosXinscripcion(),
+            tituloWidget(context, 'Motivo de la solicitud'),
+            Wrap(
+              children: motivosWidget(),
+            ),
+            motivo.id == 116
+                ? otroMotivoWidget()
+                : SizedBox(
+              height: 10,
+            ),
+            cantidadWidget(),
             observacionWidget(),
             tituloWidget(context, 'Datos del solicitante'),
             identificacionWidget(),
@@ -147,8 +146,8 @@ class InscripcionesState extends State<InscripcionesPage> {
             pagoProvider!.status == StatusPago.Procesing
                 ? loading("Procesando solicitud...")
                 : Center(
-                    child: btnProcesarPago(),
-                  ),
+              child: btnProcesarPago(),
+            ),
             SizedBox(
               height: 15,
             ),
@@ -156,6 +155,49 @@ class InscripcionesState extends State<InscripcionesPage> {
         ),
       ),
     );
+  }
+
+  Widget otroMotivoWidget() {
+    return datosWidget(
+        context,
+        'Escribe aqui el motivo de tu solicitud',
+        TextFormField(
+          controller: otroMotivoCtrl,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.stream,
+            ),
+          ),
+          validator: (value) {
+            if (motivo.id == 116 && value!.isEmpty) {
+              return 'Ingrese el motivo de su solicitud!';
+            }
+          },
+          textAlign: TextAlign.start,
+        ));
+  }
+
+  Widget cantidadWidget() {
+    return datosWidget(
+        context,
+        'Cantidad de certificados',
+        TextFormField(
+          controller: cantidadCtrl,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Ingrese su la cantidad de certificados a solicitar!';
+            }
+          },
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.confirmation_num_outlined,
+            ),
+          ),
+          textAlign: TextAlign.start,
+        ));
   }
 
   Widget observacionWidget() {
@@ -197,7 +239,7 @@ class InscripcionesState extends State<InscripcionesPage> {
             Icons.person,
           ),
           suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.Searching
+              StatusPersonProv.Searching
               ? loading("...")
               : btnBuscarPersona('SOLICITANTE'),
         ),
@@ -303,7 +345,7 @@ class InscripcionesState extends State<InscripcionesPage> {
             Icons.person,
           ),
           suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
+              StatusPersonProv.SearchingFact
               ? loading("...")
               : btnBuscarPersona('FACTURA'),
         ),
@@ -420,262 +462,94 @@ class InscripcionesState extends State<InscripcionesPage> {
           child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).primaryColor),
+                MaterialStateProperty.all(Theme.of(context).primaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                )),
+                      borderRadius: BorderRadius.circular(30.0),
+                    )),
               ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  doProcesarSolicitud();
+                  doProcesarPago();
                 }
               },
               child: Text(
-                'Generar solicitud',
+                'Procesar pago',
               )),
         ));
   }
 
-  Widget inscripcionesWidget() {
-    return FutureBuilder(
-      future: inscripciones,
-      builder: (BuildContext context, AsyncSnapshot<List<Acto?>> snapshot) {
-        if (snapshot.hasData) {
-          return SizedBox(
-              height: 70 + 70,
-              child: GridView.builder(
-                  scrollDirection: Axis.horizontal,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.20,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 3.0,
-                    crossAxisCount: 3,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, i) {
-                    Acto? item = snapshot.data![i];
-                    return Container(
-                      alignment: Alignment.centerLeft,
-                      width: size!.width,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: FilterChip(
-                        selectedColor: colorSecond.withOpacity(0.8),
-                        label: Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            item!.acto!,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                        selected: inscripcion == item,
-                        onSelected: (selected) {
-                          setState(() {
-                            inscripcion = (selected ? item : null)!;
-                            doBuscarRequisitos();
-                          });
-                        },
-                      ),
-                    );
-                  }));
-        } else {
-          return Container(
-              height: 100.0, child: Center(child: CircularProgressIndicator()));
-        }
-      },
-    );
-  }
-
-  Widget requisitosXinscripcion() {
-    switch (requisitoProvider!.status) {
-      case StatusRequisitos.Unknown:
-        return Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: Text(
-                'Escoja el acto a inscribir',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-          ],
-        );
-      case StatusRequisitos.Searching:
-        return Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            loading("Cargando requisitos..."),
-            SizedBox(
-              height: 10,
-            ),
-          ],
-        );
-      case StatusRequisitos.Found:
-        return requsitosWidget();
-      case StatusRequisitos.NoFound:
-        return Text('No se encontraron requisitos');
-      default:
-        return Container();
-    }
-  }
-
-  Widget requsitosWidget() {
-    return Column(
-      children: [
-        Text(
-          'Los archivos deben ser en tipo pdf y maximo 4mb',
-          style: Theme.of(context).textTheme.headline5,
-        ),
-        ListView.builder(
-            shrinkWrap: true,
-            itemCount: requisitos.length,
-            itemBuilder: (context, i) {
-              ActoRequisito item = requisitos[i];
-              return Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                  height: 85,
-                  width: size!.width - 20,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        color: item.requerido!
-                            ? Colors.red
-                            : Theme.of(context).primaryColor,
-                        width: 1,
-                      )),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 3,
-                      ),
-                      Wrap(
-                        children: [
-                          Text(
-                            item.requisito!,
-                            style: Theme.of(context).textTheme.headline6,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                      Text(
-                        item.nombreArchivo,
-                        style: TextStyle(fontSize: 10),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      TextButton(
-                        child: Text(
-                          'Subir archivo',
-                          style: TextStyle(fontSize: 10),
-                        ),
-                        onPressed: () async {
-                          _openFileExplorer(item);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            })
-      ],
-    );
-  }
-
-  doBuscarRequisitos() {
-    final Future<Map<String, dynamic>> successfulMessage =
-        requisitoProvider!.requisitosXacto(inscripcion!.id!);
-
-    successfulMessage.then((response) async {
-      if (response['status']) {
-        setState(() {
-          requisitos = response['data'];
-        });
-      } else {
-        mensajeError(context, response['message']);
-        setState(() {
-          requisitos = [];
-        });
-      }
-    });
-  }
-
-  void _openFileExplorer(ActoRequisito item) async {
-    String extension = 'pdf';
-    List<PlatformFile>? archivos;
-    try {
-      archivos = (await FilePicker.platform.pickFiles(
-        onFileLoading: (FilePickerStatus status) => print(status),
-        type: FileType.custom,
-        allowedExtensions: extension.replaceAll(' ', '').split(','),
-      ))
-          ?.files;
-    } on PlatformException catch (e) {
-      mensajeError(context, 'Su dispositivo no soporta la carga de archivos');
-      print("Unsupported operation" + e.toString());
-    } catch (ex) {
-      print(ex);
-    }
-    if (!mounted) return;
-    setState(() {
-      item.nombreArchivo =
-          archivos != null ? archivos.map((e) => e.name).toString() : '...';
-      item.archivo = archivos![0].bytes;
-    });
-  }
-
-  doProcesarSolicitud() {
-    for (ActoRequisito r in requisitos) {
-      if (r.requerido! && r.archivo == null) {
-        mensajeError(context, 'Debe subir los requisitos obligatorios');
-        return;
-      }
-    }
-    print(requisitos.length);
+  doProcesarPago() {
     final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
-        .procesarInscripcion(
-            obsCtrl.text,
-            identificacionCtrl.text,
-            datosPersonaCtrl.text,
-            direccionCtrl.text,
-            telefonoCtrl.text,
-            correoCtrl.text,
-            estadoCivilSol,
-            identificacionFactCtrl.text,
-            datosPersonaFactCtrl.text,
-            direccionFactCtrl.text,
-            telefonoFactCtrl.text,
-            correoFactCtrl.text,
-            acto,
-            usuario!.id!,
-            requisitos);
+        .procesarPago(
+        motivo,
+        obsCtrl.text,
+        identificacionCtrl.text,
+        datosPersonaCtrl.text,
+        direccionCtrl.text,
+        telefonoCtrl.text,
+        correoCtrl.text,
+        estadoCivilSol,
+        identificacionFactCtrl.text,
+        datosPersonaFactCtrl.text,
+        direccionFactCtrl.text,
+        telefonoFactCtrl.text,
+        correoFactCtrl.text,
+        acto,
+        usuario!.id!,
+        cantidadCtrl.text);
 
     successfulMessage.then((response) async {
+      print(response.toString());
       if (response['status']) {
         Solicitud rest = response['data'];
-        mensajeError(context, response['message']);
+
+        if (rest.linkPago != null) {
+          if (!isWeb) {
+            var verificado = await Navigator.of(context).push(PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (BuildContext context, _, __) => PagoPage(
+                  urlIframe: rest.linkPago,
+                )));
+
+            if (verificado != null) {
+              mensajeError(
+                context,
+                'Debe proceder al pago para continuar con su solcitud',
+              );
+            }
+          } else {
+            js.context.callMethod('open', [rest.linkPago, '_self']);
+          }
+        }
       } else {
         mensajeError(context, response['message']);
       }
     });
+  }
+
+  List<Widget> motivosWidget() {
+    List<Widget> choices = [];
+    motivosSolicitud.forEach((item) {
+      choices.add(Container(
+        padding: const EdgeInsets.all(2.0),
+        child: ChoiceChip(
+          selectedColor: colorSecond.withOpacity(0.8),
+          label: Text(
+            item.data!,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          selected: motivo == item,
+          onSelected: (selected) {
+            setState(() {
+              motivo = (selected ? item : null)!;
+            });
+          },
+        ),
+      ));
+    });
+    return choices;
   }
 
   buscarPersona(String tipo) {

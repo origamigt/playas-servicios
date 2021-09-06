@@ -72,9 +72,6 @@ Solicitud _$SolicitudFromJson(Map<String, dynamic> json) {
     ..estado = json['estado'] as String? ?? null
     ..tipoPago = json['tipoPago'] as bool? ?? null
     ..cantidad = json['cantidad'] as int? ?? null
-    ..anioUltimaTransferencia = json['anioUltimaTransferencia'] as int? ?? null
-    ..anioAntecedenteSolicitado =
-        json['anioAntecedenteSolicitado'] as int? ?? null
     ..acto = json['acto'] as String? ?? null
     ..ingresado = json['ingresado'] as bool? ?? null
     ..linkPago = json['linkPago'] as String? ?? null
@@ -147,8 +144,6 @@ Map<String, dynamic> _$SolicitudToJson(Solicitud instance) => <String, dynamic>{
       'estado': instance.estado,
       'tipoPago': instance.tipoPago,
       'cantidad': instance.cantidad,
-      'anioUltimaTransferencia': instance.anioUltimaTransferencia,
-      'anioAntecedenteSolicitado': instance.anioAntecedenteSolicitado,
       'acto': instance.acto,
       'ingresado': instance.ingresado,
       'linkPago': instance.linkPago,
@@ -156,4 +151,5 @@ Map<String, dynamic> _$SolicitudToJson(Solicitud instance) => <String, dynamic>{
       'payWithPayPhone': instance.payWithPayPhone,
       'payWithApp': instance.payWithApp,
       'procesando': instance.procesando,
+      'requisitos': instance.requisitos
     };

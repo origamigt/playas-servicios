@@ -1,4 +1,6 @@
-class ActoRequisto {
+import 'dart:typed_data';
+
+class ActoRequisito {
   int? id;
   int? requisitoActo;
   int? idActo;
@@ -7,11 +9,13 @@ class ActoRequisto {
   String? requisito;
   int? documento;
   bool? requerido;
+  String nombreArchivo = '';
+  Uint8List? archivo;
 
-  ActoRequisto();
+  ActoRequisito();
 
-  ActoRequisto fromJson(Map<String, dynamic> json) {
-    return ActoRequisto()
+  ActoRequisito fromJson(Map<String, dynamic> json) {
+    return ActoRequisito()
       ..id = json['id'] as int? ?? null
       ..requisitoActo = json['requisitoActo'] as int? ?? null
       ..idActo = json['idActo'] as int? ?? null
@@ -21,4 +25,19 @@ class ActoRequisto {
       ..documento = json['documento'] as int? ?? null
       ..requerido = json['requerido'] as bool?;
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'requisitoActo': requisitoActo,
+        'idActo': idActo,
+        'acto': acto,
+        'idRequisito': idRequisito,
+        'requisito': requisito,
+        'documento': documento,
+        'requerido': requerido,
+        'nombreArchivo': nombreArchivo,
+        'archivo': archivo,
+
+        //'urlRp': urlRp,
+      };
 }

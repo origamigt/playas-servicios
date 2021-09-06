@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:playas/src/models/acto.dart';
+import 'package:playas/src/models/acto_requisito.dart';
 import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
@@ -140,7 +141,8 @@ class PagoProvider extends ChangeNotifier implements ReassembleHandler {
       String telefonoFact,
       String correoFact,
       Acto acto,
-      int user) async {
+      int user,
+      List<ActoRequisito> requisitos) async {
     var result;
 
     try {
@@ -189,9 +191,12 @@ class PagoProvider extends ChangeNotifier implements ReassembleHandler {
       data.estado = 'A';
       data.tipoPago = false;
       data.procesando = false;
+      data.requisitos = requisitos;
 
       http.Response? response = await save(
-          '/rpm-ventanilla/api/solicitud/registrarCertificado', data, true);
+          '/rpm-ventanilla/api/solicitud/registrarInscripcion',
+          Solicitud().json(data),
+          true);
 
       if (response != null && response.statusCode == 200) {
         Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))

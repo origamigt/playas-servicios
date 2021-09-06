@@ -142,7 +142,13 @@ mensajeInfo(BuildContext context, String mensaje) {
 Widget loading(String txt) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[CircularProgressIndicator(), Text(txt)],
+    children: <Widget>[
+      CircularProgressIndicator(),
+      SizedBox(
+        width: 5,
+      ),
+      Text(txt)
+    ],
   );
 }
 
