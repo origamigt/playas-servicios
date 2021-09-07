@@ -67,7 +67,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
 
   @override
   Widget build(BuildContext context) {
-    load(context.vRouter.url.replaceAll('/pagos/transaccionExitosa?', ''));
+    load(context.vRouter.url.replaceAll('${ConfirmarPagoPage.route}?', ''));
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -203,36 +203,6 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
               children: <Widget>[
                 Text(
                   "Ir a inicio",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-
-  Widget get _animatedButtonUIMainPage => Container(
-        height: 60,
-        width: 270,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.0),
-          color: colorPrimary,
-        ),
-        child: ElevatedButton(
-          onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-              '/login', (Route<dynamic> route) => false),
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20.0,
-              horizontal: 20.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Ir a Pantalla de Inicio",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),

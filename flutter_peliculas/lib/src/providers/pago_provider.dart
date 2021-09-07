@@ -206,7 +206,57 @@ class PagoProvider extends ChangeNotifier implements ReassembleHandler {
         _status = StatusPago.Done;
         notifyListeners();
 
-        result = {'status': true, 'message': 'Successful', 'data': rest};
+        result = {
+          'status': true,
+          'message': 'Solicitud generada correctamente',
+          'data': rest
+        };
+      } else {
+        _status = StatusPago.Error;
+        notifyListeners();
+        result = {
+          'status': false,
+          'message': 'No se pudo procesar la solicitud'
+        };
+      }
+    } catch (e) {
+      print(e);
+      _status = StatusPago.Error;
+      notifyListeners();
+      result = {'status': false, 'message': 'Intente nuevamente'};
+    }
+    return result;
+  }
+
+  Future<Map<String, dynamic>> procederPagoInscripcion(int idSolicitud) async {
+    var result;
+
+    try {
+      _status = StatusPago.Procesing;
+      notifyListeners();
+
+      Solicitud data = Solicitud();
+      data.id = idSolicitud;
+      data.tipoSolicitud = 0;
+
+      http.Response? response = await save(
+          '/rpm-ventanilla/api/solicitud/registrarPagoEnLina',
+          Solicitud().json(data),
+          true);
+
+      if (response != null && response.statusCode == 200) {
+        Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
+            as Map<String, dynamic>;
+
+        Solicitud rest = Solicitud().fromJson(map);
+        _status = StatusPago.Done;
+        notifyListeners();
+
+        result = {
+          'status': true,
+          'message': 'Solicitud generada correctamente',
+          'data': rest
+        };
       } else {
         _status = StatusPago.Error;
         notifyListeners();

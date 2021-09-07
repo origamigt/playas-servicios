@@ -133,7 +133,7 @@ mensajeError(BuildContext context, String mensaje) {
 mensajeInfo(BuildContext context, String mensaje) {
   showTopSnackBar(
     context,
-    CustomSnackBar.error(
+    CustomSnackBar.success(
       message: mensaje,
     ),
   );

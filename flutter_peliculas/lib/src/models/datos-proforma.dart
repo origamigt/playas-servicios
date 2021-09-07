@@ -3,6 +3,7 @@ import 'package:playas/src/models/datos-detalle-proforma.dart';
 part 'datos-proforma.g.dart';
 
 class DatosProforma {
+  int? idSolicitud;
   int? numerotramite;
   int? repertorio;
   String? doc_solicitante;

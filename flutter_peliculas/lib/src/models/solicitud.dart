@@ -89,6 +89,8 @@ class Solicitud {
   String? payWithApp;
   bool? procesando;
 
+  int? numeroTramiteInscripcion;
+
   List<ActoRequisito>? requisitos;
 
   Solicitud();

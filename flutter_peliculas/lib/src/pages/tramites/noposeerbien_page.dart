@@ -480,55 +480,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         ));
   }
 
-  doProcesarPago() {
-    final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
-        .procesarPago(
-            motivo,
-            obsCtrl.text,
-            identificacionCtrl.text,
-            datosPersonaCtrl.text,
-            direccionCtrl.text,
-            telefonoCtrl.text,
-            correoCtrl.text,
-            estadoCivilSol,
-            identificacionFactCtrl.text,
-            datosPersonaFactCtrl.text,
-            direccionFactCtrl.text,
-            telefonoFactCtrl.text,
-            correoFactCtrl.text,
-            acto,
-            usuario!.id!,
-            cantidadCtrl.text);
-
-    successfulMessage.then((response) async {
-      print(response.toString());
-      if (response['status']) {
-        Solicitud rest = response['data'];
-
-        if (rest.linkPago != null) {
-          if (!isWeb) {
-            var verificado = await Navigator.of(context).push(PageRouteBuilder(
-                opaque: false,
-                pageBuilder: (BuildContext context, _, __) => PagoPage(
-                      urlIframe: rest.linkPago,
-                    )));
-
-            if (verificado != null) {
-              mensajeError(
-                context,
-                'Debe proceder al pago para continuar con su solcitud',
-              );
-            }
-          } else {
-            js.context.callMethod('open', [rest.linkPago, '_self']);
-          }
-        }
-      } else {
-        mensajeError(context, response['message']);
-      }
-    });
-  }
-
   List<Widget> motivosWidget() {
     List<Widget> choices = [];
     motivosSolicitud.forEach((item) {
@@ -579,4 +530,55 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       }
     });
   }
+
+  doProcesarPago() {
+    final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
+        .procesarPago(
+        motivo,
+        obsCtrl.text,
+        identificacionCtrl.text,
+        datosPersonaCtrl.text,
+        direccionCtrl.text,
+        telefonoCtrl.text,
+        correoCtrl.text,
+        estadoCivilSol,
+        identificacionFactCtrl.text,
+        datosPersonaFactCtrl.text,
+        direccionFactCtrl.text,
+        telefonoFactCtrl.text,
+        correoFactCtrl.text,
+        acto,
+        usuario!.id!,
+        cantidadCtrl.text);
+
+    successfulMessage.then((response) async {
+      print(response.toString());
+      if (response['status']) {
+        Solicitud rest = response['data'];
+
+        if (rest.linkPago != null) {
+          if (!isWeb) {
+            var verificado = await Navigator.of(context).push(PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (BuildContext context, _, __) => PagoPage(
+                  urlIframe: rest.linkPago,
+                )));
+
+            if (verificado != null) {
+              mensajeError(
+                context,
+                'Debe proceder al pago para continuar con su solcitud',
+              );
+            }
+          } else {
+            js.context.callMethod('open', [rest.linkPago, '_self']);
+          }
+        }
+      } else {
+        mensajeError(context, response['message']);
+      }
+    });
+  }
+
+
 }

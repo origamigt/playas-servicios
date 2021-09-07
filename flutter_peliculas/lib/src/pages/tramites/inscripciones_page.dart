@@ -522,7 +522,7 @@ class InscripcionesState extends State<InscripcionesPage> {
           ],
         );
       case StatusRequisitos.Found:
-        return requsitosWidget();
+        return requisitosWidget();
       case StatusRequisitos.NoFound:
         return Text('No se encontraron requisitos');
       default:
@@ -530,7 +530,7 @@ class InscripcionesState extends State<InscripcionesPage> {
     }
   }
 
-  Widget requsitosWidget() {
+  Widget requisitosWidget() {
     return Column(
       children: [
         Text(
@@ -671,7 +671,7 @@ class InscripcionesState extends State<InscripcionesPage> {
     successfulMessage.then((response) async {
       if (response['status']) {
         Solicitud rest = response['data'];
-        mensajeError(context, response['message']);
+        mensajeInfo(context, response['message']);
       } else {
         mensajeError(context, response['message']);
       }
