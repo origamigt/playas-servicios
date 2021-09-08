@@ -17,10 +17,14 @@ class TramiteProvider {
   }
 
   Future<DatosProforma?> consultarTramite(int tramite) async {
-    Map<String, dynamic> map =
-        await find('/api/solicitud/consultar/tramite/$tramite', true);
-    DatosProforma? datosProforma = DatosProforma.fromJson(map);
-    return datosProforma;
+    try {
+      Map<String, dynamic> map = await find(
+          '/rpm-ventanilla/api/solicitud/consultar/tramite/$tramite', true);
+      DatosProforma? datosProforma = DatosProforma.fromJson(map);
+      return datosProforma;
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<DatosProforma?> consultarInscripcionXtramite(int tramite) async {
@@ -37,11 +41,21 @@ class TramiteProvider {
           await consultarTramite(rest.numeroTramiteInscripcion!);
       if (proforma != null) {
         proforma.idSolicitud = rest.id;
+
         return proforma;
       }
       return null;
     } else {
       return null;
     }
+  }
+
+  Future<List<Solicitud>>? findMisSolicitudes(int usuario) async {
+    print('/rpm-ventanilla/api/solicitud/solicitudes/usuario/$usuario');
+    List<dynamic>? collection = await findAll(
+        '/rpm-ventanilla/api/solicitud/solicitudes/usuario/$usuario', true);
+    List<Solicitud>? solicitudes =
+        collection!.map((p) => Solicitud().fromJson(p)).toList();
+    return solicitudes;
   }
 }

@@ -228,7 +228,8 @@ class PagoProvider extends ChangeNotifier implements ReassembleHandler {
     return result;
   }
 
-  Future<Map<String, dynamic>> procederPagoInscripcion(int idSolicitud) async {
+  Future<Map<String, dynamic>> procederPagoInscripcion(
+      int idSolicitud, double total) async {
     var result;
 
     try {
@@ -238,6 +239,7 @@ class PagoProvider extends ChangeNotifier implements ReassembleHandler {
       Solicitud data = Solicitud();
       data.id = idSolicitud;
       data.tipoSolicitud = 0;
+      data.total = total;
 
       http.Response? response = await save(
           '/rpm-ventanilla/api/solicitud/registrarPagoEnLina',

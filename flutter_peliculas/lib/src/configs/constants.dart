@@ -7,12 +7,14 @@ import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/ajustes_page.dart';
 import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
+import 'package:playas/src/pages/tramites/mistramites_page.dart';
 import 'package:playas/src/pages/tramites/tramites_page.dart';
 import 'package:playas/src/pages/validar/scan-qr-page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
 
 List<Menu> menus = [
-  Menu('Mis trámites', '/', Colors.lightBlue, Icons.filter_list),
+  Menu('Mis trámites', MisTramitesPage.route, Colors.lightBlue,
+      Icons.filter_list),
   Menu('Servicios en linea', TramitesPage.route, Colors.purple, Icons.search),
   Menu('Validar documentos', VerificarDocPage.route, Colors.red, Icons.qr_code),
   Menu('Carpeta ciudadana', ScanQrpage().route, Colors.tealAccent,

@@ -8,17 +8,13 @@ part of 'datos-detalle-proforma.dart';
 
 DatosDetalleProforma _$DatosDetalleProformaFromJson(Map<String, dynamic> json) {
   return DatosDetalleProforma()
-    ..cantidad = json['cantidad'] as int
-    ..acto = json['acto'] as String
-    ..cuantia = json['cuantia'] as num
-    ..avaluo = json['avaluo'] as num
-    ..valorUnitario = json['valorUnitario'] as num
-    ..descuento = json['descuento'] as num
-    ..conceptoDescuento = json['conceptoDescuento'] as String
-    ..valorTotal = json['valorTotal'] as num;
+    ..acto = json['acto'] as String? ?? null
+    ..valorUnitario = json['valorUnitario'] as num? ?? null
+    ..descuento = json['descuento'] as num? ?? null
+    ..valorTotal = json['valorTotal'] as num? ?? null;
 }
 
-Map<String, dynamic> _$DatosDetalleProformaToJson(
+/*Map<String, dynamic> _$DatosDetalleProformaToJson(
         DatosDetalleProforma instance) =>
     <String, dynamic>{
       'cantidad': instance.cantidad,
@@ -29,4 +25,4 @@ Map<String, dynamic> _$DatosDetalleProformaToJson(
       'descuento': instance.descuento,
       'conceptoDescuento': instance.conceptoDescuento,
       'valorTotal': instance.valorTotal
-    };
+    };*/

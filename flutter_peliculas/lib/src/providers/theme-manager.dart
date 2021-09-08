@@ -74,8 +74,8 @@ class ThemeNotifier with ChangeNotifier {
           fontSize: 16,
           color: Colors.black,
         ),
-        headline4: GoogleFonts.sourceCodePro(
-          fontSize: 30,
+        headline3: GoogleFonts.sourceCodePro(
+          fontSize: 25,
           color: colorPrimary,
           fontWeight: FontWeight.bold,
         ),

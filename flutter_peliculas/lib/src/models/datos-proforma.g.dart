@@ -1,42 +1,40 @@
 part of 'datos-proforma.dart';
 
 DatosProforma _$DatosProformaFromJson(Map<String, dynamic> json) {
-  return DatosProforma()
-    ..numerotramite = json['numerotramite'] as int
-    ..repertorio = json['repertorio'] as int
-    ..doc_solicitante = json['doc_solicitante'] as String
-    ..nombre_solicitante = json['nombre_solicitante'] as String
-    ..correo_solicitante = json['correo_solicitante'] as String
-    ..doc_beneficiario = json['doc_beneficiario'] as String
-    ..nombre_beneficiario = json['nombre_beneficiario'] as String
-    ..correo_beneficiario = json['correo_beneficiario'] as String
-    ..revisor = json['revisor'] as String
-    ..numerofactura = json['numerofactura'] as String
-    ..claveacceso = json['claveacceso'] as String
-    ..numeroautorizacion = json['numeroautorizacion'] as String
-    ..estadotramite = json['estadotramite'] as String
-    ..mensaje = json['mensaje'] as String
-    ..fechaingreso = json['fechaingreso'] as int
-    ..fechaentrega = json['fechaentrega'] as int
-    ..subtotal = json['subtotal'] as num
-    ..descuento = json['descuento'] as num
-    ..dscto_limitcobro = json['dscto_limitcobro'] as num
-    ..descuento_porc = json['descuento_porc'] as num
-    ..gastos_generales = json['gastos_generales'] as num
-    ..totalPagar = json['totalPagar'] as num
-    ..avance = json['avance'] as double
-    ..detalle = (json['detalle'] as List)
-        .map((e) => e == null
-            ? null
-            : DatosDetalleProforma.fromJson(e as Map<String, dynamic>))
-        .cast<DatosDetalleProforma>()
-        .toList()
-    ..detalleSolicitud = json['detalleSolicitud'] as String
-    ..detalleAvance = json['detalleAvance'] as String
-    ..acto = json['acto'] as String;
+  try {
+    return DatosProforma()
+      ..numerotramite = json['numerotramite'] as int? ?? null
+      ..doc_solicitante = json['doc_solicitante'] as String? ?? null
+      ..nombre_solicitante = json['nombre_solicitante'] as String? ?? null
+      ..correo_solicitante = json['correo_solicitante'] as String? ?? null
+      ..doc_beneficiario = json['doc_beneficiario'] as String? ?? null
+      ..nombre_beneficiario = json['nombre_beneficiario'] as String? ?? null
+      ..correo_beneficiario = json['correo_beneficiario'] as String? ?? null
+      ..revisor = json['revisor'] as String? ?? null
+      ..numerofactura = json['numerofactura'] as String? ?? null
+      ..estadotramite = json['estadotramite'] as String? ?? null
+      ..mensaje = json['mensaje'] as String? ?? ''
+      ..fechaingreso = json['fechaingreso'] as int? ?? null
+      ..fechaentrega = json['fechaentrega'] as int? ?? null
+      ..subtotal = json['subtotal'] as num? ?? null
+      ..descuento = json['descuento'] as num? ?? null
+      ..totalPagar = json['totalPagar'] as double? ?? null
+      ..detalle = json['detalle'] != null
+          ? (json['detalle'] as List)
+              .map((e) =>
+                  DatosDetalleProforma.fromJson(e as Map<String, dynamic>))
+              .cast<DatosDetalleProforma>()
+              .toList()
+          : null
+      ..acto = json['acto'] as String? ?? null
+      ..procedePago = json['procedePago'] as bool? ?? false;
+  } catch (e) {
+    print(e);
+    return DatosProforma();
+  }
 }
 
-Map<String, dynamic> _$DatosProformaToJson(DatosProforma instance) =>
+/*Map<String, dynamic> _$DatosProformaToJson(DatosProforma instance) =>
     <String, dynamic>{
       'numerotramite': instance.numerotramite,
       'repertorio': instance.repertorio,
@@ -65,4 +63,4 @@ Map<String, dynamic> _$DatosProformaToJson(DatosProforma instance) =>
       'detalleSolicitud': instance.detalleSolicitud,
       'detalleAvance': instance.detalleAvance,
       'acto': instance.acto
-    };
+    };*/

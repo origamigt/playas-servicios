@@ -4,6 +4,7 @@ import 'package:playas/src/models/response-create.dart';
 import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/response_provider.dart';
 import 'package:playas/src/widgets/components.dart';
+import 'package:playas/src/widgets/page_component.dart';
 import 'package:vrouter/vrouter.dart';
 
 class ConfirmarPagoPage extends StatefulWidget {
@@ -20,12 +21,9 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
   AnimationController? _controller;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // String widget.url!; //code1=1290&code2=0953255957&code3=1573939762285
-
+  Size? size;
   bool activar = false;
   bool validos = false;
-  bool loading = true;
-  bool connect = false;
 
   List<String> params = [];
 
@@ -63,123 +61,121 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
   final responseProvider = ResponseProvider();
 
   @override
   Widget build(BuildContext context) {
     load(context.vRouter.url.replaceAll('${ConfirmarPagoPage.route}?', ''));
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      body: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                  Colors.white.withOpacity(0.15), BlendMode.dstATop),
-              image: AssetImage('assets/images/logo.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 20.0,
-                ),
-                //logoLogin(),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Text(
-                  "Confirmación de pago",
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                FutureBuilder(
-                    future:
-                        responseProvider.confirmarPago(param2[1], param3[1]),
-                    builder:
-                        (context, AsyncSnapshot<ResponseCreate?> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          ResponseCreate rc = snapshot.data!;
-                          return SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Text(
-                                  rc.acto!,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 35.0,
-                                      color: Colors.black),
+    return Form(
+        key: _formKey,
+        child: PageComponent(
+          header: tituloPagina(context, 'Confirmación de pago'),
+          body: body(),
+          footer: Container(),
+        ));
+  }
+
+  Widget body() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        size = MediaQuery.of(context).size;
+        if (constraints.maxWidth > 600) {
+          return FractionallySizedBox(
+            widthFactor: 0.5,
+            child: bodyDetail(),
+          );
+        } else {
+          return bodyDetail();
+        }
+      },
+    );
+  }
+
+  Widget bodyDetail() {
+    return Container(
+        margin: EdgeInsets.only(top: 30),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              FutureBuilder(
+                  future: responseProvider.confirmarPago(param2[1], param3[1]),
+                  builder: (context, AsyncSnapshot<ResponseCreate?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        ResponseCreate rc = snapshot.data!;
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Text(
+                                rc.acto!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 35.0,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Total: \$${rc.total!}',
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Datos de la transacción',
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Código autorización: ${rc.authorizationCode!}',
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Visibility(
+                                  visible: rc.statusCode == '3' ? true : false,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    child: Text(
+                                      'Su transacción fue procesada correctamente espere el correo de confirmación',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )),
+                              Visibility(
+                                  visible: rc.statusCode != '3' ? true : false,
+                                  child: Text('Detalle ${rc.messageCode}')),
+                              GestureDetector(
+                                onTapDown: _onTapDown,
+                                onTapUp: _onTapUp,
+                                child: Transform.scale(
+                                  scale: 1,
+                                  child: _animatedButtonUI,
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'Total: \$${rc.total!}',
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'Datos de la transacción',
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'Código autorización: ${rc.authorizationCode!}',
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Visibility(
-                                    visible:
-                                        rc.statusCode == '3' ? true : false,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 20),
-                                      child: Text(
-                                        'Su transacción fue procesada correctamente espere el correo de confirmación',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )),
-                                Visibility(
-                                    visible:
-                                        rc.statusCode != '3' ? true : false,
-                                    child: Text('Detalle ${rc.messageCode}')),
-                                GestureDetector(
-                                  onTapDown: _onTapDown,
-                                  onTapUp: _onTapUp,
-                                  child: Transform.scale(
-                                    scale: 1,
-                                    child: _animatedButtonUI,
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        } else {
-                          if (snapshot.data == null) {
-                            return Text('Intente nuevamente');
-                          }
-                          return CircularProgressIndicator();
-                        }
+                              )
+                            ],
+                          ),
+                        );
                       } else {
+                        if (snapshot.data == null) {
+                          return Text('Intente nuevamente');
+                        }
                         return CircularProgressIndicator();
                       }
-                    }),
-              ],
-            ),
-          )),
-    );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }),
+            ],
+          ),
+        ));
   }
 
   Widget get _animatedButtonUI => Container(
