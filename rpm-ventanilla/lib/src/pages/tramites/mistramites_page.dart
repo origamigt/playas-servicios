@@ -40,7 +40,7 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
 
   @override
   Widget build(BuildContext context) {
-    userProvider = Provider.of<UsuarioProvider>(context);
+    userProvider = Provider.of<UsuarioProvider>(context, listen: false);
     userProvider!.initialize().then((value) {
       solicitudesFuture = tramiteProvider.findMisSolicitudes(value!.id!);
     });
@@ -83,7 +83,7 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
               FutureBuilder(
                   future: solicitudesFuture,
                   builder: (context, AsyncSnapshot<List<Solicitud>?> snapshot) {
-                    print(snapshot.error.toString());
+                    print(snapshot.toString());
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
                         _pubSolicitudes = snapshot.data!;
