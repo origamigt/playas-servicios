@@ -13,13 +13,16 @@ Se debe crear un modelo de datos de con los siguientes campos y enviarlos en for
 
 ``` 
 {
-    "ubicacion" : "GYE, Ecuador",
-    "motivo" : "Asunto del documento o nombre del tramite  ",
-    "archivoFirmar" : "D:\\Proyectos\\FirmaEC\\0916581168.pdf", //Archivo en PDF 
-    "archivo" : "D:\\Proyectos\\FirmaEC\\firma.p12", //Ruta del la firma electronica: 
-    "clave" : "12345", //Clave del certificado p12
-    "tipoFirma": "QR",  // Pueden ser {"QR", "information1", "information2"}
-    "urlQr": "www.qrtramite.com/122" //URL del qr para poder consultar
+    "ubicacion": "Registro de la Propiedad",
+    "motivo": "Memorando N° 005",
+    "archivoFirmar": "C:\\Users\\Documentos\\Proyectos\\proyecto-memorando\\MEMORANDO NRO. 05-LECTOR-BARRAS.pdf",
+    "archivo": "C:/facturacion-electronica/firmas-electronicas/ANDY AUGUSTO SANCHEZ GONZALEZ 280721123043.p12",
+    "clave": "clave",
+    "tipoFirma": "QR",
+    "urlQr": "",
+    "numeroPagina": 1,
+    "posicionX1": "80",
+    "posicionY1": "200"
 }
 ```
 

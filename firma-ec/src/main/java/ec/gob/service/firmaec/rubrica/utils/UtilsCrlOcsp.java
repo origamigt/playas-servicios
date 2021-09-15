@@ -96,6 +96,7 @@ public class UtilsCrlOcsp {
                 fechaRevocado = validarCRL(cert);
             }
         }
+        System.out.println("fechaRevocado: " + fechaRevocado);
         return fechaRevocado;
     }
 
@@ -116,6 +117,7 @@ public class UtilsCrlOcsp {
             LOGGER.getLogger(UtilsCrlOcsp.class.getName()).log(Level.SEVERE, null, ex);
 //            throw new ConexionFirmadorApiException("Fallo la validacion por el servicio del API");
         }
+        System.out.println("validarFechaRevocado - fechaRevocado: "+ fechaRevocado);
         return fechaRevocado;
     }
 
