@@ -8,11 +8,6 @@ class DesktopMode extends StatelessWidget {
 
   DesktopMode({this.tipo});
 
-  /*@override
-  _DesktopModeState createState() => _DesktopModeState();
-}
-
-class _DesktopModeState extends State<DesktopMode> {*/
   @override
   Widget build(BuildContext context) {
     final double widthSize = MediaQuery.of(context).size.width;

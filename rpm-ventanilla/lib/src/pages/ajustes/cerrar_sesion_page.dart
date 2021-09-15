@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:playas/src/providers/auth_provider.dart';
+import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
+import 'package:provider/provider.dart';
 
 class CerrarSesionPage extends StatelessWidget {
   String route = '/cerrarSesion';
-
+  UsuarioProvider? userProvider;
+  AuthProvider? authProvider;
   BuildContext? context;
 
   @override
   Widget build(BuildContext context) {
     this.context = context;
+    userProvider = Provider.of<UsuarioProvider>(context);
+    authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white.withOpacity(0.96),
@@ -55,10 +61,8 @@ class CerrarSesionPage extends StatelessWidget {
         TextButton(
           child: new Text("SI"),
           onPressed: () async {
-            /*if (await signOut()) {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/login', (Route<dynamic> route) => false);
-            }*/
+            userProvider!.cerrarSesion();
+            authProvider!.setAuthState(Status.NotLoggedIn);
           },
         ),
         // usually buttons at the bottom of the dialog

@@ -24,9 +24,9 @@ class PageComponent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Opacity(
-                        opacity: 0.5,
+                        opacity: 0.6,
                         child: Image.asset(
-                          'assets/images/logo.png',
+                          'assets/images/vur.png',
                           height: 100,
                           width: 100,
                         ),

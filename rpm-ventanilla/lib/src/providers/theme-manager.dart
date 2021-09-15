@@ -44,7 +44,7 @@ class ThemeNotifier with ChangeNotifier {
       scaffoldBackgroundColor: Colors.white,
       //primarySwatch: Colors.white,
       primaryColor: colorPrimary,
-      accentColor: colorSecond,
+      accentColor: Color(0xFFFCDF00).withOpacity(0.75),
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       accentIconTheme: IconThemeData(color: Colors.white),

@@ -1,11 +1,11 @@
 {
-    "name": "flutter_peliculas",
-    "short_name": "flutter_peliculas",
+    "name": "Registro Municipal de la Propiedad y Mercantil del Cantón de Playas",
+    "short_name": "Registro Municipal de la Propiedad y Mercantil del Cantón de Playas",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Registro Municipal de la Propiedad y Mercantil del Cantón de Playas",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

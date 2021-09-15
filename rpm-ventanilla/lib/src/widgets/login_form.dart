@@ -79,7 +79,7 @@ class LoginFormState extends State<LoginForm> {*/
                 }
               },
               style: TextStyle(
-                  color: Colors.white, fontSize: fontSizeTextFormField),
+                  color: Colors.black, fontSize: fontSizeTextFormField),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               decoration: InputDecoration(
@@ -122,7 +122,7 @@ class LoginFormState extends State<LoginForm> {*/
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   fontSize: fontSizeTextFormField,
-                  color: Colors.white,
+                  color: Colors.black,
                 )),
             SizedBox(height: heightSize! * spaceBetweenFieldAndButton),
             auth!.loggedInStatus == Status.Authenticating

@@ -20,7 +20,7 @@ BoxDecoration boxDecorationLogin = BoxDecoration(
     borderRadius: BorderRadius.circular(20),
     gradient: LinearGradient(
       colors: [
-        Color(0xFFFCDF00).withOpacity(0.75),
+        Color(0xFFFEF200).withOpacity(0.75),
         Color(0xFFF8821E).withOpacity(0.75),
         Color(0XFF70C047).withOpacity(0.75)
       ],
@@ -45,11 +45,11 @@ Widget playasBG(heightSize, widthSize) {
 BoxDecoration boxDecorationPlayasBG = BoxDecoration(
   image: DecorationImage(
       image: AssetImage(
-        "assets/images/vur.png",
+        "assets/images/logo.png",
       ),
-      scale: 1.5,
+      scale: 6,
       colorFilter:
-          ColorFilter.mode(Colors.white.withOpacity(0.9), BlendMode.dstATop),
+          ColorFilter.mode(Colors.white.withOpacity(0.5), BlendMode.dstATop),
       alignment: Alignment.topLeft),
 );
 
