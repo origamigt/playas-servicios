@@ -8,10 +8,10 @@
 		<version>2.3.6.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ec.gob.rploja.firmaec</groupId>
-	<artifactId>ec-gob-rploja-firma-ec</artifactId>
+	<groupId>ec.gob.firmaec</groupId>
+	<artifactId>ec-gob-firma-ec</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ec-gob-rploja-firma-ec</name>
+	<name>ec-gob-firma-ec</name>
 	<description>FirmaElectronica for Spring Boot</description>
 
 	<properties>
