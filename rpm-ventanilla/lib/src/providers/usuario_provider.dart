@@ -63,8 +63,8 @@ class UsuarioProvider extends ChangeNotifier implements ReassembleHandler {
   }
 
   Future<User?> findUser(String? usuario) async {
-    Map<String, dynamic> map =
-        await find('/api/usuario/identificacion/' + usuario!, true);
+    Map<String, dynamic> map = await find(
+        '/rpm-ventanilla/api/usuario/identificacion/' + usuario!, true);
     User? user = User().fromJson(map);
     return user;
   }

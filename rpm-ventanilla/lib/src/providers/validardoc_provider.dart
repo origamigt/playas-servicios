@@ -38,7 +38,7 @@ class ValidarDocProvider extends ChangeNotifier implements ReassembleHandler {
     doc.multipartFile = bytes;
 
     http.Response? response = await save(
-        '/rpm-ventanilla/api/document/documento/verificarArchivo',
+        '/rpm-ventanilla/api/documento/verificarArchivo',
         Archivo().toJson(doc),
         true);
 

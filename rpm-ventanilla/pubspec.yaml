@@ -11,7 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.2
   flutter_swiper_null_safety: ^1.0.2
   http: ^0.13.3
@@ -30,6 +31,7 @@ dependencies:
   crypto: ^3.0.1
   universal_platform: ^1.0.0+1
   lint: ^1.6.0
+  qr_code_scanner: ^0.5.2
 
 dev_dependencies:
   flutter_test:

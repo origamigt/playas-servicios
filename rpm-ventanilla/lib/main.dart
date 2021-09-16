@@ -123,6 +123,7 @@ class AppComponentState extends State<AppComponent> {
 
 import 'package:flutter/material.dart';
 import 'package:playas/src/providers/auth_provider.dart';
+import 'package:playas/src/providers/certificado_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
 import 'package:playas/src/providers/requisitos_provider.dart';
@@ -150,6 +151,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => ValidarDocProvider()),
           ChangeNotifierProvider(create: (_) => PagoProvider()),
           ChangeNotifierProvider(create: (_) => RequisitosProvider()),
+          ChangeNotifierProvider(create: (_) => CertificadoProvider()),
         ],
         child: Builder(
           builder: (context) {

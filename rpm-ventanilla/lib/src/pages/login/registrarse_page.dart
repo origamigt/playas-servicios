@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:playas/src/pages/login/mobile_mode.dart';
 
 import 'desktop_mode.dart';
-import 'mobile_mode.dart';
 
 class RegistrarsePage extends StatelessWidget {
   static const String route = '/registrarse';
@@ -12,11 +12,11 @@ class RegistrarsePage extends StatelessWidget {
       builder: (context, constraints) {
         if (constraints.maxWidth <= 1024) {
           return MobileMode(
-            tipo: 'REGISTRO',
+            tipo: 'REGISTRARSE',
           );
         } else {
           return DesktopMode(
-            tipo: 'REGISTRO',
+            tipo: 'REGISTRARSE',
           );
         }
       },

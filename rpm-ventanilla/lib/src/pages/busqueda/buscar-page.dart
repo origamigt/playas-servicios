@@ -3,14 +3,15 @@ import 'package:intl/intl.dart';
 import 'package:playas/src/models/datos-proforma.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 
-class SearchPage extends StatefulWidget {
-  SearchPage();
+class BuscarPage extends StatefulWidget {
+  static const String route = '/consultarTramite';
+  BuscarPage();
 
   @override
-  State<StatefulWidget> createState() => _SearchPageState();
+  State<StatefulWidget> createState() => _BuscarPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _BuscarPageState extends State<BuscarPage> {
   DatosProforma? _datosProforma;
   static final formatter = DateFormat('dd-MM-yyyy');
   String header = '', status = '', dateInit = '', dateFinish = '';
@@ -109,24 +110,6 @@ class _SearchPageState extends State<SearchPage> {
                         ))
                   ],
                 )),
-            /* ButtonTheme.bar(
-              // make buttons use the appropriate styles for cards
-              child: ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    child: const Text('VER'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                InfoPage(datosProforma: _datosProforma)),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),*/
           ],
         ),
       ),

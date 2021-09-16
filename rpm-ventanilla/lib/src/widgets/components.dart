@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/cerrar_sesion_page.dart';
@@ -53,10 +52,10 @@ BoxDecoration boxDecorationPlayasBG = BoxDecoration(
       alignment: Alignment.topLeft),
 );
 
-Widget menuCard(BuildContext context, Menu menu) {
+Widget menuCard(BuildContext context, Menu menu, bool isWeb) {
   return Container(
-    margin: EdgeInsets.only(top: 5, right: 20, left: 5, bottom: 15),
-    width: 120,
+    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    width: 122,
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -203,3 +202,6 @@ Widget tituloPagina(BuildContext? context, String txt) {
         style: Theme.of(context!).textTheme.headline1,
       ));
 }
+
+RoundedRectangleBorder borderDialog = RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(20.0)));

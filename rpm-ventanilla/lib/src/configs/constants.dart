@@ -7,27 +7,43 @@ import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/ajustes_page.dart';
 import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
-import 'package:playas/src/pages/tramites/mistramites_page.dart';
-import 'package:playas/src/pages/tramites/tramites_page.dart';
-import 'package:playas/src/pages/validar/scan-qr-page.dart';
+import 'package:playas/src/pages/busqueda/buscar-page.dart';
+import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
+import 'package:playas/src/pages/ciudadania/mistramites_page.dart';
+import 'package:playas/src/pages/nosotros/nosotros_page.dart';
+import 'package:playas/src/pages/verificar/certificadomov_page.dart';
+import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
 
-List<Menu> menus = [
-  Menu('Mis trámites', MisTramitesPage.route, Colors.lightBlue,
-      Icons.filter_list),
-  Menu('Servicios en linea', TramitesPage.route, Colors.purple, Icons.search),
-  Menu('Validar documentos', VerificarDocPage.route, Colors.red, Icons.qr_code),
-  Menu('Carpeta ciudadana', ScanQrpage().route, Colors.tealAccent,
-      Icons.qr_code),
-  Menu('Ajustes', AjustesPage.route, Colors.blueGrey, Icons.settings),
-];
+List<Menu> menus(isWeb) {
+  return [
+    Menu('Consultar trámites', BuscarPage.route, Colors.lightBlueAccent,
+        Icons.search),
+    Menu(
+        'Validar\ncertificado',
+        isWeb ? CertificadoWebPage.route : CertificadoMovPage.route,
+        Colors.red,
+        Icons.qr_code),
+    Menu('Validar\ndocumentos', VerificarDocPage.route, Colors.purple,
+        Icons.qr_code_scanner),
+    Menu('Carpeta\nciudadana', CarpetaCiudadanaPage.route, Colors.tealAccent,
+        Icons.qr_code),
+    Menu('Ajustes', AjustesPage.route, Colors.blueGrey, Icons.settings),
+  ];
+}
 
 List<Menu> menusConfiguraciones = [
   Menu('Perfil', PerfilPage.route, Colors.lightBlue, Icons.person),
   Menu('Cambiar contraseña', ContraseniaPage.route, Colors.purple,
       Icons.password),
-  Menu('Sobre nosotros', ScanQrpage().route, Colors.red, Icons.food_bank),
+  Menu('Sobre nosotros', NosotrosPage.route, Colors.red, Icons.food_bank),
   Menu('Cerrar sesión', '/cerrarSesion', Colors.tealAccent, Icons.logout),
+];
+
+List<Menu> menusCarpeta = [
+  Menu('Mis trámites', MisTramitesPage.route, Colors.lightBlue,
+      Icons.filter_list),
+  Menu('Mis documentos', MisTramitesPage.route, Colors.grey, Icons.filter_list),
 ];
 
 List<Data> motivosSolicitud = [
@@ -48,6 +64,11 @@ List<Data> motivosSolicitud = [
   Data().initData(114, 'Permiso de construcción'),
   Data().initData(115, 'Informe de nueva linderación'),
   Data().initData(116, 'Otros'),
+];
+
+List<Data> tiposBusqueda = [
+  Data().initData(1, 'Certificados'),
+  Data().initData(2, 'Inscripciones'),
 ];
 
 String dominio = 'http://localhost:9090';

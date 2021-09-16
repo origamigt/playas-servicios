@@ -47,6 +47,13 @@ class ContraseniaPageState extends State<ContraseniaPage> {
       var nombres = persona.nombres! + ' ' + persona.apellidos!;
       datosPersonaCtrl.text = nombres;
     }
+    userProvider!.initialize().then((value) {
+      usuario = value;
+      PubPersona persona = usuario!.persona!;
+      identificacionCtrl.text = persona.cedRuc!;
+      var nombres = persona.nombres! + ' ' + persona.apellidos!;
+      datosPersonaCtrl.text = nombres;
+    });
     return Form(
         key: _formKey,
         child: PageComponent(

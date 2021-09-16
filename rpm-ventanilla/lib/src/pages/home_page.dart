@@ -6,8 +6,10 @@ import 'package:playas/src/widgets/acto_widget.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/menu-card.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class HomePage extends StatelessWidget {
+  bool isWeb = UniversalPlatform.isWeb;
   static const String route = '/inicio';
 
   final _actosProvider = ActosProvider();
@@ -54,7 +56,7 @@ class HomePage extends StatelessWidget {
             height: 15,
           ),
           MenuCard(
-            menus: menus,
+            menus: menus(isWeb),
           ),
         ],
       ),

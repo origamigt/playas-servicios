@@ -32,7 +32,7 @@ class RequisitosProvider extends ChangeNotifier implements ReassembleHandler {
 
     http.Response? response =
         await findAllResponse('/rpm-ventanilla/api/requisitos/$idActo', false);
-    print(response!.body);
+
     if (response != null && response.statusCode == 200) {
       List<dynamic> collection = json.decode(utf8.decode(response.bodyBytes));
 

@@ -21,6 +21,7 @@ class NoposeerBienPage extends StatefulWidget {
   static const String route = '/noposeerbien';
 
   @override
+  @override
   NoposeerBienState createState() => NoposeerBienState();
 }
 
@@ -515,7 +516,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       print(response.toString());
       if (response['status']) {
         PubPersona persona = response['persona'];
-        print(persona.cedRuc);
         if (tipo == 'SOLICITANTE') {
           identificacionCtrl.text = persona.cedRuc!;
           datosPersonaCtrl.text =
@@ -534,22 +534,22 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   doProcesarPago() {
     final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
         .procesarPago(
-        motivo,
-        obsCtrl.text,
-        identificacionCtrl.text,
-        datosPersonaCtrl.text,
-        direccionCtrl.text,
-        telefonoCtrl.text,
-        correoCtrl.text,
-        estadoCivilSol,
-        identificacionFactCtrl.text,
-        datosPersonaFactCtrl.text,
-        direccionFactCtrl.text,
-        telefonoFactCtrl.text,
-        correoFactCtrl.text,
-        acto,
-        usuario!.id!,
-        cantidadCtrl.text);
+            motivo,
+            obsCtrl.text,
+            identificacionCtrl.text,
+            datosPersonaCtrl.text,
+            direccionCtrl.text,
+            telefonoCtrl.text,
+            correoCtrl.text,
+            estadoCivilSol,
+            identificacionFactCtrl.text,
+            datosPersonaFactCtrl.text,
+            direccionFactCtrl.text,
+            telefonoFactCtrl.text,
+            correoFactCtrl.text,
+            acto,
+            usuario!.id!,
+            cantidadCtrl.text);
 
     successfulMessage.then((response) async {
       print(response.toString());
@@ -561,8 +561,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
                 pageBuilder: (BuildContext context, _, __) => PagoPage(
-                  urlIframe: rest.linkPago,
-                )));
+                      urlIframe: rest.linkPago,
+                    )));
 
             if (verificado != null) {
               mensajeError(
@@ -579,6 +579,4 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       }
     });
   }
-
-
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playas/src/models/persona.dart';
+import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/persona_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
@@ -32,16 +33,17 @@ class PerfilPageState extends State<PerfilPage> {
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     this.personaProvider = personaProvider;
-    if (userProvider != null && userProvider!.user != null) {
-      PubPersona persona = userProvider!.user!.persona!;
-      identificacion = persona.cedRuc;
-      identificacionCtrl.text = identificacion!;
+    userProvider!.initialize().then((value) {
+      User? usuario = value;
+      PubPersona persona = usuario!.persona!;
+      identificacionCtrl.text = persona.cedRuc!;
       var nombres = persona.nombres! + ' ' + persona.apellidos!;
       datosPersonaCtrl.text = nombres;
       direccionCtrl.text = persona.direccion!;
       telefonoCtrl.text = persona.telefono1!;
       correoCtrl.text = persona.correo1!;
-    }
+    });
+
     return Form(
         key: _formKey,
         child: PageComponent(

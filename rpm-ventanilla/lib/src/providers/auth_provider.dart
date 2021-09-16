@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:playas/src/configs/rpm_preferences.dart';
+import 'package:playas/src/models/codigo.dart';
 import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/models/usuario_registro.dart';
@@ -12,23 +13,37 @@ import 'package:playas/src/providers/ws.dart';
 enum Status {
   Unknown,
   NotLoggedIn,
-  NotRegistered,
   LoggedIn,
-  Registered,
   Authenticating,
-  Registering,
   LoggedOut,
-  SmsEnviando,
-  SmsEnviado,
+}
+
+enum StatusRegistro {
+  Unknown,
+  NotRegistered,
+  Registered,
+  Registering,
+  CodigoEnviando,
+  CodigoEnviado,
+  CodigoNoEnviado,
+  ValidarCodCargando,
+  ValidarCodOk,
+  ValidarCodNoOk,
 }
 
 class AuthProvider with ChangeNotifier {
   Status _loggedInStatus = Status.Unknown;
-  Status _registeredInStatus = Status.NotRegistered;
+  StatusRegistro _registeredInStatus = StatusRegistro.Unknown;
+  //Status _codigoStatus = Status.CodigoUnknown;
+  //Status _validarCodigoStatus = Status.ValidarCodUnknown;
 
   Status get loggedInStatus => _loggedInStatus;
 
-  Status get registeredInStatus => _registeredInStatus;
+  StatusRegistro get registeredInStatus => _registeredInStatus;
+
+  //Status get codigoStatus => _codigoStatus;
+
+  //Status get validarCodigoStatus => _validarCodigoStatus;
 
   void setAuthState(Status authState) {
     _loggedInStatus = authState;
@@ -98,7 +113,7 @@ class AuthProvider with ChangeNotifier {
       'fechaExpedicion': fechaExpedicion
     };
 
-    _registeredInStatus = Status.Registering;
+    _registeredInStatus = StatusRegistro.Registering;
     notifyListeners();
 
     http.Response response = await http.post(
@@ -110,16 +125,17 @@ class AuthProvider with ChangeNotifier {
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
 
     if (response.statusCode == 200) {
-      _registeredInStatus = Status.Registered;
+      _registeredInStatus = StatusRegistro.NotRegistered;
       notifyListeners();
       UsuarioRegistro usuarioRegistro = UsuarioRegistro().fromJson(map);
       result = {
         'status': true,
-        'message': 'Datos encontrados',
-        'data': usuarioRegistro.nombresCompletos
+        'message': 'Usuario no registrado',
+        'data': usuarioRegistro
       };
     } else {
-      _registeredInStatus = Status.NotRegistered;
+      _registeredInStatus = StatusRegistro.Unknown;
+      notifyListeners();
       Data data = Data().fromJson(map);
       result = {
         'status': false,
@@ -130,34 +146,91 @@ class AuthProvider with ChangeNotifier {
     return result;
   }
 
-  Future<Map<String, dynamic>> enviarCodigoVerificacion(
-      String identificacion, String celular) async {
+  Future<Map<String, dynamic>> enviarCodigoVerificacion(String identificacion,
+      String persona, String correo, String celular) async {
     var result;
 
-    final Map<String, dynamic> registrationData = {
-      'identificacion': identificacion,
-      'celular': celular
-    };
+    CodigoVerificacion cv = CodigoVerificacion();
+    cv.validado = false;
+    cv.correo = correo;
+    cv.persona = persona;
+    cv.identificacion = identificacion;
 
-    _registeredInStatus = Status.SmsEnviando;
+    Map<String, dynamic> verificacion = CodigoVerificacion().json(cv);
+
+    _registeredInStatus = StatusRegistro.CodigoEnviando;
     notifyListeners();
 
     http.Response response = await http.post(
-        Uri.http(SERVER_IP, '/rpm-ventanilla/api/usuario/consultar'),
-        body: json.encode(registrationData),
+        Uri.http(SERVER_IP, '/rpm-ventanilla/api/correo/generarCodigoRegistro'),
+        body: json.encode(verificacion),
         headers: headerNoAuth);
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
 
     if (response.statusCode == 200) {
-      UsuarioRegistro usuarioRegistro = UsuarioRegistro().fromJson(map);
-      result = {
-        'status': true,
-        'message': 'Datos encontrados',
-        'data': usuarioRegistro.nombresCompletos
-      };
+      _registeredInStatus = StatusRegistro.CodigoEnviado;
+      notifyListeners();
+      CodigoVerificacion data = CodigoVerificacion().fromJson(map);
+      result = {'status': true, 'message': 'Datos encontrados', 'data': data};
     } else {
+      _registeredInStatus = StatusRegistro.CodigoNoEnviado;
+      notifyListeners();
+      Data data = Data().fromJson(map);
+      result = {
+        'status': false,
+        'message': data.data,
+      };
+    }
+
+    return result;
+  }
+
+  Future<Map<String, dynamic>> validarCodigoRegistroUsuario(
+      String correo,
+      String codigo,
+      String celular,
+      String identificacion,
+      String direccion,
+      String clave,
+      int personaid) async {
+    var result;
+
+    UsuarioRegistro ur = UsuarioRegistro();
+    ur.personaId = personaid;
+    ur.identificacion = identificacion;
+    ur.direccion = direccion;
+    ur.correo = correo;
+    ur.celular = celular;
+    ur.clave = clave;
+
+    CodigoVerificacion cv = CodigoVerificacion();
+    cv.correo = correo;
+    cv.codigo = codigo;
+    cv.usuarioRegistro = ur;
+
+    Map<String, dynamic> verificacion = CodigoVerificacion().jsonRegistro(cv);
+
+    _registeredInStatus = StatusRegistro.ValidarCodCargando;
+    notifyListeners();
+
+    http.Response response = await http.post(
+        Uri.http(SERVER_IP, '/rpm-ventanilla/api/correo/validarCodigoRegistro'),
+        body: json.encode(verificacion),
+        headers: headerNoAuth);
+
+    Map<String, dynamic> map =
+        json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+
+    if (response.statusCode == 200) {
+      _registeredInStatus = StatusRegistro.ValidarCodOk;
+      notifyListeners();
+      CodigoVerificacion data = CodigoVerificacion().fromJson(map);
+      result = {'status': true, 'message': 'Datos encontrados', 'data': data};
+    } else {
+      _registeredInStatus = StatusRegistro.ValidarCodNoOk;
+      notifyListeners();
       Data data = Data().fromJson(map);
       result = {
         'status': false,

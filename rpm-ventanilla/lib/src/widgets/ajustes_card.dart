@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:responsive_property/responsive_property.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class AjustesCard extends StatelessWidget {
+  bool isWeb = UniversalPlatform.isWeb;
   final List<Menu>? menus;
 
   AjustesCard({@required this.menus});
@@ -17,7 +19,7 @@ class AjustesCard extends StatelessWidget {
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: Responsive({
-              mobileScreenScope: 2,
+              mobileScreenScope: 1,
               tabletScreenScope: 3,
               desktopScreenScope: 3
             }).resolve(context)!,
@@ -32,7 +34,7 @@ class AjustesCard extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[menuCard(context, menu)],
+              children: <Widget>[menuCard(context, menu, isWeb)],
             );
           },
         ));

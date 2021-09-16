@@ -1,11 +1,12 @@
-class ImagesCertificados {
-  String urlImage;
+class ImagenesCertificados {
+  String? urlImage;
 
-  ImagesCertificados.fromJson(Map json)
-      : urlImage = json['urlImage'];
+  ImagenesCertificados fromJson(Map<String, dynamic> json) {
+    return ImagenesCertificados()
+      ..urlImage = json['urlImage'] as String? ?? null;
+  }
 
   Map toJson() {
     return {'urlImage': urlImage};
   }
-
 }

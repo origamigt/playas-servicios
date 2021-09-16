@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/widgets/components.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class MenuCard extends StatelessWidget {
+  bool isWeb = UniversalPlatform.isWeb;
   final List<Menu>? menus;
 
   MenuCard({@required this.menus});
@@ -17,7 +19,7 @@ class MenuCard extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: menus!.length,
-        itemBuilder: (context, i) => menuCard(context, menus![i]),
+        itemBuilder: (context, i) => menuCard(context, menus![i], isWeb),
       ),
     );
   }
