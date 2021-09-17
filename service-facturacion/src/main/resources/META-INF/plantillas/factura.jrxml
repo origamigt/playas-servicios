@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a90b5cc6-9a35-48d7-a2d0-ef67a99b13b8">
 	<property name="ireport.zoom" value="1.6105100000000052"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -165,9 +165,9 @@
 				<reportElement mode="Transparent" x="0" y="152" width="276" height="139" uuid="5d4941fc-b1f2-4942-acbf-dde893953955"/>
 			</rectangle>
 			<staticText>
-				<reportElement style="negrita" x="5" y="238" width="177" height="14" uuid="377a8104-9c05-4ecd-a343-ac9ed26f2390"/>
+				<reportElement style="negrita" x="4" y="231" width="177" height="14" uuid="377a8104-9c05-4ecd-a343-ac9ed26f2390"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<text><![CDATA[CONTRIBUYENTE ESPECIAL NRO.:]]></text>
 			</staticText>
@@ -208,23 +208,16 @@
 				<textFieldExpression><![CDATA[$P{CLAVE_ACC}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement style="negrita" x="3" y="161" width="268" height="32" uuid="a47536ca-59fb-4ddd-992a-023bc9134958"/>
-				<textElement>
+				<reportElement style="negrita" x="3" y="156" width="268" height="32" uuid="a47536ca-59fb-4ddd-992a-023bc9134958"/>
+				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{RAZON_SOCIAL}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="3" y="199" width="268" height="32" uuid="75b51905-f406-45f9-8081-f8f96a76f164"/>
-				<textElement verticalAlignment="Top">
-					<font size="9" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Dirección Matriz: " + $P{DIR_MATRIZ}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="182" y="238" width="51" height="14" uuid="0d053631-1d67-4ec5-90b0-8b05cd35900c"/>
+				<reportElement x="182" y="231" width="51" height="14" uuid="0d053631-1d67-4ec5-90b0-8b05cd35900c"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{LLEVA_CONTABILIDAD}]]></textFieldExpression>
 			</textField>
@@ -302,25 +295,74 @@
 				<textFieldExpression><![CDATA[$P{AMBIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="negrita" x="5" y="252" width="177" height="14" uuid="b641e160-974f-4297-b4c3-f0d7a9e1988e"/>
+				<reportElement style="negrita" x="4" y="245" width="177" height="14" uuid="b641e160-974f-4297-b4c3-f0d7a9e1988e"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<text><![CDATA[OBLIGADO A LLEVAR CONTABILIDAD:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="182" y="252" width="51" height="14" uuid="9cbf801c-3b53-4e9b-925a-8353b8e0cef1"/>
+				<reportElement x="182" y="245" width="51" height="14" uuid="9cbf801c-3b53-4e9b-925a-8353b8e0cef1"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{LLEVA_CONTABILIDAD}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="negrita" x="5" y="265" width="177" height="14" uuid="1d71e1d6-a928-4a19-a09f-a48eb3a4366f"/>
+				<reportElement style="negrita" x="4" y="259" width="100" height="14" uuid="1d71e1d6-a928-4a19-a09f-a48eb3a4366f"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
+					<font size="7" isBold="false"/>
 				</textElement>
-				<text><![CDATA[AGENTE DE RETENCIÓN]]></text>
+				<text><![CDATA[AGENTE DE RETENCIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="273" width="269" height="14" uuid="e397f693-fe10-4d62-af59-ec5eae9ebf7d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nro. de Resolución NAC-DNCRAS20-00000001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="negrita" x="4" y="189" width="60" height="14" uuid="23abdbea-f634-44be-8c1a-8383b1a51307"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="negrita" x="4" y="203" width="60" height="14" uuid="9454a6ce-fea0-4c75-9a2c-e6bd64f11470"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[CORREO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="negrita" x="4" y="217" width="60" height="14" uuid="8db2a0e3-93c4-4944-ae1a-41d4637a9832"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[TELÉFONO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="189" width="207" height="14" uuid="c89ddcc4-4c28-4a06-b2a8-d18e2d17bce6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Av. 15 de Agosto. Km 1 vía al Morro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="203" width="207" height="14" uuid="346682dd-c283-4e37-b0e2-5be36c6a9855"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[info@rmpplayas.gob.ec]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="217" width="207" height="14" uuid="c61bdd46-86cf-477b-a363-1e6c2bb1cd0f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[04-370-5660]]></text>
 			</staticText>
 		</band>
 	</title>
