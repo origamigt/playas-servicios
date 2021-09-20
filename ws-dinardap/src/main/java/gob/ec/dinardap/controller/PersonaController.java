@@ -1,17 +1,22 @@
-package com.rp.catastro.catastro.controller;
-import com.rp.catastro.catastro.SisVars;
-import com.rp.catastro.catastro.dinardap.ServicioDINARDAP;
-import com.rp.catastro.catastro.entities.PubPersona;
-import com.rp.catastro.catastro.repository.PubPersonaRepository;
+package gob.ec.dinardap.controller;
+import gob.ec.dinardap.dinardap.ServicioDINARDAP;
+import gob.ec.dinardap.entities.PubPersona;
+import gob.ec.dinardap.repository.PubPersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/persona/")
-public class PubPersonaController {
-
+public class PersonaController {
+    @Value("${app.paqueteSri}")
+    private String paqueteSri;
+    @Value("${app.paqueteDemografico}")
+    private String paqueteDemografico;
+    @Value("${app.parametroDemograficoSri}")
+    private String parametroDemograficoSri;
     @Autowired
     private PubPersonaRepository pubPersonaRepository;
     @Autowired
@@ -60,13 +65,13 @@ public class PubPersonaController {
             }
             switch (codigoPaquete) {
                 case "C":
-                    codigo = SisVars.paqueteDemografico;
-                    parametro = SisVars.parametroDemograficoSri;
+                    codigo = paqueteDemografico;
+                    parametro = parametroDemograficoSri;
                     break;
                 case "R":
                 case "J":
-                    codigo = SisVars.paqueteSri;
-                    parametro = SisVars.parametroDemograficoSri;
+                    codigo = paqueteSri;
+                    parametro = parametroDemograficoSri;
                     break;
                 default:
                     acept = Boolean.FALSE;
@@ -74,8 +79,7 @@ public class PubPersonaController {
 
             }
             if (acept) {
-                PubPersona pubPersona = servicioDINARDAP.datosDINARDAP(identificacion, codigo, parametro,
-                        SisVars.urlInterOperatividad, SisVars.interOperatividadUser, SisVars.interOperatividadPass);
+                PubPersona pubPersona = servicioDINARDAP.datosDINARDAP(identificacion, codigo, parametro);
                 pubPersona.setTipoDocumento(codigoPaquete);
                 return new ResponseEntity<>(pubPersona, HttpStatus.OK);
             } else {

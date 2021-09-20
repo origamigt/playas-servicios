@@ -1,8 +1,7 @@
-package com.rp.catastro.catastro.repository;
+package gob.ec.dinardap.repository;
 
 
-import com.rp.catastro.catastro.entities.AclUser;
-import org.springframework.data.jpa.repository.Query;
+import gob.ec.dinardap.entities.AclUser;
 import org.springframework.data.repository.CrudRepository;
 
 public interface AclUserRepository extends CrudRepository<AclUser, Integer> {

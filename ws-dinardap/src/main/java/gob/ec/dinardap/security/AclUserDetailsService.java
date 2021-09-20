@@ -1,7 +1,7 @@
-package com.rp.catastro.catastro.security;
+package gob.ec.dinardap.security;
 
-import com.rp.catastro.catastro.entities.AclUser;
-import com.rp.catastro.catastro.repository.AclUserRepository;
+import gob.ec.dinardap.entities.AclUser;
+import gob.ec.dinardap.repository.AclUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

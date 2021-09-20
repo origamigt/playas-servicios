@@ -1,4 +1,4 @@
-package com.rp.catastro.catastro.security;
+package gob.ec.dinardap.security;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;

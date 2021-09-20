@@ -1,4 +1,4 @@
-package com.rp.catastro.catastro.entities;
+package gob.ec.dinardap.entities;
 
 import java.io.Serializable;
 import java.util.Date;

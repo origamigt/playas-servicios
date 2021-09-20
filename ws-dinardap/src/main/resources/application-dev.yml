@@ -3,14 +3,14 @@ spring:
     name: RP-DINARDAP-SERVICES
 
   datasource:
-    url: jdbc:postgresql://192.168.200.18:5432/sgr
-    username: rploja
-    password: XL9kDtKQtxyI25awCxnW
+    url: jdbc:postgresql://192.168.100.3:5432/rpm_playas
+    username: sisapp
+    password: sisapp98
     platform: postgres
     hikari:
       maximum-pool-size: 5
       minimum-idle: 5
-      pool-name: CatastroPoolWS
+      pool-name: DinardapPoolWS
       max-lifetime: 1800
 
 
@@ -19,7 +19,6 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        default_schema: catastro
         dialect: org.hibernate.dialect.PostgreSQL95Dialect
         temp:
           use_jdbc_metadata_defaults: false 

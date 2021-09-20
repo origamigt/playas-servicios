@@ -1,4 +1,4 @@
-package com.rp.catastro.catastro;
+package gob.ec.dinardap;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

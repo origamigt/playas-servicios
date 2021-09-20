@@ -1,8 +1,8 @@
-package com.rp.catastro.catastro.controller;
+package gob.ec.dinardap.controller;
 
-import com.rp.catastro.catastro.entities.AclUser;
-import com.rp.catastro.catastro.repository.AclUserRepository;
-import com.rp.catastro.catastro.security.MD5PasswordEncoder;
+import gob.ec.dinardap.entities.AclUser;
+import gob.ec.dinardap.repository.AclUserRepository;
+import gob.ec.dinardap.security.MD5PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

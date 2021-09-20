@@ -5,5 +5,13 @@ spring:
   profiles:
     active: prod
   application:
-    name: RPL-CATASTRO-SERVICES 
+    name: RPL-DINARDAP-SERVICES
  
+
+app:
+  urlInterOperatividad: https://interoperabilidad.dinardap.gob.ec/interoperador-v2?wsdl
+  interOperatividadUser: RpcLInter19
+  interOperatividadPass: i1-AYEYSblGg-T
+  paqueteDemografico: 2416
+  paqueteSri: 2419
+  parametroDemograficoSri: identificacion

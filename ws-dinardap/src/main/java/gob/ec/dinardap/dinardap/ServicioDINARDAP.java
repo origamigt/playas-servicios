@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rp.catastro.catastro.dinardap;
+package gob.ec.dinardap.dinardap;
 
-import com.rp.catastro.catastro.SisVars;
-import com.rp.catastro.catastro.entities.PubPersona;
+import gob.ec.dinardap.entities.PubPersona;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,20 +33,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServicioDINARDAP {
 
+    @Value("${app.paqueteSri}")
+    private String paqueteSri;
+    @Value("${app.paqueteDemografico}")
+    private String paqueteDemografico;
+    @Value("${app.urlInterOperatividad}")
+    private String urlInterOperatividad;
+    @Value("${app.userInterOperatividad}")
+    private String userInterOperatividad;
+    @Value("${app.passInterOperatividad}")
+    private String passInterOperatividad;
+    
     /**
      * @param identificacion
      * @param codigoPaquete
      * @param parametro
-     * @param urlInterOperatividad
-     * @param userInterOperatividad
-     * @param passInterOperatividad
      * @return
      */
     public PubPersona datosDINARDAP(String identificacion,
-            String codigoPaquete, String parametro,
-            String urlInterOperatividad,
-            String userInterOperatividad,
-            String passInterOperatividad) {
+            String codigoPaquete, String parametro) {
         PubPersona persona = null;
         try {
 
@@ -78,7 +83,7 @@ public class ServicioDINARDAP {
             parametros.getParametro().add(paramCodigoPaquete);
             parametros.getParametro().add(paramIdent);
 
-            if (codigoPaquete.equals(SisVars.paqueteSri)) {
+            if (codigoPaquete.equals(paqueteSri)) {
                 System.out.println("holi ");
                 Parametro fuenteDatos = new Parametro();
                 fuenteDatos.setNombre("fuenteDatos");
@@ -107,7 +112,7 @@ public class ServicioDINARDAP {
                                 persona.setCedRuc(columna.getValor());
                                 break;
                             case "nombre":
-                                if (codigoPaquete.equals(SisVars.paqueteDemografico)) {
+                                if (codigoPaquete.equals(paqueteDemografico)) {
                                     datos = getDatos(columna.getValor());
                                     persona.setNombres(datos.get("nombre"));
                                     persona.setApellidos(datos.get("apellido"));
@@ -140,22 +145,22 @@ public class ServicioDINARDAP {
                                 }
                                 break;
                             case "fechaExpedicion":
-                                if (codigoPaquete.equals(SisVars.paqueteDemografico)) {
+                                if (codigoPaquete.equals(paqueteDemografico)) {
                                     persona.setFechaExpedicionLong(new SimpleDateFormat("dd/MM/yyyy").parse(columna.getValor()).getTime());
                                 }
                                 break;
                             case "fechaInicioActividades":
-                                if (codigoPaquete.equals(SisVars.paqueteSri)) {
+                                if (codigoPaquete.equals(paqueteSri)) {
                                     persona.setFechaExpedicionLong(new SimpleDateFormat("yyyy-MM-dd").parse(columna.getValor()).getTime());
                                 }
                                 break;
                             case "condicionCiudadano":
-                                if (codigoPaquete.equals(SisVars.paqueteDemografico)) {
+                                if (codigoPaquete.equals(paqueteDemografico)) {
                                     persona.setCondicionCiudadano(columna.getValor());
                                 }
                                 break;
                             case "fechaDefuncion":
-                                if (codigoPaquete.equals(SisVars.paqueteDemografico)) {
+                                if (codigoPaquete.equals(paqueteDemografico)) {
                                     persona.setFechaDefuncion(columna.getValor());
                                 }
                                 break;

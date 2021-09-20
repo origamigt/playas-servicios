@@ -1,6 +1,6 @@
-package com.rp.catastro.catastro;
+package gob.ec.dinardap;
 
-import com.rp.catastro.catastro.security.MD5PasswordEncoder;
+import gob.ec.dinardap.security.MD5PasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
