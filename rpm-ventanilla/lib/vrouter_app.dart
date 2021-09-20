@@ -68,7 +68,6 @@ class _VRouterAppState extends State<VRouterApp> {
     //final viewsState = watch(viewsChangeNotifier);
     return Consumer<AuthProvider>(builder: (context, authProvider, child) {
       if (authProvider.loggedInStatus == Status.Unknown) {
-        print('Unknown');
         return Container(
           color: Colors.white,
           child: Center(

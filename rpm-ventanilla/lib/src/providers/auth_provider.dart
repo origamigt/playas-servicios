@@ -41,10 +41,6 @@ class AuthProvider with ChangeNotifier {
 
   StatusRegistro get registeredInStatus => _registeredInStatus;
 
-  //Status get codigoStatus => _codigoStatus;
-
-  //Status get validarCodigoStatus => _validarCodigoStatus;
-
   void setAuthState(Status authState) {
     _loggedInStatus = authState;
     notifyListeners();
@@ -105,7 +101,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> buscarUsuario(
-      String identificacion, String fechaExpedicion) async {
+      String identificacion, String fechaExpedicion, bool tipo) async {
     var result;
 
     final Map<String, dynamic> registrationData = {
@@ -217,6 +213,45 @@ class AuthProvider with ChangeNotifier {
 
     http.Response response = await http.post(
         Uri.http(SERVER_IP, '/rpm-ventanilla/api/correo/validarCodigoRegistro'),
+        body: json.encode(verificacion),
+        headers: headerNoAuth);
+
+    Map<String, dynamic> map =
+        json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+
+    if (response.statusCode == 200) {
+      _registeredInStatus = StatusRegistro.ValidarCodOk;
+      notifyListeners();
+      CodigoVerificacion data = CodigoVerificacion().fromJson(map);
+      result = {'status': true, 'message': 'Datos encontrados', 'data': data};
+    } else {
+      _registeredInStatus = StatusRegistro.ValidarCodNoOk;
+      notifyListeners();
+      Data data = Data().fromJson(map);
+      result = {
+        'status': false,
+        'message': data.data,
+      };
+    }
+
+    return result;
+  }
+
+  Future<Map<String, dynamic>> validarCodigoRecuperacion(
+      String correo, String codigo, String identificacion) async {
+    var result;
+
+    CodigoVerificacion cv = CodigoVerificacion();
+    cv.correo = correo;
+    cv.codigo = codigo;
+
+    Map<String, dynamic> verificacion = CodigoVerificacion().jsonRegistro(cv);
+
+    _registeredInStatus = StatusRegistro.ValidarCodCargando;
+    notifyListeners();
+
+    http.Response response = await http.post(
+        Uri.http(SERVER_IP, '/rpm-ventanilla/api/correo/validarCodigo'),
         body: json.encode(verificacion),
         headers: headerNoAuth);
 

@@ -45,7 +45,7 @@ class LoginFormState extends State<LoginForm> {*/
   final _formKey = GlobalKey<FormState>();
   BuildContext? context;
   AuthProvider? auth;
-  String? _username = '0953255957', _password = '123';
+  String? _username, _password;
   double? widthSize;
 
   double? heightSize;

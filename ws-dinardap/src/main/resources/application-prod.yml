@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: RPL-CATASTRO-SERVICES 
+
+  datasource:
+    url: jdbc:postgresql://192.168.16.212:5432/rpm_playas
+    username: sisapp
+    password: sisapp98
+    platform: postgres
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 5
+      pool-name: DinardapPoolWS
+      max-lifetime: 1800
+
+
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        temp:
+          use_jdbc_metadata_defaults: false
+  #main:
+   # allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  #file: C:\servers_files\temp\ventanillaLog.log 
+  file: /opt/ws-api/catastroLog.log 

@@ -44,8 +44,7 @@ class _MobileModeState extends State<MobileMode> {*/
       return RegistrarseForm(0.007, 0.04, widthSize! * 0.04, 0.06, 0.04, 0.07,
           widthSize! * 0.09, 0.05, 0.032, 0.04, 0.032);
     }
-    if (tipo == 'ENVIO_MENSAJE') {}
-    if (tipo == 'CLAVE') {}
+    if (tipo == 'RECUPERAR') {}
     return Container();
   }
 }

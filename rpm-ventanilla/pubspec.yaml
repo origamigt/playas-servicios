@@ -25,7 +25,7 @@ dependencies:
   flutter_custom_clippers: ^2.0.0
   responsive_property: ^0.0.6
   top_snackbar_flutter: ^1.0.0
-  vrouter: ^1.2.0+11
+  vrouter: ^1.2.0+12
   file_picker: ^4.0.0
   webview_flutter: ^2.0.12
   crypto: ^3.0.1

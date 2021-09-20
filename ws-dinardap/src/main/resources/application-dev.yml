@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: RP-DINARDAP-SERVICES
+
+  datasource:
+    url: jdbc:postgresql://192.168.200.18:5432/sgr
+    username: rploja
+    password: XL9kDtKQtxyI25awCxnW
+    platform: postgres
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 5
+      pool-name: CatastroPoolWS
+      max-lifetime: 1800
+
+
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: catastro
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        temp:
+          use_jdbc_metadata_defaults: false 
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+ 
+
+logging:
+   file: C:\Users\EDWIN\OneDrive\Documentos\Proyectos\Proyecto Registro\logs\ventanillaLog.log
+   
+    

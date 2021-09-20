@@ -5,13 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:playas/src/models/codigo.dart';
 import 'package:playas/src/models/usuario_registro.dart';
-import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:provider/provider.dart';
-import 'package:vrouter/vrouter.dart';
 
-class RegistrarseForm extends StatefulWidget {
+class RecuperarForm extends StatefulWidget {
   final paddingTopForm,
       fontSizeTextField,
       fontSizeTextFormField,
@@ -24,7 +22,7 @@ class RegistrarseForm extends StatefulWidget {
       fontSizeSnackBar,
       errorFormMessage;
 
-  RegistrarseForm(
+  RecuperarForm(
       this.paddingTopForm,
       this.fontSizeTextField,
       this.fontSizeTextFormField,
@@ -41,7 +39,7 @@ class RegistrarseForm extends StatefulWidget {
   LoginFormState createState() => LoginFormState();
 }
 
-class LoginFormState extends State<RegistrarseForm> {
+class LoginFormState extends State<RecuperarForm> {
   final _formKey = GlobalKey<FormState>();
 
   bool obscureText = true;
@@ -49,7 +47,6 @@ class LoginFormState extends State<RegistrarseForm> {
   TextEditingController identificacionCtrl = TextEditingController();
   TextEditingController claveCtrl = TextEditingController();
   TextEditingController datosPersonaCtrl = TextEditingController();
-  TextEditingController direccionCtrl = TextEditingController();
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
   TextEditingController codigoCtrl = TextEditingController();
@@ -84,7 +81,7 @@ class LoginFormState extends State<RegistrarseForm> {
                         ? datosPersona()
                         : auth!.registeredInStatus ==
                                 StatusRegistro.CodigoEnviado
-                            ? datosVerificacion()
+                            ? nuevaContrasenia()
                             : Container())));
   }
 
@@ -226,30 +223,6 @@ class LoginFormState extends State<RegistrarseForm> {
         SizedBox(height: heightSize! * widget.spaceBetweenFields),
         Align(
             alignment: Alignment.centerLeft,
-            child: Text('Dirección',
-                style: GoogleFonts.sourceCodePro(
-                  fontSize: widthSize! * widget.fontSizeTextField,
-                ))),
-        TextFormField(
-          controller: direccionCtrl,
-          style: TextStyle(fontSize: widget.fontSizeTextFormField),
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-              color: Theme.of(context).primaryColor,
-              size: widthSize! * widget.iconFormSize,
-            ),
-            labelStyle: TextStyle(color: Colors.white),
-            errorStyle: TextStyle(
-                color: Colors.red,
-                fontSize: widthSize! * widget.errorFormMessage),
-          ),
-          textAlign: TextAlign.start,
-        ),
-        SizedBox(height: heightSize! * widget.spaceBetweenFields),
-        Align(
-            alignment: Alignment.centerLeft,
             child: Text('Celular',
                 style: GoogleFonts.sourceCodePro(
                   fontSize: widthSize! * widget.fontSizeTextField,
@@ -305,41 +278,39 @@ class LoginFormState extends State<RegistrarseForm> {
                   fontSize: widthSize! * widget.fontSizeTextField,
                 ))),
         SizedBox(height: heightSize! * widget.spaceBetweenFields),
-        auth!.registeredInStatus == StatusRegistro.CodigoEnviando
-            ? loading('Enviando código ... ')
-            : btnEnviarCodigo(),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Ingrese el código de verificación',
+                style: GoogleFonts.sourceCodePro(
+                  fontSize: widthSize! * widget.fontSizeTextField,
+                ))),
+        TextFormField(
+          controller: codigoCtrl,
+          style: TextStyle(fontSize: widget.fontSizeTextFormField),
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              Icons.confirmation_num_outlined,
+              color: Theme.of(context).primaryColor,
+              size: widthSize! * widget.iconFormSize,
+            ),
+          ),
+          textAlign: TextAlign.start,
+        ),
+        SizedBox(height: heightSize! * widget.spaceBetweenFieldAndButton),
+        auth!.registeredInStatus == StatusRegistro.ValidarCodCargando
+            ? loading('Validando código ... ')
+            : btnRegistrar(),
+        SizedBox(height: heightSize! * 0.01),
         SizedBox(height: heightSize! * widget.spaceBetweenFields),
       ],
     );
   }
 
-  Widget datosVerificacion() {
-    return Column(children: <Widget>[
-      Align(
-          alignment: Alignment.centerLeft,
-          child: Text('Ingrese el código de verificación',
-              style: GoogleFonts.sourceCodePro(
-                fontSize: widthSize! * widget.fontSizeTextField,
-              ))),
-      TextFormField(
-        controller: codigoCtrl,
-        style: TextStyle(fontSize: widget.fontSizeTextFormField),
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.confirmation_num_outlined,
-            color: Theme.of(context).primaryColor,
-            size: widthSize! * widget.iconFormSize,
-          ),
-        ),
-        textAlign: TextAlign.start,
-      ),
-      SizedBox(height: heightSize! * widget.spaceBetweenFieldAndButton),
-      auth!.registeredInStatus == StatusRegistro.ValidarCodCargando
-          ? loading('Registrando usuario ... ')
-          : btnRegistrar(),
-      SizedBox(height: heightSize! * 0.01),
-    ]);
+  Widget nuevaContrasenia() {
+    return Column(
+      children: [],
+    );
   }
 
   Widget btnContinuar() {
@@ -368,39 +339,6 @@ class LoginFormState extends State<RegistrarseForm> {
     );
   }
 
-  Widget btnEnviarCodigo() {
-    return Container(
-      height: 45,
-      width: MediaQuery.of(context).size.width,
-      child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all(Theme.of(context).primaryColor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            )),
-          ),
-          onPressed: () async {
-            if (direccionCtrl.text.isEmpty) {
-              mensajeError(
-                  context, 'Debe ingresar una dirección para continuar');
-              return;
-            }
-            if (correoCtrl.text.isEmpty) {
-              mensajeError(context,
-                  'Debe ingresar un correo electrónico para continuar');
-              return;
-            }
-            enviarCodigo();
-          },
-          child: Text('Enviar código de verificación',
-              style: GoogleFonts.sourceCodePro(
-                fontSize: widthSize! * widget.fontSizeButton,
-              ))),
-    );
-  }
-
   Widget btnRegistrar() {
     return Container(
       height: 45,
@@ -420,7 +358,7 @@ class LoginFormState extends State<RegistrarseForm> {
                   'Debe ingresar el código de verificación para continuar');
               return;
             }
-            registarUsuario();
+            validarCodigo();
           },
           child: Text('Registrar usuario',
               style: GoogleFonts.sourceCodePro(
@@ -449,14 +387,13 @@ class LoginFormState extends State<RegistrarseForm> {
 
   buscarUsuario() {
     final Future<Map<String, dynamic>> successfulMessage =
-        auth!.buscarUsuario(identificacionCtrl.text, _fecha!, true);
+        auth!.buscarUsuario(identificacionCtrl.text, _fecha!, false);
 
     successfulMessage.then((response) {
       if (response['status']) {
         usuario = response['data'];
         setState(() {
           datosPersonaCtrl.text = usuario!.nombresCompletos!;
-          direccionCtrl.text = usuario!.direccion!;
           telefonoCtrl.text = usuario!.celular!;
           correoCtrl.text = usuario!.correo!;
         });
@@ -481,45 +418,17 @@ class LoginFormState extends State<RegistrarseForm> {
     });
   }
 
-  registarUsuario() {
-    final Future<Map<String, dynamic>> successfulMessage = auth!
-        .validarCodigoRegistroUsuario(
-            correoCtrl.text,
-            codigoCtrl.text,
-            telefonoCtrl.text,
-            identificacionCtrl.text,
-            direccionCtrl.text,
-            claveCtrl.text,
-            usuario!.personaId!);
+  validarCodigo() {
+    final Future<Map<String, dynamic>> successfulMessage =
+        auth!.validarCodigoRecuperacion(
+      correoCtrl.text,
+      codigoCtrl.text,
+      identificacionCtrl.text,
+    );
 
     successfulMessage.then((response) {
       if (response['status']) {
         mensajeInfo(context, 'Su usuario ha sido creado con éxito');
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                  shape: borderDialog,
-                  content: Text(
-                    'Estimado ${datosPersonaCtrl.text} su usuario ha sido creado con éxito puede ingresar '
-                    'con su número de cédula o ruc y su clave que registró',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  ),
-                  actions: <Widget>[
-                    Center(
-                      child: ElevatedButton(
-                        child: Text("Aceptar",
-                            style: TextStyle(fontSize: 15),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1),
-                        onPressed: () async {
-                          context.vRouter.to(LoginPage.route);
-                        },
-                      ),
-                    )
-                  ]);
-            });
       } else {
         mensajeError(context, response['message']);
       }
