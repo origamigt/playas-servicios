@@ -80,10 +80,14 @@ class _VRouterAppState extends State<VRouterApp> {
         debugShowCheckedModeBanner: false,
         title:
             'Registro Municipal de la Propiedad y Mercantil del Cantón de Playas',
-        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
+        ],
         supportedLocales: [const Locale('es'), const Locale('en')],
         theme: widget.themeData!,
-        mode: VRouterMode.history,
+        mode: VRouterMode.hash,
         initialUrl: LoginPage.route,
         routes: [
           VWidget(

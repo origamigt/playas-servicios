@@ -39,9 +39,9 @@ public class ServicioDINARDAP {
     private String paqueteDemografico;
     @Value("${app.urlInterOperatividad}")
     private String urlInterOperatividad;
-    @Value("${app.userInterOperatividad}")
+    @Value("${app.interOperatividadUser}")
     private String userInterOperatividad;
-    @Value("${app.passInterOperatividad}")
+    @Value("${app.interOperatividadPass}")
     private String passInterOperatividad;
     
     /**
