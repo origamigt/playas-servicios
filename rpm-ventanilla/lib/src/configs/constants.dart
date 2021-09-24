@@ -10,6 +10,7 @@ import 'package:playas/src/pages/ajustes/perfil_page.dart';
 import 'package:playas/src/pages/busqueda/buscar-page.dart';
 import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
 import 'package:playas/src/pages/ciudadania/mistramites_page.dart';
+import 'package:playas/src/pages/ciudadania/repositorio_page.dart';
 import 'package:playas/src/pages/nosotros/nosotros_page.dart';
 import 'package:playas/src/pages/verificar/certificadomov_page.dart';
 import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
@@ -43,7 +44,7 @@ List<Menu> menusConfiguraciones = [
 List<Menu> menusCarpeta = [
   Menu('Mis trámites', MisTramitesPage.route, Colors.lightBlue,
       Icons.filter_list),
-  Menu('Mis documentos', MisTramitesPage.route, Colors.grey, Icons.filter_list),
+  Menu('Mis documentos', RepositorioPage.route, Colors.grey, Icons.filter_list),
 ];
 
 List<Data> motivosSolicitud = [

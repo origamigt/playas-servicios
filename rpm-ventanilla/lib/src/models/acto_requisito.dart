@@ -10,6 +10,7 @@ class ActoRequisito {
   int? documento;
   bool? requerido;
   String nombreArchivo = '';
+  String? fecha;
   Uint8List? archivo;
 
   ActoRequisito();
@@ -20,6 +21,8 @@ class ActoRequisito {
       ..requisitoActo = json['requisitoActo'] as int? ?? null
       ..idActo = json['idActo'] as int? ?? null
       ..acto = json['acto'] as String? ?? ''
+      ..fecha = json['fecha'] as String? ?? ''
+      ..nombreArchivo = json['nombreArchivo'] as String? ?? ''
       ..idRequisito = json['idRequisito'] as int? ?? null
       ..requisito = json['requisito'] as String? ?? ''
       ..documento = json['documento'] as int? ?? null
@@ -31,6 +34,7 @@ class ActoRequisito {
         'requisitoActo': requisitoActo,
         'idActo': idActo,
         'acto': acto,
+        'fecha': fecha,
         'idRequisito': idRequisito,
         'requisito': requisito,
         'documento': documento,

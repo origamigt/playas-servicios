@@ -360,11 +360,6 @@ class PropiedadPageState extends State<PropiedadPage> {
         controller: identificacionFactCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Ingrese la identificación para la factura';
-          }
-        },
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.person,
@@ -729,21 +724,20 @@ class PropiedadPageState extends State<PropiedadPage> {
         tipo);
 
     successfulMessage.then((response) {
-      print(response.toString());
       if (response['status']) {
-        PubPersona persona = response['persona'];
+        PubPersona p = response['persona'];
         setState(() {
           if (tipo == 'PROPIETARIO') {
-            identificacionPropCtrl.text = persona.cedRuc!;
+            identificacionPropCtrl.text = p.cedRuc!;
             datosPersonaPropCtrl.text =
-                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
+                (p.apellidos ?? '') + ' ' + (p.nombres ?? '');
           } else {
-            identificacionFactCtrl.text = persona.cedRuc!;
+            identificacionFactCtrl.text = 'p.cedRuc!';
             datosPersonaFactCtrl.text =
-                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
-            direccionFactCtrl.text = persona.direccion ?? '';
-            telefonoFactCtrl.text = persona.telefono1 ?? '';
-            correoFactCtrl.text = persona.correo1 ?? '';
+                (p.apellidos ?? '') + ' ' + (p.nombres ?? '');
+            direccionFactCtrl.text = p.direccion ?? '';
+            telefonoFactCtrl.text = p.telefono1 ?? '';
+            correoFactCtrl.text = p.correo1 ?? '';
           }
         });
       } else {

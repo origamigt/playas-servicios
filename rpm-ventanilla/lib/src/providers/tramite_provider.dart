@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:playas/src/models/acto_requisito.dart';
 import 'package:playas/src/models/datos-proforma.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
@@ -11,11 +12,15 @@ import 'package:rxdart/rxdart.dart';
 class TramiteProvider {
   final tramiteStreamController = PublishSubject<DatosProforma>();
   final _misTramitesStreamController = PublishSubject<List<Solicitud>>();
+  final _requsitosStreamController = PublishSubject<List<ActoRequisito>>();
 
   Stream<DatosProforma> get proformaStream => tramiteStreamController.stream;
 
   Stream<List<Solicitud>> get misTramitesStream =>
       _misTramitesStreamController.stream;
+
+  Stream<List<ActoRequisito>> get requsitosStreamController =>
+      _requsitosStreamController.stream;
 
   void disposeStreams() {
     tramiteStreamController.close();
@@ -66,11 +71,20 @@ class TramiteProvider {
 
   findSolicitudes() async {
     User? u = await userLogged();
-    //print('/rpm-ventanilla/api/solicitud/solicitudes/usuario/${u!.id}');
     List<dynamic>? collection = await findAll(
         '/rpm-ventanilla/api/solicitud/solicitudes/usuario/${u!.id}', true);
     List<Solicitud>? solicitudes =
         collection!.map((p) => Solicitud().fromJson(p)).toList();
     _misTramitesStreamController.add(solicitudes);
+  }
+
+  findRequisitos() async {
+    User? u = await userLogged();
+    List<dynamic>? collection = await findAll(
+        '/rpm-ventanilla/api/solicitud/solicitudes/requisitos/usuario/${u!.id}',
+        true);
+    List<ActoRequisito>? list =
+        collection!.map((p) => ActoRequisito().fromJson(p)).toList();
+    _requsitosStreamController.add(list);
   }
 }

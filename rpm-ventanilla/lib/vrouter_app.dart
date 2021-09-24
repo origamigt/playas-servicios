@@ -6,6 +6,7 @@ import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
 import 'package:playas/src/pages/busqueda/buscar-page.dart';
 import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
+import 'package:playas/src/pages/ciudadania/repositorio_page.dart';
 import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/pages/login/recuperar_page.dart';
@@ -188,6 +189,10 @@ class _VRouterAppState extends State<VRouterApp> {
                       VWidget(
                         path: MisTramitesPage.route,
                         widget: MisTramitesPage(),
+                      ),
+                      VWidget(
+                        path: RepositorioPage.route,
+                        widget: RepositorioPage(),
                       ),
                       VWidget(
                         path: BuscarPage.route,
