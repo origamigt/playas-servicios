@@ -35,7 +35,7 @@ class PageComponent extends StatelessWidget {
                         clipper: WaveClipperTwo(reverse: true),
                         child: Container(
                           height: 60,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],

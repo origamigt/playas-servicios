@@ -8,6 +8,7 @@ import 'package:playas/src/pages/busqueda/buscar-page.dart';
 import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
 import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/pages/login/login_page.dart';
+import 'package:playas/src/pages/login/recuperar_page.dart';
 import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/pages/nosotros/nosotros_page.dart';
 import 'package:playas/src/pages/pagos/confirmar_pago_page.dart';
@@ -87,7 +88,7 @@ class _VRouterAppState extends State<VRouterApp> {
         ],
         supportedLocales: [const Locale('es'), const Locale('en')],
         theme: widget.themeData!,
-        mode: VRouterMode.hash,
+        mode: VRouterMode.history,
         initialUrl: LoginPage.route,
         routes: [
           VWidget(
@@ -98,6 +99,11 @@ class _VRouterAppState extends State<VRouterApp> {
           VWidget(
               path: RegistrarsePage.route,
               widget: RegistrarsePage(),
+              buildTransition: (animation, _, child) =>
+                  FadeTransition(opacity: animation, child: child)),
+          VWidget(
+              path: RecuperarPage.route,
+              widget: RecuperarPage(),
               buildTransition: (animation, _, child) =>
                   FadeTransition(opacity: animation, child: child)),
           VWidget(

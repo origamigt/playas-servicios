@@ -3,10 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/tramite_provider.dart';
-import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
-import 'package:provider/provider.dart';
 
 class MisTramitesPage extends StatefulWidget {
   static const String route = '/misTramites';
@@ -16,7 +14,6 @@ class MisTramitesPage extends StatefulWidget {
 }
 
 class _MisTramitesPageState extends State<MisTramitesPage> {
-  UsuarioProvider? userProvider;
   static final formatter = DateFormat('dd-MM-yyyy');
   List<Solicitud> _pubSolicitudes = [];
 
@@ -40,11 +37,7 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
 
   @override
   Widget build(BuildContext context) {
-    userProvider = Provider.of<UsuarioProvider>(context, listen: false);
-    userProvider!.initialize().then((value) {
-      solicitudesFuture = tramiteProvider.findMisSolicitudes(value!.id!);
-    });
-
+    tramiteProvider.findSolicitudes();
     return Form(
         key: _formKey,
         child: PageComponent(
@@ -80,24 +73,18 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
               SizedBox(
                 height: 20,
               ),
-              FutureBuilder(
-                  future: solicitudesFuture,
-                  builder: (context, AsyncSnapshot<List<Solicitud>?> snapshot) {
-                    print(snapshot.toString());
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        _pubSolicitudes = snapshot.data!;
-                        return _buildList();
-                      } else {
-                        if (snapshot.data == null) {
-                          return Text('Intente nuevamente');
-                        }
-                        return CircularProgressIndicator();
-                      }
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  })
+              StreamBuilder(
+                stream: tramiteProvider.misTramitesStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Solicitud>?> snapshot) {
+                  if (snapshot.hasData) {
+                    _pubSolicitudes = snapshot.data!;
+                    return _buildList();
+                  } else {
+                    return cargando();
+                  }
+                },
+              )
             ],
           ),
         ));

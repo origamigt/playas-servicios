@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/user.dart';
+import 'package:playas/src/providers/perfil_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
@@ -18,30 +19,32 @@ class PerfilPage extends StatefulWidget {
 class PerfilPageState extends State<PerfilPage> {
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
+  PerfilProvider? perfilProvider;
 
-  String? identificacion;
   TextEditingController identificacionCtrl = TextEditingController();
   TextEditingController datosPersonaCtrl = TextEditingController();
   TextEditingController direccionCtrl = TextEditingController();
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
-
+  User? usuario;
+  PubPersona? persona;
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
+    perfilProvider = Provider.of<PerfilProvider>(context);
     this.personaProvider = personaProvider;
     userProvider!.initialize().then((value) {
-      User? usuario = value;
-      PubPersona persona = usuario!.persona!;
-      identificacionCtrl.text = persona.cedRuc!;
-      var nombres = persona.nombres! + ' ' + persona.apellidos!;
+      usuario = value;
+      persona = usuario!.persona!;
+      identificacionCtrl.text = persona!.cedRuc!;
+      var nombres = persona!.nombres! + ' ' + persona!.apellidos!;
       datosPersonaCtrl.text = nombres;
-      direccionCtrl.text = persona.direccion!;
-      telefonoCtrl.text = persona.telefono1!;
-      correoCtrl.text = persona.correo1!;
+      direccionCtrl.text = persona!.direccion!;
+      telefonoCtrl.text = persona!.telefono1!;
+      correoCtrl.text = persona!.correo1!;
     });
 
     return Form(
@@ -85,7 +88,9 @@ class PerfilPageState extends State<PerfilPage> {
             SizedBox(
               height: 10,
             ),
-            btnActualizar()
+            perfilProvider!.status == StatusPerfil.Searching
+                ? loading("Actualizando datos...")
+                : btnActualizar()
           ],
         ),
       ),
@@ -98,7 +103,6 @@ class PerfilPageState extends State<PerfilPage> {
       'Identificación',
       TextFormField(
         controller: identificacionCtrl,
-        onSaved: (value) => identificacion = value,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
@@ -166,6 +170,7 @@ class PerfilPageState extends State<PerfilPage> {
         TextFormField(
           controller: telefonoCtrl,
           keyboardType: TextInputType.number,
+          maxLength: 10,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
             prefixIcon: Icon(
@@ -187,7 +192,7 @@ class PerfilPageState extends State<PerfilPage> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  //    doLogin();
+                  actualizarPersona();
                 }
               },
               child: Text(
@@ -196,5 +201,23 @@ class PerfilPageState extends State<PerfilPage> {
         ),
       ),
     );
+  }
+
+  void actualizarPersona() {
+    final Future<Map<String, dynamic>> successfulMessage;
+    successfulMessage = perfilProvider!.actualizarPerfil(
+        identificacionCtrl.text,
+        direccionCtrl.text,
+        telefonoCtrl.text,
+        correoCtrl.text,
+        usuario!,
+        persona!);
+    successfulMessage.then((response) {
+      if (response['status']) {
+        mensajeInfo(context, response['message']);
+      } else {
+        mensajeError(context, response['message']);
+      }
+    });
   }
 }

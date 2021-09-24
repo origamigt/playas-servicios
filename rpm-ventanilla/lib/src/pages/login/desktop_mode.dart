@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/login_form.dart';
+import 'package:playas/src/widgets/recuperar_form.dart';
 import 'package:playas/src/widgets/registro_form.dart';
 
 class DesktopMode extends StatelessWidget {
@@ -56,7 +57,10 @@ class DesktopMode extends StatelessWidget {
       return RegistrarseForm(
           0, 0.009, 18, 0.04, 0.01, 0.03, 75, 0.01, 0.009, 0.01, 0.006);
     }
-    if (tipo == 'ENVIO_MENSAJE') {}
+    if (tipo == 'RECUPERAR') {
+      return RecuperarForm(
+          0, 0.009, 18, 0.04, 0.01, 0.03, 75, 0.01, 0.009, 0.01, 0.006);
+    }
     if (tipo == 'CLAVE') {}
     return Container();
   }

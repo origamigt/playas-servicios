@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:playas/src/models/datos-proforma.dart';
-import 'package:progress_indicators/progress_indicators.dart';
+import 'package:playas/src/providers/consulta_provider.dart';
+import 'package:playas/src/widgets/components.dart';
+import 'package:playas/src/widgets/page_component.dart';
+import 'package:provider/provider.dart';
 
 class BuscarPage extends StatefulWidget {
   static const String route = '/consultarTramite';
+
   BuscarPage();
 
   @override
@@ -12,48 +17,101 @@ class BuscarPage extends StatefulWidget {
 }
 
 class _BuscarPageState extends State<BuscarPage> {
+  ConsultaProvider? tramiteProvider;
+  final _formKey = GlobalKey<FormState>();
   DatosProforma? _datosProforma;
   static final formatter = DateFormat('dd-MM-yyyy');
   String header = '', status = '', dateInit = '', dateFinish = '';
   bool searching = false;
   bool foundResult = false;
+  TextEditingController codigoCtrl = TextEditingController();
   final styleTextCard = TextStyle(
     fontWeight: FontWeight.w700,
     color: Colors.grey,
     fontSize: 14.0,
   );
 
-  Widget descriptionBody = Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Center(
-          child: Text(
-        '',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontWeight: FontWeight.w700,
-          color: Colors.grey,
-          fontSize: 15.0,
-        ),
-      )));
-
-  Widget appBarTitle = Text(
-    'titleSearch',
-    style: TextStyle(color: Colors.lightBlue, fontSize: 15),
-  );
-  Icon actionIcon = Icon(
-    Icons.search,
-    color: Colors.lightBlue,
-  );
-
   @override
   void initState() {
     super.initState();
-    //bodyText = 'defaultText';
   }
 
   @override
   Widget build(BuildContext context) {
-    final cardSearch = Center(
+    tramiteProvider = Provider.of<ConsultaProvider>(context);
+    return Form(
+        key: _formKey,
+        child: PageComponent(
+          header: tituloPagina(context, 'Consulta de trámites'),
+          body: body(),
+          footer: Container(),
+        ));
+  }
+
+  Widget body() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 600) {
+          return FractionallySizedBox(
+            widthFactor: 0.5,
+            child: bodyDetail(),
+          );
+        } else {
+          return bodyDetail();
+        }
+      },
+    );
+  }
+
+  Widget bodyDetail() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Container(
+            height: 80,
+            alignment: Alignment.center,
+            child: TextFormField(
+              controller: codigoCtrl,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Ingrese el número de trámite';
+                }
+              },
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: InputDecoration(
+                suffix: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      consultarTramite();
+                    }
+                  },
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                hintText: 'Ingrese el número de trámite',
+              ),
+              textAlign: TextAlign.start,
+            )),
+        tramiteProvider!.status == StatusConsultaProv.Unknown
+            ? Container()
+            : tramiteProvider!.status == StatusConsultaProv.Searching
+                ? cargando()
+                : cardSearch()
+      ],
+    );
+  }
+
+  Widget cardSearch() {
+    return Center(
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -114,99 +172,15 @@ class _BuscarPageState extends State<BuscarPage> {
         ),
       ),
     );
-
-    return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(40.0),
-            child: AppBar(
-                brightness: Brightness.light,
-                elevation: 1.0,
-                centerTitle: true,
-                backgroundColor: Colors.white,
-                title: appBarTitle,
-                actions: <Widget>[
-                  IconButton(
-                    icon: actionIcon,
-                    onPressed: () {
-                      setState(() {
-                        if (this.actionIcon.icon == Icons.search) {
-                          this.descriptionBody = Text('');
-
-                          this.actionIcon =
-                              Icon(Icons.close, color: Colors.lightBlue);
-                          this.appBarTitle = TextField(
-                            textInputAction: TextInputAction.send,
-                            keyboardType: TextInputType.number,
-                            onSubmitted: searchProcedure,
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                            decoration: InputDecoration(
-                                prefixIcon:
-                                    Icon(Icons.search, color: Colors.lightBlue),
-                                hintText: "Escriba el número de su trámite...",
-                                hintStyle: TextStyle(
-                                    color: Colors.lightBlue, fontSize: 12)),
-                          );
-                        } else {
-                          this.actionIcon = Icon(
-                            Icons.search,
-                            color: Colors.lightBlue,
-                          );
-                          this.appBarTitle = Text('titleSearch',
-                              style: TextStyle(
-                                  color: Colors.lightBlue, fontSize: 15));
-
-                          this.descriptionBody = Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Center(
-                                  child: Text(
-                                'bodyText',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.grey,
-                                  fontSize: 15.0,
-                                ),
-                              )));
-                        }
-                      });
-                    },
-                  ),
-                ])),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Visibility(
-                visible: searching,
-                child: JumpingDotsProgressIndicator(
-                  fontSize: 30.0,
-                )),
-            (!searching && _datosProforma == null)
-                ? descriptionBody
-                : (!searching &&
-                        _datosProforma != null &&
-                        _datosProforma?.numerotramite != null)
-                    ? cardSearch
-                    : descriptionBody,
-          ],
-        ));
   }
 
-  searchProcedure(String inputSearch) async {
-    if (inputSearch.length > 0) {
-      setState(() {
-        searching = true;
-      });
-      _datosProforma = DatosProforma();
-      //DatosProforma result = await findTask(int.parse(inputSearch));
-
-      setState(() {
-        searching = false;
-        //_datosProforma = result;
-        if (_datosProforma != null && _datosProforma!.numerotramite != null) {
-          this.descriptionBody = Text('');
+  void consultarTramite() {
+    final Future<Map<String, dynamic>> successfulMessage;
+    successfulMessage = tramiteProvider!.consultarTramite(codigoCtrl.text);
+    successfulMessage.then((response) {
+      if (response['status']) {
+        setState(() {
+          _datosProforma = response['data'];
           this.header = '#' +
               _datosProforma!.numerotramite!.toString() +
               ' - ' +
@@ -215,21 +189,10 @@ class _BuscarPageState extends State<BuscarPage> {
           this.dateInit = formatter.format(DateTime.fromMillisecondsSinceEpoch(
               _datosProforma!.fechaingreso!));
           this.dateFinish = _datosProforma!.revisor!;
-        } else {
-          this.descriptionBody = Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Center(
-                  child: Text(
-                'No se encontró trámite',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.grey,
-                  fontSize: 15.0,
-                ),
-              )));
-        }
-      });
-    }
+        });
+      } else {
+        mensajeError(context, response['message']);
+      }
+    });
   }
 }

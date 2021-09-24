@@ -1,155 +1,3 @@
-/*import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-class VerificarDocPage extends StatefulWidget {
-  @override
-  VerificarDocPageState createState() => VerificarDocPageState();
-}
-
-class VerificarDocPageState extends State<VerificarDocPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String? _nombreArchivo;
-  List<PlatformFile>? archivos;
-  String? directorioArchivo;
-  String? _extension = 'pdf';
-  bool cargandoArchivo = false;
-  bool _multiPick = false;
-  FileType _pickingType = FileType.custom;
-  TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() => _extension = _controller.text);
-  }
-
-  void _openFileExplorer() async {
-    _clearCachedFiles();
-    setState(() => cargandoArchivo = true);
-    try {
-      directorioArchivo = null;
-      archivos = (await FilePicker.platform.pickFiles(
-        type: _pickingType,
-        allowMultiple: _multiPick,
-        onFileLoading: (FilePickerStatus status) => print(status),
-        allowedExtensions: (_extension?.isNotEmpty ?? false)
-            ? _extension?.replaceAll(' ', '').split(',')
-            : null,
-      ))
-          ?.files;
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
-    } catch (ex) {
-      print(ex);
-    }
-    if (!mounted) return;
-    setState(() {
-      cargandoArchivo = false;
-      _nombreArchivo =
-          archivos != null ? archivos!.map((e) => e.name).toString() : '...';
-    });
-  }
-
-  void _clearCachedFiles() {
-    FilePicker.platform.clearTemporaryFiles().then((result) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: result! ? Colors.green : Colors.red,
-          content: Text((result
-              ? 'Temporary files removed with success.'
-              : 'Failed to clean temporary files')),
-        ),
-      );
-    });
-  }
-
-  void _selectFolder() {
-    FilePicker.platform.getDirectoryPath().then((value) {
-      setState(() => directorioArchivo = value);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: const Text('File Picker example app'),
-        ),
-        body: Center(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () => _openFileExplorer(),
-                  child: const Text("Open file picker"),
-                ),
-                Builder(
-                  builder: (BuildContext context) => cargandoArchivo
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: const CircularProgressIndicator(),
-                        )
-                      : directorioArchivo != null
-                          ? ListTile(
-                              title: const Text('Directory path'),
-                              subtitle: Text(directorioArchivo!),
-                            )
-                          : archivos != null
-                              ? Container(
-                                  padding: const EdgeInsets.only(bottom: 30.0),
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.50,
-                                  child: Scrollbar(
-                                      child: ListView.separated(
-                                    itemCount:
-                                        archivos != null && archivos!.isNotEmpty
-                                            ? archivos!.length
-                                            : 1,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      final bool isMultiPath =
-                                          archivos != null && archivos!.isNotEmpty;
-                                      final String name = 'File $index: ' +
-                                          (isMultiPath
-                                              ? archivos!
-                                                  .map((e) => e.name)
-                                                  .toList()[index]
-                                              : _nombreArchivo ?? '...');
-                                      final path = archivos!
-                                          .map((e) => e.path)
-                                          .toList()[index]
-                                          .toString();
-
-                                      return ListTile(
-                                        title: Text(
-                                          name,
-                                        ),
-                                        subtitle: Text(path),
-                                      );
-                                    },
-                                    separatorBuilder:
-                                        (BuildContext context, int index) =>
-                                            const Divider(),
-                                  )),
-                                )
-                              : const SizedBox(),
-                ),
-              ],
-            ),
-          ),
-        )),
-      ),
-    );
-  }
-}
-*/
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -193,15 +41,35 @@ class VerificarDocPageState extends State<VerificarDocPage> {
   }
 
   Widget body() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 600) {
+          return FractionallySizedBox(
+            widthFactor: 0.5,
+            child: bodyDetail(),
+          );
+        } else {
+          return bodyDetail();
+        }
+      },
+    );
+  }
+
+  Widget bodyDetail() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
           height: 20,
         ),
+        subTituloWidget(context,
+            'Para validar sus archivos debe cargar su certificado o razón de inscripción y procede a validar el documento'),
         TextButton(
-          child: Text('Subir archivo'),
+          child: Text(
+            'Cargar archivo',
+            style: Theme.of(context).textTheme.headline6,
+          ),
           onPressed: () async {
             _openFileExplorer();
           },
@@ -248,13 +116,16 @@ class VerificarDocPageState extends State<VerificarDocPage> {
                                     const Divider(),
                           ),
                         )
-                      : const SizedBox(),
+                      : Container(),
         ),
         validarDocProvider!.status == StatusValidarDoc.Searching
             ? loading("...")
             : archivos != null
                 ? TextButton(
-                    child: Text('Validar archivo'),
+                    child: Text(
+                      'Validar archivo',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                     onPressed: () async {
                       validarDocumento();
                     },
@@ -275,10 +146,10 @@ class VerificarDocPageState extends State<VerificarDocPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            tituloWidget(context, 'Firma valida'),
-            subTituloWidget(context, data!.firmaValida! ? 'SI' : 'NO'),
-            tituloWidget(context, 'Documento valido'),
-            subTituloWidget(context, data!.documentoValido! ? 'SI' : 'NO'),
+            tituloWidget2(context, 'Firma valida'),
+            subTituloWidget2(context, data!.firmaValida! ? 'SI' : 'NO'),
+            tituloWidget2(context, 'Documento valido'),
+            subTituloWidget2(context, data!.documentoValido! ? 'SI' : 'NO'),
             data!.error != null
                 ? subTituloWidget(context, data!.error!)
                 : Container(),
@@ -305,21 +176,24 @@ class VerificarDocPageState extends State<VerificarDocPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          tituloWidget(context, 'Información Firmante'),
-          subTituloWidget(context, certificado.informacionFirmante!),
-          tituloWidget(context, 'Cargo'),
-          subTituloWidget(context, certificado.datosUsuario!.cargo!),
-          tituloWidget(context, 'Información Entidad Certificadora'),
-          subTituloWidget(
+          tituloWidget2(context, 'Información Firmante'),
+          subTituloWidget2(context, certificado.informacionFirmante!),
+          tituloWidget2(context, 'Cargo'),
+          subTituloWidget2(context, certificado.datosUsuario!.cargo!),
+          tituloWidget2(context, 'Información Entidad Certificadora'),
+          subTituloWidget2(
               context, certificado.informacionEntidadCertificadora!),
-          tituloWidget(context, 'Fecha'),
-          subTituloWidget(context, dt.format(certificado.generado!)),
-          tituloWidget(context, 'Motivo Documento'),
-          subTituloWidget(context, certificado.motivoDocumento!),
-          tituloWidget(context, 'Localizacion Documento'),
-          subTituloWidget(context, certificado.localizacionDocumento!),
-          tituloWidget(context, 'Firma Verificada'),
-          subTituloWidget(context, certificado.firmaVerificada! ? 'SI' : 'NO'),
+          tituloWidget2(context, 'Fecha'),
+          subTituloWidget2(context, dt.format(certificado.generado!)),
+          tituloWidget2(context, 'Motivo Documento'),
+          subTituloWidget2(context, certificado.motivoDocumento!),
+          tituloWidget2(context, 'Localizacion Documento'),
+          subTituloWidget2(context, certificado.localizacionDocumento!),
+          tituloWidget2(context, 'Firma Verificada'),
+          subTituloWidget2(context, certificado.firmaVerificada! ? 'SI' : 'NO'),
+          SizedBox(
+            height: 30,
+          ),
         ],
       ),
     );

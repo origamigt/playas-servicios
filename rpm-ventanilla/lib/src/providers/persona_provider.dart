@@ -29,7 +29,7 @@ class PersonaProvider extends ChangeNotifier implements ReassembleHandler {
       String identificacion, String tipo) async {
     var result;
 
-    _personaStatusPersonProv = tipo == 'SOLICITANTE'
+    _personaStatusPersonProv = tipo == 'PROPIETARIO'
         ? StatusPersonProv.Searching
         : StatusPersonProv.SearchingFact;
     notifyListeners();

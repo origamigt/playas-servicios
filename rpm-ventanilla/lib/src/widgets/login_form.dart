@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/home_page.dart';
+import 'package:playas/src/pages/login/recuperar_page.dart';
 import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
@@ -149,7 +150,7 @@ class LoginFormState extends State<LoginForm> {*/
               alignment: Alignment.centerRight,
               child: TextButton(
                   onPressed: () {
-                    context.vRouter.to(RegistrarsePage.route);
+                    context.vRouter.to(RecuperarPage.route);
                   },
                   child: Text('Recuperar contraseña',
                       style: GoogleFonts.sourceCodePro(

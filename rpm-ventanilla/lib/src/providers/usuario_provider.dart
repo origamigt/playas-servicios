@@ -13,22 +13,6 @@ class UsuarioProvider extends ChangeNotifier implements ReassembleHandler {
     print('Did hot-reload');
   }
 
-  Future<bool> fetchUser(String usuario, String clave) async {
-    setLoading(true);
-    // fetch user from the input supplied in the form
-
-    await loginAPP(usuario, clave).then((data) {
-      setLoading(false);
-      if (data != null) {
-        setUser(data);
-      } else {
-        setMessage('message');
-      }
-    });
-
-    return isUser(); //returns the fetched user
-  }
-
   bool isLoading() {
     return loading; //return true if the app is loading the data
   }
@@ -60,13 +44,6 @@ class UsuarioProvider extends ChangeNotifier implements ReassembleHandler {
     return user != null
         ? true
         : false; // returns true if user is not null, anf false otherwise
-  }
-
-  Future<User?> findUser(String? usuario) async {
-    Map<String, dynamic> map = await find(
-        '/rpm-ventanilla/api/usuario/identificacion/' + usuario!, true);
-    User? user = User().fromJson(map);
-    return user;
   }
 
   Future<User?> initialize() async {

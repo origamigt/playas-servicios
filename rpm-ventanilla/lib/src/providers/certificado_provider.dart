@@ -19,7 +19,7 @@ class CertificadoProvider extends ChangeNotifier implements ReassembleHandler {
 
   StatusCertificadoProv get status => _status;
 
-  void setPersonaState(StatusCertificadoProv state) {
+  void setState(StatusCertificadoProv state) {
     _status = state;
     notifyListeners();
   }

@@ -7,6 +7,8 @@ class UsuarioRegistro {
   String? celular;
   String? clave;
   String? correo;
+  String? correoCodificado;
+  bool? creado;
 
   UsuarioRegistro();
 
@@ -19,7 +21,9 @@ class UsuarioRegistro {
       ..direccion = json['direccion'] as String? ?? null
       ..celular = json['celular'] as String? ?? null
       ..clave = json['clave'] as String? ?? null
-      ..correo = json['correo'] as String? ?? null;
+      ..correo = json['correo'] as String? ?? null
+      ..creado = json['creado'] as bool? ?? null
+      ..correoCodificado = json['correoCodificado'] as String? ?? null;
   }
 
   Map<String, dynamic> json(UsuarioRegistro instance) => <String, dynamic>{
@@ -31,17 +35,20 @@ class UsuarioRegistro {
         'celular': instance.celular,
         'clave': instance.clave,
         'correo': instance.correo,
+        'creado': instance.creado,
+        'correoCodificado': instance.correoCodificado,
       };
 
   Map<String, dynamic> toJson() => {
-    'personaId': personaId,
-    'identificacion': identificacion,
-    'fechaExpedicion': fechaExpedicion,
-    'nombresCompletos': nombresCompletos,
-    'direccion': direccion,
-    'celular': celular,
-    'clave': clave,
-    'correo': correo,
-  };
-
+        'personaId': personaId,
+        'identificacion': identificacion,
+        'fechaExpedicion': fechaExpedicion,
+        'nombresCompletos': nombresCompletos,
+        'direccion': direccion,
+        'celular': celular,
+        'clave': clave,
+        'correo': correo,
+        'creado': creado,
+        'correoCodificado': correoCodificado,
+      };
 }

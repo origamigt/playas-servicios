@@ -179,10 +179,32 @@ Widget tituloWidget(BuildContext? context, String txt) {
   );
 }
 
+Widget tituloWidget2(BuildContext? context, String txt) {
+  return Container(
+    alignment: Alignment.centerLeft,
+    margin: EdgeInsets.symmetric(vertical: 10),
+    child: Text(
+      txt,
+      style: Theme.of(context!).textTheme.headline4,
+    ),
+  );
+}
+
 Widget subTituloWidget(BuildContext? context, String txt) {
   return Container(
     alignment: Alignment.center,
     margin: EdgeInsets.symmetric(vertical: 10),
+    child: Text(
+      txt,
+      style: Theme.of(context!).textTheme.headline2,
+    ),
+  );
+}
+
+Widget subTituloWidget2(BuildContext? context, String txt) {
+  return Container(
+    alignment: Alignment.centerLeft,
+    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
     child: Text(
       txt,
       style: Theme.of(context!).textTheme.headline2,
@@ -205,3 +227,10 @@ Widget tituloPagina(BuildContext? context, String txt) {
 
 RoundedRectangleBorder borderDialog = RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(20.0)));
+
+Widget cargando() {
+  return Container(
+      alignment: Alignment.center,
+      height: 60,
+      child: CircularProgressIndicator());
+}

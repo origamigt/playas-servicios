@@ -3,7 +3,7 @@ import 'package:playas/src/pages/login/mobile_mode.dart';
 
 import 'desktop_mode.dart';
 
-class RegistrarsePage extends StatelessWidget {
+class RecuperarPage extends StatelessWidget {
   static const String route = '/recuperar';
 
   @override

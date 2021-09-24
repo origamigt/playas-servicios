@@ -29,13 +29,14 @@ enum StatusRegistro {
   ValidarCodCargando,
   ValidarCodOk,
   ValidarCodNoOk,
+  ClaveActualizando,
+  ClaveActualizada,
+  ClaveNoActualizada,
 }
 
 class AuthProvider with ChangeNotifier {
   Status _loggedInStatus = Status.Unknown;
   StatusRegistro _registeredInStatus = StatusRegistro.Unknown;
-  //Status _codigoStatus = Status.CodigoUnknown;
-  //Status _validarCodigoStatus = Status.ValidarCodUnknown;
 
   Status get loggedInStatus => _loggedInStatus;
 
@@ -112,14 +113,15 @@ class AuthProvider with ChangeNotifier {
     _registeredInStatus = StatusRegistro.Registering;
     notifyListeners();
 
-    http.Response response = await http.post(
-        Uri.http(SERVER_IP, '/rpm-ventanilla/api/usuario/consultar'),
-        body: json.encode(registrationData),
-        headers: headerNoAuth);
+    String path = tipo
+        ? '/rpm-ventanilla/api/usuario/consultar'
+        : '/rpm-ventanilla/api/usuario/consultar/recuperar';
+    http.Response response = await http.post(Uri.http(SERVER_IP, path),
+        body: json.encode(registrationData), headers: headerNoAuth);
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-
+    print(response.body);
     if (response.statusCode == 200) {
       _registeredInStatus = StatusRegistro.NotRegistered;
       notifyListeners();
@@ -150,6 +152,7 @@ class AuthProvider with ChangeNotifier {
     cv.validado = false;
     cv.correo = correo;
     cv.persona = persona;
+    cv.celular = celular;
     cv.identificacion = identificacion;
 
     Map<String, dynamic> verificacion = CodigoVerificacion().json(cv);
@@ -190,9 +193,9 @@ class AuthProvider with ChangeNotifier {
       String identificacion,
       String direccion,
       String clave,
-      int personaid) async {
+      int personaid,
+      bool creado) async {
     var result;
-
     UsuarioRegistro ur = UsuarioRegistro();
     ur.personaId = personaid;
     ur.identificacion = identificacion;
@@ -200,6 +203,7 @@ class AuthProvider with ChangeNotifier {
     ur.correo = correo;
     ur.celular = celular;
     ur.clave = clave;
+    ur.creado = creado;
 
     CodigoVerificacion cv = CodigoVerificacion();
     cv.correo = correo;
@@ -207,7 +211,6 @@ class AuthProvider with ChangeNotifier {
     cv.usuarioRegistro = ur;
 
     Map<String, dynamic> verificacion = CodigoVerificacion().jsonRegistro(cv);
-
     _registeredInStatus = StatusRegistro.ValidarCodCargando;
     notifyListeners();
 
@@ -244,6 +247,7 @@ class AuthProvider with ChangeNotifier {
     CodigoVerificacion cv = CodigoVerificacion();
     cv.correo = correo;
     cv.codigo = codigo;
+    cv.identificacion = identificacion;
 
     Map<String, dynamic> verificacion = CodigoVerificacion().jsonRegistro(cv);
 
@@ -272,7 +276,44 @@ class AuthProvider with ChangeNotifier {
         'message': data.data,
       };
     }
+    return result;
+  }
 
+  Future<Map<String, dynamic>> actualizarContrasenia(
+      String clave, String identificacion) async {
+    var result;
+
+    final Map<String, dynamic> registrationData = {
+      'usuario': identificacion,
+      'clave': clave
+    };
+
+    _registeredInStatus = StatusRegistro.ClaveActualizando;
+    notifyListeners();
+
+    http.Response response = await http.post(
+        Uri.http(
+            SERVER_IP, '/rpm-ventanilla/api/usuario/actualizarContrasenia'),
+        body: json.encode(registrationData),
+        headers: headerNoAuth);
+
+    Map<String, dynamic> map =
+        json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+
+    if (response.statusCode == 200) {
+      _registeredInStatus = StatusRegistro.ClaveActualizada;
+      notifyListeners();
+      User data = User().fromJson(map);
+      result = {'status': true, 'message': 'Datos encontrados', 'data': data};
+    } else {
+      _registeredInStatus = StatusRegistro.ClaveNoActualizada;
+      notifyListeners();
+      Data data = Data().fromJson(map);
+      result = {
+        'status': false,
+        'message': data.data,
+      };
+    }
     return result;
   }
 }

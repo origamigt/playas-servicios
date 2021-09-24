@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/login_form.dart';
+import 'package:playas/src/widgets/recuperar_form.dart';
 import 'package:playas/src/widgets/registro_form.dart';
 
 class MobileMode extends StatelessWidget {
@@ -44,7 +45,10 @@ class _MobileModeState extends State<MobileMode> {*/
       return RegistrarseForm(0.007, 0.04, widthSize! * 0.04, 0.06, 0.04, 0.07,
           widthSize! * 0.09, 0.05, 0.032, 0.04, 0.032);
     }
-    if (tipo == 'RECUPERAR') {}
+    if (tipo == 'RECUPERAR') {
+      return RecuperarForm(0.007, 0.04, widthSize! * 0.04, 0.06, 0.04, 0.07,
+          widthSize! * 0.09, 0.05, 0.032, 0.04, 0.032);
+    }
     return Container();
   }
 }

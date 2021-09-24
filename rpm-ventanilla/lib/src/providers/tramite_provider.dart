@@ -4,13 +4,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:playas/src/models/datos-proforma.dart';
 import 'package:playas/src/models/solicitud.dart';
+import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/ws.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TramiteProvider {
   final tramiteStreamController = PublishSubject<DatosProforma>();
+  final _misTramitesStreamController = PublishSubject<List<Solicitud>>();
 
   Stream<DatosProforma> get proformaStream => tramiteStreamController.stream;
+
+  Stream<List<Solicitud>> get misTramitesStream =>
+      _misTramitesStreamController.stream;
 
   void disposeStreams() {
     tramiteStreamController.close();
@@ -57,5 +62,15 @@ class TramiteProvider {
     List<Solicitud>? solicitudes =
         collection!.map((p) => Solicitud().fromJson(p)).toList();
     return solicitudes;
+  }
+
+  findSolicitudes() async {
+    User? u = await userLogged();
+    //print('/rpm-ventanilla/api/solicitud/solicitudes/usuario/${u!.id}');
+    List<dynamic>? collection = await findAll(
+        '/rpm-ventanilla/api/solicitud/solicitudes/usuario/${u!.id}', true);
+    List<Solicitud>? solicitudes =
+        collection!.map((p) => Solicitud().fromJson(p)).toList();
+    _misTramitesStreamController.add(solicitudes);
   }
 }

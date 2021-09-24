@@ -325,6 +325,7 @@ class LoginFormState extends State<RegistrarseForm> {
         controller: codigoCtrl,
         style: TextStyle(fontSize: widget.fontSizeTextFormField),
         keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.confirmation_num_outlined,
@@ -490,7 +491,8 @@ class LoginFormState extends State<RegistrarseForm> {
             identificacionCtrl.text,
             direccionCtrl.text,
             claveCtrl.text,
-            usuario!.personaId!);
+            usuario!.personaId!,
+            false);
 
     successfulMessage.then((response) {
       if (response['status']) {
@@ -502,8 +504,8 @@ class LoginFormState extends State<RegistrarseForm> {
               return AlertDialog(
                   shape: borderDialog,
                   content: Text(
-                    'Estimado ${datosPersonaCtrl.text} su usuario ha sido creado con éxito puede ingresar '
-                    'con su número de cédula o ruc y su clave que registró',
+                    'Estimad@ ${datosPersonaCtrl.text} su usuario ha sido creado con éxito puede ingresar '
+                    'con su número de cédula o ruc y su clave que registro',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   actions: <Widget>[

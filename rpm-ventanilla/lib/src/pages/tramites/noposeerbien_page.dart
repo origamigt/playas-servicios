@@ -9,6 +9,7 @@ import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/pagos/pago_page.dart';
+import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
@@ -28,7 +29,7 @@ class NoposeerBienPage extends StatefulWidget {
 class NoposeerBienState extends State<NoposeerBienPage> {
   bool isWeb = UniversalPlatform.isWeb;
 
-  Acto acto = Acto();
+  Acto? acto;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
   PagoProvider? pagoProvider;
@@ -55,11 +56,20 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   final _formKey = GlobalKey<FormState>();
 
   Data motivo = motivosSolicitud[0];
+  final _actosProvider = ActosProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    cargarActo();
+  }
+
+  cargarActo() async {
+    acto = await _actosProvider.findActoId(1358);
+  }
 
   @override
   Widget build(BuildContext context) {
-    acto.id = 1358;
-    acto.valor = 6.0;
     cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
@@ -239,10 +249,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
           prefixIcon: Icon(
             Icons.person,
           ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.Searching
-              ? loading("...")
-              : btnBuscarPersona('SOLICITANTE'),
         ),
         textAlign: TextAlign.start,
       ),
@@ -437,17 +443,10 @@ class NoposeerBienState extends State<NoposeerBienPage> {
     return IconButton(
       icon: Icon(Icons.search),
       onPressed: () async {
-        if (tipo == 'SOLICITANTE') {
-          if (identificacionCtrl.text.isEmpty) {
-            mensajeError(context, 'Ingrese la identificación del solicitante');
-            return;
-          }
-        } else {
-          if (identificacionFactCtrl.text.isEmpty) {
-            mensajeError(context,
-                'Ingrese la identificación de quien se emitirá la factura');
-            return;
-          }
+        if (identificacionFactCtrl.text.isEmpty) {
+          mensajeError(context,
+              'Ingrese la identificación de quien se emitirá la factura');
+          return;
         }
         buscarPersona(tipo);
       },
@@ -516,15 +515,24 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       print(response.toString());
       if (response['status']) {
         PubPersona persona = response['persona'];
-        if (tipo == 'SOLICITANTE') {
-          identificacionCtrl.text = persona.cedRuc!;
-          datosPersonaCtrl.text =
-              (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
-          direccionCtrl.text = persona.direccion ?? '';
-          telefonoCtrl.text = persona.telefono1 ?? '';
-          correoCtrl.text = persona.correo1 ?? '';
-          estadoCivilSol = persona.estadoCivil ?? '';
-        }
+        setState(() {
+          if (tipo == 'SOLICITANTE') {
+            identificacionCtrl.text = persona.cedRuc!;
+            datosPersonaCtrl.text =
+                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
+            direccionCtrl.text = persona.direccion ?? '';
+            telefonoCtrl.text = persona.telefono1 ?? '';
+            correoCtrl.text = persona.correo1 ?? '';
+            estadoCivilSol = persona.estadoCivil ?? '';
+          } else {
+            identificacionFactCtrl.text = persona.cedRuc!;
+            datosPersonaFactCtrl.text =
+                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
+            direccionFactCtrl.text = persona.direccion ?? '';
+            telefonoFactCtrl.text = persona.telefono1 ?? '';
+            correoFactCtrl.text = persona.correo1 ?? '';
+          }
+        });
       } else {
         mensajeError(context, response['message']);
       }
@@ -547,7 +555,9 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             direccionFactCtrl.text,
             telefonoFactCtrl.text,
             correoFactCtrl.text,
-            acto,
+            '',
+            '',
+            acto!,
             usuario!.id!,
             cantidadCtrl.text);
 

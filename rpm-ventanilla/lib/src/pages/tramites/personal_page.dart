@@ -496,6 +496,8 @@ class PersonalState extends State<PersonalPage> {
             direccionFactCtrl.text,
             telefonoFactCtrl.text,
             correoFactCtrl.text,
+            '',
+            '',
             acto,
             usuario!.id!,
             cantidadCtrl.text);

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/user.dart';
+import 'package:playas/src/pages/login/login_page.dart';
+import 'package:playas/src/providers/auth_provider.dart';
+import 'package:playas/src/providers/perfil_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
+import 'package:vrouter/vrouter.dart';
 
 class ContraseniaPage extends StatefulWidget {
   static const route = '/actualizarContrasenia';
@@ -18,7 +23,8 @@ class ContraseniaPage extends StatefulWidget {
 class ContraseniaPageState extends State<ContraseniaPage> {
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
-
+  PerfilProvider? perfilProvider;
+  AuthProvider? authProvider;
   User? usuario;
 
   String? identificacion;
@@ -38,6 +44,8 @@ class ContraseniaPageState extends State<ContraseniaPage> {
   Widget build(BuildContext context) {
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
+    perfilProvider = Provider.of<PerfilProvider>(context);
+    authProvider = Provider.of<AuthProvider>(context);
     this.personaProvider = personaProvider;
     if (userProvider != null && userProvider!.user != null) {
       usuario = userProvider!.user!;
@@ -95,7 +103,9 @@ class ContraseniaPageState extends State<ContraseniaPage> {
             SizedBox(
               height: 10,
             ),
-            btnActualizar()
+            perfilProvider!.status == StatusPerfil.Searching
+                ? loading("Actualizando datos...")
+                : btnActualizar()
           ],
         ),
       ),
@@ -261,7 +271,16 @@ class ContraseniaPageState extends State<ContraseniaPage> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  //    doLogin();
+                  if (usuario!.clave != generateMd5(claveActualCtrl.text)) {
+                    mensajeError(context,
+                        'Su clave actual no coincide con la ingresada');
+                    return;
+                  }
+                  if (claveNuevaCtrl.text != claveConfirmaCtrl.text) {
+                    mensajeError(context, 'Su nueva clave no coincide');
+                    return;
+                  }
+                  actualizarContasenia();
                 }
               },
               child: Text(
@@ -270,5 +289,47 @@ class ContraseniaPageState extends State<ContraseniaPage> {
         ),
       ),
     );
+  }
+
+  void actualizarContasenia() {
+    final Future<Map<String, dynamic>> successfulMessage;
+    successfulMessage = perfilProvider!.actualizarContrasenia(
+      claveNuevaCtrl.text,
+      usuario!.usuario!,
+      usuario!.id!,
+    );
+    successfulMessage.then((response) {
+      if (response['status']) {
+        mensajeInfo(context, response['message']);
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  shape: borderDialog,
+                  content: Text(
+                    'Estimad@ ${datosPersonaCtrl.text} su usuario ha sido actualizado con éxito,\ninicie sesión nuevamente',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  actions: <Widget>[
+                    Center(
+                      child: ElevatedButton(
+                        child: Text("Aceptar",
+                            style: TextStyle(fontSize: 15),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1),
+                        onPressed: () async {
+                          userProvider!.cerrarSesion();
+                          authProvider!.setAuthState(Status.NotLoggedIn);
+                          context.vRouter.to(LoginPage.route);
+                        },
+                      ),
+                    )
+                  ]);
+            });
+      } else {
+        mensajeError(context, response['message']);
+      }
+    });
   }
 }

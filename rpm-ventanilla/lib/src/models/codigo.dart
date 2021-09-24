@@ -6,6 +6,7 @@ class CodigoVerificacion {
   int? id;
   String? codigo;
   String? correo;
+  String? celular;
   bool? validado;
   String? persona;
   String? identificacion;
@@ -20,6 +21,7 @@ class CodigoVerificacion {
       ..id = json['id'] as int? ?? null
       ..codigo = json['codigo'] as String? ?? null
       ..correo = json['correo'] as String? ?? null
+      ..celular = json['celular'] as String? ?? null
       ..validado = json['validado'] as bool? ?? null
       ..persona = json['persona'] as String? ?? null
       ..identificacion = json['identificacion'] as String? ?? null;
@@ -29,6 +31,7 @@ class CodigoVerificacion {
         'id': id,
         'codigo': codigo,
         'correo': correo,
+        'celular': celular,
         'validado': validado,
         'persona': persona,
         'identificacion': identificacion,
@@ -38,6 +41,7 @@ class CodigoVerificacion {
         'id': instance.id,
         'codigo': instance.codigo,
         'correo': instance.correo,
+        'celular': instance.celular,
         'validado': instance.validado,
         'persona': instance.persona,
         'identificacion': instance.identificacion,

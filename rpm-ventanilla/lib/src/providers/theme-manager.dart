@@ -10,8 +10,8 @@ class ThemeNotifier with ChangeNotifier {
       primaryColor: Colors.black,
       brightness: Brightness.dark,
       backgroundColor: const Color(0xFF212121),
-      accentColor: Colors.white,
-      accentIconTheme: IconThemeData(color: Colors.black),
+//      accentColor: Colors.white,
+      //     accentIconTheme: IconThemeData(color: Colors.black),
       dividerColor: Colors.black12,
       textTheme: TextTheme(
         bodyText2: GoogleFonts.sourceCodePro(
@@ -44,10 +44,23 @@ class ThemeNotifier with ChangeNotifier {
       scaffoldBackgroundColor: Colors.white,
       //primarySwatch: Colors.white,
       primaryColor: colorPrimary,
-      accentColor: Color(0xFFFCDF00).withOpacity(0.75),
+      colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          secondary: Color(0xFFFCDF00).withOpacity(0.75),
+          onError: Colors.red,
+          onSecondary: Colors.blue,
+          onBackground: Colors.white,
+          primaryVariant: Colors.purple,
+          secondaryVariant: Colors.pinkAccent,
+          background: Colors.pink,
+          error: Colors.red,
+          onPrimary: Colors.white,
+          onSurface: Colors.green,
+          primary: colorPrimary,
+          surface: Colors.teal),
       brightness: Brightness.light,
       backgroundColor: Colors.white,
-      accentIconTheme: IconThemeData(color: Colors.white),
+      //accentIconTheme: IconThemeData(color: Colors.white),
       dividerColor: Colors.white54,
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
@@ -76,6 +89,11 @@ class ThemeNotifier with ChangeNotifier {
         ),
         headline3: GoogleFonts.sourceCodePro(
           fontSize: 25,
+          color: colorPrimary,
+          fontWeight: FontWeight.bold,
+        ),
+        headline4: GoogleFonts.sourceCodePro(
+          fontSize: 16,
           color: colorPrimary,
           fontWeight: FontWeight.bold,
         ),

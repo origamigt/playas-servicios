@@ -9,6 +9,7 @@ import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/pagos/pago_page.dart';
+import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
@@ -27,7 +28,7 @@ class PropiedadPage extends StatefulWidget {
 class PropiedadPageState extends State<PropiedadPage> {
   bool isWeb = UniversalPlatform.isWeb;
 
-  Acto acto = Acto();
+  Acto? acto;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
   PagoProvider? pagoProvider;
@@ -38,7 +39,8 @@ class PropiedadPageState extends State<PropiedadPage> {
 
   TextEditingController identificacionCtrl = TextEditingController();
   TextEditingController datosPersonaCtrl = TextEditingController();
-  TextEditingController direccionCtrl = TextEditingController();
+
+  //TextEditingController direccionCtrl = TextEditingController();
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
 
@@ -59,14 +61,25 @@ class PropiedadPageState extends State<PropiedadPage> {
 
   String estadoCivilSol = '';
   User? usuario;
+  PubPersona? persona;
   final _formKey = GlobalKey<FormState>();
 
   Data motivo = motivosSolicitud[0];
 
+  final _actosProvider = ActosProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    cargarActo();
+  }
+
+  cargarActo() async {
+    acto = await _actosProvider.findActoId(1357);
+  }
+
   @override
   Widget build(BuildContext context) {
-    acto.id = 1357;
-    acto.valor = 15.0;
     cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
@@ -74,21 +87,21 @@ class PropiedadPageState extends State<PropiedadPage> {
     if (userProvider != null) {
       userProvider!.initialize().then((value) {
         usuario = value;
-        PubPersona persona = usuario!.persona!;
+        persona = usuario!.persona!;
 
-        identificacionCtrl.text = persona.cedRuc!;
-        var nombres = persona.nombres! + ' ' + persona.apellidos!;
+        identificacionCtrl.text = persona!.cedRuc!;
+        var nombres = persona!.nombres! + ' ' + persona!.apellidos!;
         datosPersonaCtrl.text = nombres;
-        direccionCtrl.text = persona.direccion!;
-        telefonoCtrl.text = persona.telefono1!;
-        correoCtrl.text = persona.correo1!;
+        //direccionCtrl.text = persona.direccion!;
+        telefonoCtrl.text = persona!.telefono1!;
+        correoCtrl.text = persona!.correo1!;
 
-        identificacionFactCtrl.text = persona.cedRuc!;
+        identificacionFactCtrl.text = persona!.cedRuc!;
 
         datosPersonaFactCtrl.text = nombres;
-        direccionFactCtrl.text = persona.direccion!;
-        telefonoFactCtrl.text = persona.telefono1!;
-        correoFactCtrl.text = persona.correo1!;
+        direccionFactCtrl.text = persona!.direccion!;
+        telefonoFactCtrl.text = persona!.telefono1!;
+        correoFactCtrl.text = persona!.correo1!;
       });
     }
     return Form(
@@ -140,7 +153,7 @@ class PropiedadPageState extends State<PropiedadPage> {
             tituloWidget(context, 'Datos del solicitante'),
             identificacionWidget(),
             nombresWidget(),
-            direccionWidget(),
+            //direccionWidget(),
             telefonoWidget(),
             correoWidget(),
             tituloWidget(context, 'Datos de la propiedad'),
@@ -254,10 +267,6 @@ class PropiedadPageState extends State<PropiedadPage> {
           prefixIcon: Icon(
             Icons.person,
           ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.Searching
-              ? loading("...")
-              : btnBuscarPersona('SOLICITANTE'),
         ),
         textAlign: TextAlign.start,
       ),
@@ -285,7 +294,7 @@ class PropiedadPageState extends State<PropiedadPage> {
         ));
   }
 
-  Widget direccionWidget() {
+  /* Widget direccionWidget() {
     return datosWidget(
         context,
         'Dirección',
@@ -304,7 +313,7 @@ class PropiedadPageState extends State<PropiedadPage> {
           textAlign: TextAlign.start,
         ));
   }
-
+*/
   Widget correoWidget() {
     return datosWidget(
         context,
@@ -452,9 +461,9 @@ class PropiedadPageState extends State<PropiedadPage> {
     return IconButton(
       icon: Icon(Icons.search),
       onPressed: () async {
-        if (tipo == 'SOLICITANTE') {
+        if (tipo == 'PROPIETARIO') {
           if (identificacionCtrl.text.isEmpty) {
-            mensajeError(context, 'Ingrese la identificación del solicitante');
+            mensajeError(context, 'Ingrese la identificación del propietario');
             return;
           }
         } else {
@@ -645,7 +654,7 @@ class PropiedadPageState extends State<PropiedadPage> {
             obsCtrl.text,
             identificacionCtrl.text,
             datosPersonaCtrl.text,
-            direccionCtrl.text,
+            persona!.direccion!,
             telefonoCtrl.text,
             correoCtrl.text,
             estadoCivilSol,
@@ -654,12 +663,13 @@ class PropiedadPageState extends State<PropiedadPage> {
             direccionFactCtrl.text,
             telefonoFactCtrl.text,
             correoFactCtrl.text,
-            acto,
+            identificacionPropCtrl.text,
+            datosPersonaPropCtrl.text,
+            acto!,
             usuario!.id!,
             cantidadCtrl.text);
 
     successfulMessage.then((response) async {
-      print(response.toString());
       if (response['status']) {
         Solicitud rest = response['data'];
 
@@ -713,8 +723,8 @@ class PropiedadPageState extends State<PropiedadPage> {
   buscarPersona(String tipo) {
     final Future<Map<String, dynamic>> successfulMessage;
     successfulMessage = personaProvider!.buscarPersona(
-        tipo == 'SOLICITANTE'
-            ? identificacionCtrl.text
+        tipo == 'PROPIETARIO'
+            ? identificacionPropCtrl.text
             : identificacionFactCtrl.text,
         tipo);
 
@@ -722,15 +732,20 @@ class PropiedadPageState extends State<PropiedadPage> {
       print(response.toString());
       if (response['status']) {
         PubPersona persona = response['persona'];
-        if (tipo == 'SOLICITANTE') {
-          identificacionCtrl.text = persona.cedRuc!;
-          datosPersonaCtrl.text =
-              (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
-          direccionCtrl.text = persona.direccion ?? '';
-          telefonoCtrl.text = persona.telefono1 ?? '';
-          correoCtrl.text = persona.correo1 ?? '';
-          estadoCivilSol = persona.estadoCivil ?? '';
-        }
+        setState(() {
+          if (tipo == 'PROPIETARIO') {
+            identificacionPropCtrl.text = persona.cedRuc!;
+            datosPersonaPropCtrl.text =
+                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
+          } else {
+            identificacionFactCtrl.text = persona.cedRuc!;
+            datosPersonaFactCtrl.text =
+                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
+            direccionFactCtrl.text = persona.direccion ?? '';
+            telefonoFactCtrl.text = persona.telefono1 ?? '';
+            correoFactCtrl.text = persona.correo1 ?? '';
+          }
+        });
       } else {
         mensajeError(context, response['message']);
       }

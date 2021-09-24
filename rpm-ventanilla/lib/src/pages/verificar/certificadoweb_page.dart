@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/images-certificados.dart';
@@ -79,6 +80,7 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
               alignment: Alignment.center,
               child: TextFormField(
                 controller: codigoCtrl,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Ingrese el código de verificación';
@@ -110,10 +112,7 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
           certificadoProvider!.status == StatusCertificadoProv.Unknown
               ? Container()
               : certificadoProvider!.status == StatusCertificadoProv.Searching
-                  ? Container(
-                      alignment: Alignment.center,
-                      height: 60,
-                      child: CircularProgressIndicator())
+                  ? cargando()
                   : imagenesDocumento()
         ],
       ),
@@ -121,40 +120,44 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
   }
 
   Widget imagenesDocumento() {
-    return Scrollbar(
-        isAlwaysShown: true,
-        child: ListView.builder(
-          itemCount: imagesCertificados.length,
-          itemBuilder: (context, index) {
-            return Padding(
-                padding: EdgeInsets.only(top: 12),
-                child: InteractiveViewer(
-                    panEnabled: false,
-                    // Set it to false
-                    boundaryMargin: EdgeInsets.all(100),
-                    minScale: 0.5,
-                    maxScale: 2,
-                    child: imagesCertificados[index].urlImage != null
-                        ? Image.network(imagesCertificados[index].urlImage!,
-                            fit: BoxFit.fill, loadingBuilder:
-                                (BuildContext context, Widget? child,
-                                    ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) return child!;
-                            return Container(
-                              alignment: Alignment.center,
-                              height: 60,
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          })
-                        : Container()));
-          },
-        ));
+    return Container(
+        height: MediaQuery.of(context).size.height / 1.5,
+        width: MediaQuery.of(context).size.width / 1.5,
+        child: Scrollbar(
+            isAlwaysShown: true,
+            child: ListView.builder(
+              itemCount: imagesCertificados.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                    padding: EdgeInsets.only(top: 12),
+                    child: InteractiveViewer(
+                        panEnabled: false,
+                        // Set it to false
+                        boundaryMargin: EdgeInsets.all(100),
+                        minScale: 0.5,
+                        maxScale: 2,
+                        child: imagesCertificados[index].urlImage != null
+                            ? Image.network(imagesCertificados[index].urlImage!,
+                                fit: BoxFit.fill, loadingBuilder:
+                                    (BuildContext context, Widget? child,
+                                        ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child!;
+                                return Container(
+                                  alignment: Alignment.center,
+                                  height: 60,
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              })
+                            : Container()));
+              },
+            )));
   }
 
   List<Widget> tiposWidget() {
@@ -185,6 +188,7 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
     successfulMessage =
         certificadoProvider!.validarCertificado(codigoCtrl.text, tipo.data![0]);
     successfulMessage.then((response) {
+      print(response.toString());
       if (response['status']) {
         imagesCertificados = response['data'];
       } else {

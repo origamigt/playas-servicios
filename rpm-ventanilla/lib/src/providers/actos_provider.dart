@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/providers/ws.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,20 +13,18 @@ class ActosProvider {
     _actosStreamController.close();
   }
 
-  Future<List<Acto>?> _procesarRespuesta(Uri url) async {
-    Map<String, String> header = await mapHeaderAuth();
-    http.Response response = await http.get(url, headers: header);
-    List<dynamic>? collection = json.decode(utf8.decode(response.bodyBytes));
-
-    List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
-    return actos;
-  }
-
   findActosPopulares() async {
     List<dynamic>? collection =
         await findAll('/rpm-ventanilla/api/actosPopulares', true);
     List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
     _actosStreamController.add(actos);
+  }
+
+  Future<Acto>? findActoId(int id) async {
+    Map<String, dynamic> map =
+        await find('/rpm-ventanilla/api/actos/id/$id', false);
+    Acto? acto = Acto().fromJson(map);
+    return acto;
   }
 
   findActos() async {

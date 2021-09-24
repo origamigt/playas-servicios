@@ -9,6 +9,7 @@ import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/pagos/pago_page.dart';
+import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
@@ -27,7 +28,7 @@ class MercantilPage extends StatefulWidget {
 class MercantilState extends State<MercantilPage> {
   bool isWeb = UniversalPlatform.isWeb;
 
-  Acto acto = Acto();
+  Acto? acto;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
   PagoProvider? pagoProvider;
@@ -54,11 +55,20 @@ class MercantilState extends State<MercantilPage> {
   final _formKey = GlobalKey<FormState>();
 
   Data motivo = motivosSolicitud[0];
+  final _actosProvider = ActosProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    cargarActo();
+  }
+
+  cargarActo() async {
+    acto = await _actosProvider.findActoId(1358);
+  }
 
   @override
   Widget build(BuildContext context) {
-    acto.id = 1358;
-    acto.valor = 6.0;
     cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
@@ -124,8 +134,8 @@ class MercantilState extends State<MercantilPage> {
             motivo.id == 116
                 ? otroMotivoWidget()
                 : SizedBox(
-              height: 10,
-            ),
+                    height: 10,
+                  ),
             cantidadWidget(),
             observacionWidget(),
             tituloWidget(context, 'Datos del solicitante'),
@@ -146,8 +156,8 @@ class MercantilState extends State<MercantilPage> {
             pagoProvider!.status == StatusPago.Procesing
                 ? loading("Procesando solicitud...")
                 : Center(
-              child: btnProcesarPago(),
-            ),
+                    child: btnProcesarPago(),
+                  ),
             SizedBox(
               height: 15,
             ),
@@ -238,10 +248,6 @@ class MercantilState extends State<MercantilPage> {
           prefixIcon: Icon(
             Icons.person,
           ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-              StatusPersonProv.Searching
-              ? loading("...")
-              : btnBuscarPersona('SOLICITANTE'),
         ),
         textAlign: TextAlign.start,
       ),
@@ -345,7 +351,7 @@ class MercantilState extends State<MercantilPage> {
             Icons.person,
           ),
           suffixIcon: personaProvider!.personaStatusPersonProv ==
-              StatusPersonProv.SearchingFact
+                  StatusPersonProv.SearchingFact
               ? loading("...")
               : btnBuscarPersona('FACTURA'),
         ),
@@ -462,11 +468,11 @@ class MercantilState extends State<MercantilPage> {
           child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
-                MaterialStateProperty.all(Theme.of(context).primaryColor),
+                    MaterialStateProperty.all(Theme.of(context).primaryColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    )),
+                  borderRadius: BorderRadius.circular(30.0),
+                )),
               ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
@@ -483,22 +489,24 @@ class MercantilState extends State<MercantilPage> {
   doProcesarPago() {
     final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
         .procesarPago(
-        motivo,
-        obsCtrl.text,
-        identificacionCtrl.text,
-        datosPersonaCtrl.text,
-        direccionCtrl.text,
-        telefonoCtrl.text,
-        correoCtrl.text,
-        estadoCivilSol,
-        identificacionFactCtrl.text,
-        datosPersonaFactCtrl.text,
-        direccionFactCtrl.text,
-        telefonoFactCtrl.text,
-        correoFactCtrl.text,
-        acto,
-        usuario!.id!,
-        cantidadCtrl.text);
+            motivo,
+            obsCtrl.text,
+            identificacionCtrl.text,
+            datosPersonaCtrl.text,
+            direccionCtrl.text,
+            telefonoCtrl.text,
+            correoCtrl.text,
+            estadoCivilSol,
+            identificacionFactCtrl.text,
+            datosPersonaFactCtrl.text,
+            direccionFactCtrl.text,
+            telefonoFactCtrl.text,
+            correoFactCtrl.text,
+            '',
+            '',
+            acto!,
+            usuario!.id!,
+            cantidadCtrl.text);
 
     successfulMessage.then((response) async {
       print(response.toString());
@@ -510,8 +518,8 @@ class MercantilState extends State<MercantilPage> {
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
                 pageBuilder: (BuildContext context, _, __) => PagoPage(
-                  urlIframe: rest.linkPago,
-                )));
+                      urlIframe: rest.linkPago,
+                    )));
 
             if (verificado != null) {
               mensajeError(
@@ -561,19 +569,26 @@ class MercantilState extends State<MercantilPage> {
         tipo);
 
     successfulMessage.then((response) {
-      print(response.toString());
       if (response['status']) {
         PubPersona persona = response['persona'];
-        print(persona.cedRuc);
-        if (tipo == 'SOLICITANTE') {
-          identificacionCtrl.text = persona.cedRuc!;
-          datosPersonaCtrl.text =
-              (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
-          direccionCtrl.text = persona.direccion ?? '';
-          telefonoCtrl.text = persona.telefono1 ?? '';
-          correoCtrl.text = persona.correo1 ?? '';
-          estadoCivilSol = persona.estadoCivil ?? '';
-        }
+        setState(() {
+          if (tipo == 'SOLICITANTE') {
+            identificacionCtrl.text = persona.cedRuc!;
+            datosPersonaCtrl.text =
+                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
+            direccionCtrl.text = persona.direccion ?? '';
+            telefonoCtrl.text = persona.telefono1 ?? '';
+            correoCtrl.text = persona.correo1 ?? '';
+            estadoCivilSol = persona.estadoCivil ?? '';
+          } else {
+            identificacionFactCtrl.text = persona.cedRuc!;
+            datosPersonaFactCtrl.text =
+                (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
+            direccionFactCtrl.text = persona.direccion ?? '';
+            telefonoFactCtrl.text = persona.telefono1 ?? '';
+            correoFactCtrl.text = persona.correo1 ?? '';
+          }
+        });
       } else {
         mensajeError(context, response['message']);
       }

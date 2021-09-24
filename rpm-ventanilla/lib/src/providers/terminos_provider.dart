@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:http/http.dart' as http;
 import 'package:playas/src/providers/ws.dart';
 import 'package:rxdart/rxdart.dart';
 

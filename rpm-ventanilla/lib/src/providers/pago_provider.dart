@@ -44,6 +44,8 @@ class PagoProvider extends ChangeNotifier implements ReassembleHandler {
       String direccionFact,
       String telefonoFact,
       String correoFact,
+      String identificacionProp,
+      String datosProp,
       Acto acto,
       int user,
       String cantidad) async {
@@ -89,7 +91,10 @@ class PagoProvider extends ChangeNotifier implements ReassembleHandler {
       data.benDireccion = direccionFact;
       data.benTelefono = telefonoFact;
       data.benCorreo = correoFact;
-      //data.payframeUrl = 'identificacionFact';
+
+      data.propCedula = identificacionProp;
+      data.propNombres = datosProp;
+
       data.user = User();
       data.user!.id = user;
       data.cantidad = int.parse(cantidad);
