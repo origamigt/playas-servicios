@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/images-certificados.dart';
@@ -75,12 +74,16 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
           SizedBox(
             height: 20,
           ),
+          subTituloWidget(context,
+              'Para validar su certificado o razón de inscripción ingrese su código de verificaciónn'),
+          SizedBox(
+            height: 20,
+          ),
           Container(
               height: 80,
               alignment: Alignment.center,
               child: TextFormField(
                 controller: codigoCtrl,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Ingrese el código de verificación';

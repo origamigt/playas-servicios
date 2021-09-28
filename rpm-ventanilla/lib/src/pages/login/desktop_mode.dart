@@ -8,11 +8,12 @@ class DesktopMode extends StatelessWidget {
   String? tipo;
 
   DesktopMode({this.tipo});
-
+  double? widthSize;
+  double? heightSize;
   @override
   Widget build(BuildContext context) {
-    final double widthSize = MediaQuery.of(context).size.width;
-    final double heightSize = MediaQuery.of(context).size.height;
+    widthSize = MediaQuery.of(context).size.width;
+    heightSize = MediaQuery.of(context).size.height;
 
     return Container(
         decoration: boxDecorationBG,
@@ -38,14 +39,23 @@ class DesktopMode extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Image.asset('assets/images/logo.png',
-                                              height: heightSize * 0.15,
-                                              width: widthSize * 0.15),
+                                          leftBody(),
                                           SizedBox(height: 20),
                                           body()
                                         ]),
                                   )))
                         ])))));
+  }
+
+  Widget leftBody() {
+    return tipo == 'LOGIN'
+        ? SingleChildScrollView(
+            child: Column(
+              children: [],
+            ),
+          )
+        : Image.asset('assets/images/logo.png',
+            height: heightSize! * 0.15, width: widthSize! * 0.15);
   }
 
   Widget body() {

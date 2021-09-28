@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/home_page.dart';
-import 'package:playas/src/pages/login/recuperar_page.dart';
-import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
@@ -66,6 +64,13 @@ class LoginFormState extends State<LoginForm> {*/
           ),
           child: SingleChildScrollView(
               child: Column(children: <Widget>[
+            Align(
+                alignment: Alignment.center,
+                child: Text('Iniciar sesión',
+                    style: GoogleFonts.sourceCodePro(
+                      fontSize: widthSize! * fontSizeTextField,
+                    ))),
+            SizedBox(height: heightSize! * spaceBetweenFields),
             Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Identificación',
@@ -130,6 +135,8 @@ class LoginFormState extends State<LoginForm> {*/
                 ? loading("Iniciando sesión...")
                 : btnLogin(),
             SizedBox(height: heightSize! * 0.01),
+
+            /*
             Container(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -159,6 +166,35 @@ class LoginFormState extends State<LoginForm> {*/
                           color:
                               Theme.of(context).textTheme.bodyText1!.color!))),
             ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                  onPressed: () {
+                    context.vRouter.to(RecuperarPage.route);
+                  },
+                  child: Text('Ingresar como invitado',
+                      style: GoogleFonts.sourceCodePro(
+                          fontSize: widthSize! * fontSizeForgotPassword,
+                          fontWeight: FontWeight.w900,
+                          color:
+                              Theme.of(context).textTheme.bodyText1!.color!))),
+            ),
+            Container(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                    onPressed: () {
+                      //RpmApplication.router.navigateTo(context, RegistrarsePage.route);
+                      //context.vRouter.push('/home');
+                      context.vRouter.to(RegistrarsePage.route);
+                    },
+                    child: Text('Registrarse como entidad verificadora',
+                        style: GoogleFonts.sourceCodePro(
+                            fontSize: widthSize! * fontSizeForgotPassword,
+                            fontWeight: FontWeight.w900,
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .color!)))),*/
           ])),
         ));
   }

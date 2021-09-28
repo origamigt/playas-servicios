@@ -27,8 +27,16 @@ class ActoCard extends StatelessWidget {
             builder: DotSwiperPaginationBuilder(
                 color: Colors.grey, activeColor: Colors.lightBlue)),
         layout: SwiperLayout.DEFAULT,
-        itemWidth: _screenSize.width * 0.6,
-        itemHeight: _screenSize.height * 0.6,
+        indicatorLayout: PageIndicatorLayout.SCALE,
+        control: SwiperControl(),
+        fade: 1.0,
+        loop: true,
+        itemWidth: _screenSize.width,
+        itemHeight: _screenSize.height,
+        itemCount: actos!.length,
+        //autoplay: true,
+        //autoplayDelay: 1000,
+        scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
           Acto acto = actos![index];
 
@@ -90,7 +98,6 @@ class ActoCard extends StatelessWidget {
                 ),
               ));
         },
-        itemCount: actos!.length,
       ),
     );
   }

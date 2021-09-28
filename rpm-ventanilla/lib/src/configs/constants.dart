@@ -21,11 +21,11 @@ List<Menu> menus(isWeb) {
     Menu('Consultar trámites', BuscarPage.route, Colors.lightBlueAccent,
         Icons.search),
     Menu(
-        'Validar\ncertificado',
+        'Validar\ndocumentos',
         isWeb ? CertificadoWebPage.route : CertificadoMovPage.route,
         Colors.red,
         Icons.qr_code),
-    Menu('Validar\ndocumentos', VerificarDocPage.route, Colors.purple,
+    Menu('Validar\nfirma eléctronica', VerificarDocPage.route, Colors.purple,
         Icons.qr_code_scanner),
     Menu('Carpeta\nciudadana', CarpetaCiudadanaPage.route, Colors.tealAccent,
         Icons.qr_code),
