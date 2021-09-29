@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
+import 'package:playas/src/widgets/menu-login-card.dart';
 import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
 
@@ -48,7 +50,8 @@ class LoginFormState extends State<LoginForm> {*/
   double? widthSize;
 
   double? heightSize;
-
+  ScrollController scrollController =
+      ScrollController(initialScrollOffset: 0.0);
   @override
   Widget build(BuildContext context) {
     this.context = context;
@@ -63,80 +66,85 @@ class LoginFormState extends State<LoginForm> {*/
             right: widthSize! * 0.05,
           ),
           child: SingleChildScrollView(
-              child: Column(children: <Widget>[
-            Align(
-                alignment: Alignment.center,
-                child: Text('Iniciar sesión',
-                    style: GoogleFonts.sourceCodePro(
-                      fontSize: widthSize! * fontSizeTextField,
-                    ))),
-            SizedBox(height: heightSize! * spaceBetweenFields),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Identificación',
-                    style: GoogleFonts.sourceCodePro(
-                      fontSize: widthSize! * fontSizeTextField,
-                    ))),
-            TextFormField(
-              onSaved: (value) => _username = value,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Ingrese su identificación!';
-                }
-              },
-              style: TextStyle(
-                  color: Colors.black, fontSize: fontSizeTextFormField),
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.person,
-                  size: widthSize! * iconFormSize,
-                ),
-                errorStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: widthSize! * errorFormMessage),
-              ),
-              textAlign: TextAlign.start,
-            ),
-            SizedBox(height: heightSize! * spaceBetweenFields),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Contraseña',
-                    style: GoogleFonts.sourceCodePro(
-                      fontSize: widthSize! * fontSizeTextField,
-                    ))),
-            TextFormField(
-                onSaved: (value) => _password = value,
+            controller: scrollController,
+            child: Container(
+                child: Column(children: <Widget>[
+              Align(
+                  alignment: Alignment.center,
+                  child: Text('Iniciar sesión',
+                      style: GoogleFonts.sourceCodePro(
+                        fontSize: widthSize! * fontSizeTextField,
+                      ))),
+              SizedBox(height: 10),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Identificación',
+                      style: GoogleFonts.sourceCodePro(
+                        fontSize: widthSize! * fontSizeTextField,
+                      ))),
+              TextFormField(
+                onSaved: (value) => _username = value,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Ingrese su contraseña para continuar!';
+                    return 'Ingrese su identificación!';
                   }
                 },
-                keyboardType: TextInputType.text,
-                obscureText: true,
+                style: TextStyle(
+                    color: Colors.black, fontSize: fontSizeTextFormField),
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
                   prefixIcon: Icon(
-                    Icons.lock,
+                    Icons.person,
                     size: widthSize! * iconFormSize,
                   ),
-                  labelStyle: TextStyle(color: Colors.white),
                   errorStyle: TextStyle(
-                      color: Colors.white,
+                      color: Colors.red,
                       fontSize: widthSize! * errorFormMessage),
                 ),
                 textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: fontSizeTextFormField,
-                  color: Colors.black,
-                )),
-            SizedBox(height: heightSize! * spaceBetweenFieldAndButton),
-            auth!.loggedInStatus == Status.Authenticating
-                ? loading("Iniciando sesión...")
-                : btnLogin(),
-            SizedBox(height: heightSize! * 0.01),
-
-            /*
+              ),
+              SizedBox(height: heightSize! * spaceBetweenFields),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Contraseña',
+                      style: GoogleFonts.sourceCodePro(
+                        fontSize: widthSize! * fontSizeTextField,
+                      ))),
+              TextFormField(
+                  onSaved: (value) => _password = value,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Ingrese su contraseña para continuar!';
+                    }
+                  },
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      size: widthSize! * iconFormSize,
+                    ),
+                    labelStyle: TextStyle(color: Colors.white),
+                    errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: widthSize! * errorFormMessage),
+                  ),
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: fontSizeTextFormField,
+                    color: Colors.black,
+                  )),
+              SizedBox(height: heightSize! * spaceBetweenFieldAndButton),
+              auth!.loggedInStatus == Status.Authenticating
+                  ? loading("Iniciando sesión...")
+                  : btnLogin(),
+              SizedBox(height: heightSize! * 0.02),
+              MenuLoginCard(
+                menus: menusLogin,
+              ),
+              SizedBox(height: heightSize! * 0.02),
+              /*
             Container(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -195,7 +203,8 @@ class LoginFormState extends State<LoginForm> {*/
                                 .textTheme
                                 .bodyText1!
                                 .color!)))),*/
-          ])),
+            ])),
+          ),
         ));
   }
 

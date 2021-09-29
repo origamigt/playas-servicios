@@ -5,16 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/ajustes_page.dart';
+import 'package:playas/src/pages/ajustes/cerrar_sesion_page.dart';
 import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
 import 'package:playas/src/pages/busqueda/buscar-page.dart';
 import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
 import 'package:playas/src/pages/ciudadania/mistramites_page.dart';
 import 'package:playas/src/pages/ciudadania/repositorio_page.dart';
+import 'package:playas/src/pages/home_page.dart';
+import 'package:playas/src/pages/login/recuperar_page.dart';
+import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/pages/nosotros/nosotros_page.dart';
 import 'package:playas/src/pages/verificar/certificadomov_page.dart';
 import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
+import 'package:playas/src/widgets/components.dart';
 
 List<Menu> menus(isWeb) {
   return [
@@ -38,13 +43,25 @@ List<Menu> menusConfiguraciones = [
   Menu('Cambiar contraseña', ContraseniaPage.route, Colors.purple,
       Icons.password),
   Menu('Sobre nosotros', NosotrosPage.route, Colors.red, Icons.food_bank),
-  Menu('Cerrar sesión', '/cerrarSesion', Colors.tealAccent, Icons.logout),
+  Menu(
+      'Cerrar sesión', CerrarSesionPage.route, Colors.tealAccent, Icons.logout),
 ];
 
 List<Menu> menusCarpeta = [
   Menu('Mis trámites', MisTramitesPage.route, Colors.lightBlue,
       Icons.filter_list),
   Menu('Mis documentos', RepositorioPage.route, Colors.grey, Icons.filter_list),
+];
+
+List<Menu> menusLogin = [
+  Menu('Registrarse', RegistrarsePage.route, colorBandera1,
+      Icons.person_add_alt_1),
+  Menu('Recuperar contraseña', RecuperarPage.route, colorBandera2,
+      Icons.admin_panel_settings_outlined),
+  Menu('Ingresar como invitado', HomePage.route, colorBandera3,
+      Icons.pets_rounded),
+  Menu('Registrarse como entidad verificadora', RegistrarsePage.route,
+      colorPrimary, Icons.apartment),
 ];
 
 List<Data> motivosSolicitud = [

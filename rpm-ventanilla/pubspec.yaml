@@ -24,7 +24,7 @@ dependencies:
   intl: ^0.17.0
   flutter_custom_clippers: ^2.0.0
   responsive_property: ^0.0.6
-  top_snackbar_flutter: ^1.0.0
+  top_snackbar_flutter: ^1.0.1
   vrouter: ^1.2.0+12
   file_picker: ^4.0.0
   webview_flutter: ^2.0.12
@@ -32,6 +32,7 @@ dependencies:
   universal_platform: ^1.0.0+1
   lint: ^1.6.0
   qr_code_scanner: ^0.5.2
+  url_launcher: ^6.0.12
 
 dev_dependencies:
   flutter_test:

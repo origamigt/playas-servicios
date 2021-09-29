@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:vrouter/vrouter.dart';
 
 class CerrarSesionPage extends StatelessWidget {
-  String route = '/cerrarSesion';
+  static const String route = '/cerrarSesion';
   UsuarioProvider? userProvider;
   AuthProvider? authProvider;
   BuildContext? context;

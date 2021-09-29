@@ -15,7 +15,7 @@ class ActosProvider {
 
   findActosPopulares() async {
     List<dynamic>? collection =
-        await findAll('/rpm-ventanilla/api/actosPopulares', true);
+        await findAll('/rpm-ventanilla/api/actosPopulares', false);
     List<Acto>? actos = collection!.map((p) => Acto().fromJson(p)).toList();
     _actosStreamController.add(actos);
   }

@@ -34,7 +34,7 @@ class AjustesCard extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[menuCard(context, menu, isWeb)],
+              children: <Widget>[menuCard(context, menu, isWeb, true)],
             );
           },
         ));

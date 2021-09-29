@@ -8,8 +8,10 @@ class DesktopMode extends StatelessWidget {
   String? tipo;
 
   DesktopMode({this.tipo});
+
   double? widthSize;
   double? heightSize;
+
   @override
   Widget build(BuildContext context) {
     widthSize = MediaQuery.of(context).size.width;
@@ -19,43 +21,55 @@ class DesktopMode extends StatelessWidget {
         decoration: boxDecorationBG,
         child: Center(
             child: Container(
-                height: heightSize * 0.70,
-                width: widthSize * 0.70,
+                height: heightSize! * 0.70,
+                width: widthSize! * 0.70,
                 child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 5,
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          playasBG(heightSize, widthSize),
-                          Expanded(
-                              child: Container(
-                                  padding: EdgeInsets.only(top: 10),
-                                  decoration: boxDecorationLogin,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          leftBody(),
-                                          SizedBox(height: 20),
-                                          body()
-                                        ]),
-                                  )))
-                        ])))));
+                    elevation: 2,
+                    child: ClipPath(
+                      clipper: ShapeBorderClipper(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8))),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                left: BorderSide(
+                                  color: colorBandera1,
+                                  width: 6,
+                                ),
+                                bottom: BorderSide(
+                                  color: colorBandera2,
+                                  width: 6,
+                                ),
+                                right: BorderSide(
+                                  color: colorBandera3,
+                                  width: 6,
+                                ))),
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              playasBG(heightSize, widthSize),
+                              Expanded(
+                                  child: Container(
+                                      padding: EdgeInsets.only(top: 10),
+                                      //decoration: boxDecorationLogin,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              leftBody(),
+                                              SizedBox(height: 20),
+                                              body()
+                                            ]),
+                                      )))
+                            ]),
+                      ),
+                    )))));
   }
 
   Widget leftBody() {
-    return tipo == 'LOGIN'
-        ? SingleChildScrollView(
-            child: Column(
-              children: [],
-            ),
-          )
-        : Image.asset('assets/images/logo.png',
-            height: heightSize! * 0.15, width: widthSize! * 0.15);
+    return Image.asset('assets/images/logo.png',
+        height: heightSize! * 0.12, width: widthSize! * 0.15);
   }
 
   Widget body() {

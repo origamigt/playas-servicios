@@ -44,11 +44,11 @@ class PropiedadPageState extends State<PropiedadPage> {
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
 
-  TextEditingController identificacionFactCtrl = TextEditingController();
+  /*TextEditingController identificacionFactCtrl = TextEditingController();
   TextEditingController datosPersonaFactCtrl = TextEditingController();
   TextEditingController direccionFactCtrl = TextEditingController();
   TextEditingController telefonoFactCtrl = TextEditingController();
-  TextEditingController correoFactCtrl = TextEditingController();
+  TextEditingController correoFactCtrl = TextEditingController();*/
 
   TextEditingController obsCtrl = TextEditingController();
   TextEditingController otroMotivoCtrl = TextEditingController();
@@ -67,6 +67,7 @@ class PropiedadPageState extends State<PropiedadPage> {
   Data motivo = motivosSolicitud[0];
 
   final _actosProvider = ActosProvider();
+  double? total;
 
   @override
   void initState() {
@@ -76,6 +77,19 @@ class PropiedadPageState extends State<PropiedadPage> {
 
   cargarActo() async {
     acto = await _actosProvider.findActoId(1357);
+    total = acto!.valor;
+    /*cantidadCtrl.addListener(() {
+      try {
+        print(cantidadCtrl.text);
+        if (cantidadCtrl.text.isNotEmpty) {
+          double? v = double.parse(cantidadCtrl.text);
+          total = acto!.valor! * v;
+        }
+        ;
+      } catch (e) {
+        print(e);
+      }
+    });*/
   }
 
   @override
@@ -96,19 +110,17 @@ class PropiedadPageState extends State<PropiedadPage> {
         telefonoCtrl.text = persona!.telefono1!;
         correoCtrl.text = persona!.correo1!;
 
-        identificacionFactCtrl.text = persona!.cedRuc!;
-
+        /*identificacionFactCtrl.text = persona!.cedRuc!;
         datosPersonaFactCtrl.text = nombres;
         direccionFactCtrl.text = persona!.direccion!;
         telefonoFactCtrl.text = persona!.telefono1!;
-        correoFactCtrl.text = persona!.correo1!;
+        correoFactCtrl.text = persona!.correo1!;*/
       });
     }
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context,
-              'Certificado de Propiedad, Gravámenes y Limitaciones de Dominio'),
+          header: tituloPagina(context, 'Certificado de Historia de Dominio'),
           body: body(),
           footer: Container(),
         ));
@@ -150,7 +162,7 @@ class PropiedadPageState extends State<PropiedadPage> {
                   ),
             cantidadWidget(),
             observacionWidget(),
-            tituloWidget(context, 'Datos del solicitante'),
+            tituloWidget(context, 'Datos del solicitante y factura'),
             identificacionWidget(),
             nombresWidget(),
             //direccionWidget(),
@@ -163,12 +175,12 @@ class PropiedadPageState extends State<PropiedadPage> {
             numeroFichaWidget(),
             numeroInscripcionWidget(),
             anioInscripcionWidget(),
-            tituloWidget(context, 'Datos de la factura'),
+            /*tituloWidget(context, 'Datos de la factura'),
             identificacionFactWidget(),
             nombresFactWidget(),
             direccionFactWidget(),
             telefonoFactWidget(),
-            correoFactWidget(),
+            correoFactWidget(),*/
             SizedBox(
               height: 15,
             ),
@@ -357,7 +369,7 @@ class PropiedadPageState extends State<PropiedadPage> {
       context,
       'Identificación',
       TextFormField(
-        controller: identificacionFactCtrl,
+        //controller: identificacionFactCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
@@ -379,7 +391,7 @@ class PropiedadPageState extends State<PropiedadPage> {
         context,
         'Datos personales',
         TextFormField(
-          controller: datosPersonaFactCtrl,
+          //controller: datosPersonaFactCtrl,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Ingrese los nombres para la factura';
@@ -399,7 +411,7 @@ class PropiedadPageState extends State<PropiedadPage> {
         context,
         'Dirección',
         TextFormField(
-          controller: direccionFactCtrl,
+          //controller: direccionFactCtrl,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Ingrese la dirección para la factura';
@@ -419,7 +431,7 @@ class PropiedadPageState extends State<PropiedadPage> {
         context,
         'Correo electrónico',
         TextFormField(
-          controller: correoFactCtrl,
+          //controller: correoFactCtrl,
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.email,
@@ -440,7 +452,7 @@ class PropiedadPageState extends State<PropiedadPage> {
         context,
         'Teléfono',
         TextFormField(
-          controller: telefonoFactCtrl,
+          //controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -462,11 +474,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             return;
           }
         } else {
-          if (identificacionFactCtrl.text.isEmpty) {
+          /*if (identificacionFactCtrl.text.isEmpty) {
             mensajeError(context,
                 'Ingrese la identificación de quien se emitirá la factura');
             return;
-          }
+          }*/
         }
         buscarPersona(tipo);
       },
@@ -653,11 +665,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             telefonoCtrl.text,
             correoCtrl.text,
             estadoCivilSol,
-            identificacionFactCtrl.text,
-            datosPersonaFactCtrl.text,
-            direccionFactCtrl.text,
-            telefonoFactCtrl.text,
-            correoFactCtrl.text,
+            identificacionCtrl.text,
+            datosPersonaCtrl.text,
+            persona!.direccion!,
+            telefonoCtrl.text,
+            correoCtrl.text,
             identificacionPropCtrl.text,
             datosPersonaPropCtrl.text,
             acto!,
@@ -720,7 +732,7 @@ class PropiedadPageState extends State<PropiedadPage> {
     successfulMessage = personaProvider!.buscarPersona(
         tipo == 'PROPIETARIO'
             ? identificacionPropCtrl.text
-            : identificacionFactCtrl.text,
+            : 'identificacionFactCtrl.text',
         tipo);
 
     successfulMessage.then((response) {
@@ -732,12 +744,12 @@ class PropiedadPageState extends State<PropiedadPage> {
             datosPersonaPropCtrl.text =
                 (p.apellidos ?? '') + ' ' + (p.nombres ?? '');
           } else {
-            identificacionFactCtrl.text = 'p.cedRuc!';
+            /*identificacionFactCtrl.text = 'p.cedRuc!';
             datosPersonaFactCtrl.text =
                 (p.apellidos ?? '') + ' ' + (p.nombres ?? '');
             direccionFactCtrl.text = p.direccion ?? '';
             telefonoFactCtrl.text = p.telefono1 ?? '';
-            correoFactCtrl.text = p.correo1 ?? '';
+            correoFactCtrl.text = p.correo1 ?? '';*/
           }
         });
       } else {

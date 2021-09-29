@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/login_form.dart';
 import 'package:playas/src/widgets/recuperar_form.dart';
 import 'package:playas/src/widgets/registro_form.dart';
@@ -24,7 +23,7 @@ class _MobileModeState extends State<MobileMode> {*/
     return Scaffold(
         body: Container(
             height: heightSize,
-            decoration: boxDecorationBG,
+            //decoration: boxDecorationBG,
             child: SingleChildScrollView(
                 child: Column(children: [
               SizedBox(

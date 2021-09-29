@@ -108,8 +108,24 @@ class _VRouterAppState extends State<VRouterApp> {
               buildTransition: (animation, _, child) =>
                   FadeTransition(opacity: animation, child: child)),
           VWidget(
+            path: HomePage.route,
+            widget: HomePage(),
+          ),
+          VWidget(
               path: r':_(.pagos/transaccionExitosa)',
               widget: ConfirmarPagoPage()),
+          VWidget(
+            path: VerificarDocPage.route,
+            widget: VerificarDocPage(),
+          ),
+          VWidget(
+            path: CertificadoMovPage.route,
+            widget: CertificadoMovPage(),
+          ),
+          VWidget(
+            path: CertificadoWebPage.route,
+            widget: CertificadoWebPage(),
+          ),
           VGuard(
               beforeEnter: (vRedirector) async {
                 switch (authProvider.loggedInStatus) {
@@ -127,10 +143,6 @@ class _VRouterAppState extends State<VRouterApp> {
                     buildTransition: (animation1, _, child) =>
                         FadeTransition(opacity: animation1, child: child),
                     nestedRoutes: [
-                      VWidget(
-                        path: HomePage.route,
-                        widget: HomePage(),
-                      ),
                       VWidget(
                         path: TramitesPage.route,
                         widget: TramitesPage(),
@@ -150,10 +162,6 @@ class _VRouterAppState extends State<VRouterApp> {
                       VWidget(
                         path: ContraseniaPage.route,
                         widget: ContraseniaPage(),
-                      ),
-                      VWidget(
-                        path: VerificarDocPage.route,
-                        widget: VerificarDocPage(),
                       ),
                       VWidget(
                         path: PagoPage.route,
@@ -197,14 +205,6 @@ class _VRouterAppState extends State<VRouterApp> {
                       VWidget(
                         path: BuscarPage.route,
                         widget: BuscarPage(),
-                      ),
-                      VWidget(
-                        path: CertificadoMovPage.route,
-                        widget: CertificadoMovPage(),
-                      ),
-                      VWidget(
-                        path: CertificadoWebPage.route,
-                        widget: CertificadoWebPage(),
                       ),
                       VWidget(
                         path: NosotrosPage.route,

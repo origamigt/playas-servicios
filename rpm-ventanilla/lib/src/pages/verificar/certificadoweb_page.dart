@@ -16,6 +16,7 @@ class CertificadoWebPage extends StatefulWidget {
 
 class _CertificadoWebPageState extends State<CertificadoWebPage> {
   String codigo = "";
+  String detalle = "";
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Data tipo = tiposBusqueda[0];
   TextEditingController codigoCtrl = TextEditingController();
@@ -36,7 +37,6 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
   @override
   Widget build(BuildContext context) {
     certificadoProvider = Provider.of<CertificadoProvider>(context);
-
     return Form(
         key: _formKey,
         child: PageComponent(
@@ -75,7 +75,7 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
             height: 20,
           ),
           subTituloWidget(context,
-              'Para validar su certificado o razón de inscripción ingrese su código de verificaciónn'),
+              'Para validar su certificado o razón de inscripción ingrese su código de verificación'),
           SizedBox(
             height: 20,
           ),
@@ -112,6 +112,7 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
                 ),
                 textAlign: TextAlign.start,
               )),
+          subTituloWidget(context, detalle),
           certificadoProvider!.status == StatusCertificadoProv.Unknown
               ? Container()
               : certificadoProvider!.status == StatusCertificadoProv.Searching
@@ -133,32 +134,25 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
               itemBuilder: (context, index) {
                 return Padding(
                     padding: EdgeInsets.only(top: 12),
-                    child: InteractiveViewer(
-                        panEnabled: false,
-                        // Set it to false
-                        boundaryMargin: EdgeInsets.all(100),
-                        minScale: 0.5,
-                        maxScale: 2,
-                        child: imagesCertificados[index].urlImage != null
-                            ? Image.network(imagesCertificados[index].urlImage!,
-                                fit: BoxFit.fill, loadingBuilder:
-                                    (BuildContext context, Widget? child,
-                                        ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) return child!;
-                                return Container(
-                                  alignment: Alignment.center,
-                                  height: 60,
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              })
-                            : Container()));
+                    child: imagesCertificados[index].urlImage != null
+                        ? Image.network(imagesCertificados[index].urlImage!,
+                            fit: BoxFit.fill, loadingBuilder:
+                                (BuildContext context, Widget? child,
+                                    ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child!;
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 60,
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          })
+                        : Container());
               },
             )));
   }
@@ -194,6 +188,8 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
       print(response.toString());
       if (response['status']) {
         imagesCertificados = response['data'];
+        detalle = imagesCertificados[0].urlImage!;
+        imagesCertificados.removeAt(0);
       } else {
         mensajeError(context, response['message']);
       }

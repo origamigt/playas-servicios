@@ -43,14 +43,13 @@ class InscripcionesState extends State<InscripcionesPage> {
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
 
-  TextEditingController identificacionFactCtrl = TextEditingController();
+  /* TextEditingController identificacionFactCtrl = TextEditingController();
   TextEditingController datosPersonaFactCtrl = TextEditingController();
   TextEditingController direccionFactCtrl = TextEditingController();
   TextEditingController telefonoFactCtrl = TextEditingController();
-  TextEditingController correoFactCtrl = TextEditingController();
+  TextEditingController correoFactCtrl = TextEditingController();*/
 
   TextEditingController obsCtrl = TextEditingController();
-  TextEditingController otroMotivoCtrl = TextEditingController();
 
   String estadoCivilSol = '';
   User? usuario;
@@ -82,12 +81,11 @@ class InscripcionesState extends State<InscripcionesPage> {
       telefonoCtrl.text = persona.telefono1!;
       correoCtrl.text = persona.correo1!;
 
-      identificacionFactCtrl.text = persona.cedRuc!;
-
+      /*identificacionFactCtrl.text = persona.cedRuc!;
       datosPersonaFactCtrl.text = nombres;
       direccionFactCtrl.text = persona.direccion!;
       telefonoFactCtrl.text = persona.telefono1!;
-      correoFactCtrl.text = persona.correo1!;
+      correoFactCtrl.text = persona.correo1!;*/
     });
     return Form(
         key: _formKey,
@@ -129,18 +127,18 @@ class InscripcionesState extends State<InscripcionesPage> {
             tituloWidget(context, 'Requisitos'),
             requisitosXinscripcion(),
             observacionWidget(),
-            tituloWidget(context, 'Datos del solicitante'),
+            tituloWidget(context, 'Datos del solicitante y factura'),
             identificacionWidget(),
             nombresWidget(),
             direccionWidget(),
             telefonoWidget(),
             correoWidget(),
-            tituloWidget(context, 'Datos de la factura'),
+            /*tituloWidget(context, 'Datos de la factura'),
             identificacionFactWidget(),
             nombresFactWidget(),
             direccionFactWidget(),
             telefonoFactWidget(),
-            correoFactWidget(),
+            correoFactWidget(),*/
             SizedBox(
               height: 15,
             ),
@@ -196,10 +194,10 @@ class InscripcionesState extends State<InscripcionesPage> {
           prefixIcon: Icon(
             Icons.person,
           ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
+          /*suffixIcon: personaProvider!.personaStatusPersonProv ==
                   StatusPersonProv.Searching
               ? loading("...")
-              : btnBuscarPersona('SOLICITANTE'),
+              : btnBuscarPersona('SOLICITANTE'),*/
         ),
         textAlign: TextAlign.start,
       ),
@@ -290,7 +288,7 @@ class InscripcionesState extends State<InscripcionesPage> {
       context,
       'Identificación',
       TextFormField(
-        controller: identificacionFactCtrl,
+        //controller: identificacionFactCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -317,7 +315,7 @@ class InscripcionesState extends State<InscripcionesPage> {
         context,
         'Datos personales',
         TextFormField(
-          controller: datosPersonaFactCtrl,
+          //controller: datosPersonaFactCtrl,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Ingrese los nombres para la factura';
@@ -337,7 +335,7 @@ class InscripcionesState extends State<InscripcionesPage> {
         context,
         'Dirección',
         TextFormField(
-          controller: direccionFactCtrl,
+          //controller: direccionFactCtrl,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Ingrese la dirección para la factura';
@@ -357,7 +355,7 @@ class InscripcionesState extends State<InscripcionesPage> {
         context,
         'Correo electrónico',
         TextFormField(
-          controller: correoFactCtrl,
+          // controller: correoFactCtrl,
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.email,
@@ -378,7 +376,7 @@ class InscripcionesState extends State<InscripcionesPage> {
         context,
         'Teléfono',
         TextFormField(
-          controller: telefonoFactCtrl,
+          //  controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -400,11 +398,11 @@ class InscripcionesState extends State<InscripcionesPage> {
             return;
           }
         } else {
-          if (identificacionFactCtrl.text.isEmpty) {
+          /*if (identificacionFactCtrl.text.isEmpty) {
             mensajeError(context,
                 'Ingrese la identificación de quien se emitirá la factura');
             return;
-          }
+          }*/
         }
         buscarPersona(tipo);
       },
@@ -659,11 +657,11 @@ class InscripcionesState extends State<InscripcionesPage> {
             telefonoCtrl.text,
             correoCtrl.text,
             estadoCivilSol,
-            identificacionFactCtrl.text,
-            datosPersonaFactCtrl.text,
-            direccionFactCtrl.text,
-            telefonoFactCtrl.text,
-            correoFactCtrl.text,
+            identificacionCtrl.text,
+            datosPersonaCtrl.text,
+            direccionCtrl.text,
+            telefonoCtrl.text,
+            correoCtrl.text,
             acto,
             usuario!.id!,
             requisitos);
@@ -683,7 +681,7 @@ class InscripcionesState extends State<InscripcionesPage> {
     successfulMessage = personaProvider!.buscarPersona(
         tipo == 'SOLICITANTE'
             ? identificacionCtrl.text
-            : identificacionFactCtrl.text,
+            : 'identificacionFactCtrl.text',
         tipo);
 
     successfulMessage.then((response) {

@@ -6,12 +6,15 @@ import 'package:playas/src/pages/tramites/mercantil_page.dart';
 import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
 import 'package:playas/src/pages/tramites/personal_page.dart';
 import 'package:playas/src/pages/tramites/propiedad_page.dart';
+import 'package:playas/src/widgets/components.dart';
 import 'package:vrouter/vrouter.dart';
 
 class ActoCard extends StatelessWidget {
   final List<Acto>? actos;
+  bool? auth;
+  bool? isWeb;
 
-  ActoCard({@required this.actos});
+  ActoCard({@required this.actos, this.auth, this.isWeb});
 
   @override
   Widget build(BuildContext context) {
@@ -42,22 +45,26 @@ class ActoCard extends StatelessWidget {
 
           return GestureDetector(
               onTap: () {
-                switch (acto.abrv) {
-                  case 'CERT-NO':
-                    context.vRouter.to(NoposeerBienPage.route);
-                    break;
-                  case 'CERT-HIST':
-                    context.vRouter.to(PropiedadPage.route);
-                    break;
-                  case 'INS':
-                    context.vRouter.to(InscripcionesPage.route);
-                    break;
-                  case 'CERT-PERS':
-                    context.vRouter.to(PersonalPage.route);
-                    break;
-                  case 'CERT-MERC':
-                    context.vRouter.to(MercantilPage.route);
-                    break;
+                if (auth!) {
+                  switch (acto.abrv) {
+                    case 'CERT-NO':
+                      context.vRouter.to(NoposeerBienPage.route);
+                      break;
+                    case 'CERT-HIST':
+                      context.vRouter.to(PropiedadPage.route);
+                      break;
+                    case 'INS':
+                      context.vRouter.to(InscripcionesPage.route);
+                      break;
+                    case 'CERT-PERS':
+                      context.vRouter.to(PersonalPage.route);
+                      break;
+                    case 'CERT-MERC':
+                      context.vRouter.to(MercantilPage.route);
+                      break;
+                  }
+                } else {
+                  mensajeError(context, 'Debe iniciar sesión para continuar');
                 }
               },
               child: Container(
@@ -67,7 +74,7 @@ class ActoCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 300,
+                      height: isWeb! ? 300 : 200,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(20.0),
                           child: acto.urlImage != null

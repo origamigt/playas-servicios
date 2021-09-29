@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NosotrosPage extends StatefulWidget {
   static const String route = '/acercaDe';
@@ -34,7 +35,53 @@ class _NosotrosPageState extends State<NosotrosPage> {
   }
 
   Widget body() {
-    return Column(children: <Widget>[]);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 600) {
+          return FractionallySizedBox(
+            widthFactor: 0.5,
+            child: bodyDetail(),
+          );
+        } else {
+          return bodyDetail();
+        }
+      },
+    );
+  }
+
+  Widget bodyDetail() {
+    return Column(children: <Widget>[
+      tituloWidget(context, 'Misión'),
+      subTituloWidget(context,
+          'Registrar documental y electrónicamente los títulos de propiedades de los predios del Cantón Playas, garantizando la Seguridad Jurídica Inmobiliaria;  mediante los sistemas institucionales que se encargan de realizar y generar la información de acuerdo a los parámetros establecidos, para emitir los certificados y/o inscripciones  que requiera la ciudadanía usuaria de nuestros servicios, en concordancia con las disposiciones de Ley correspondientes.'),
+      SizedBox(
+        height: 10,
+      ),
+      tituloWidget(context, 'Visión'),
+      subTituloWidget(context,
+          'Posesionar a esta institución, dentro de cinco años,  como un ente de calidad y eficacia en la entrega de nuestros servicios; trabajando bajo esquemas jurídico-técnicos y tecnológicos actualizados, para impulsar un proceso de crecimiento del servicio público, con profesionalismo y responsabilidad, asegurando un mejoramiento continuo.'),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () async {
+              await canLaunch('https://origamiec.com/')
+                  ? await launch('https://origamiec.com/')
+                  : mensajeError(context, 'No se puede redirigir a https://origamiec.com/');
+            },
+            child: Column(
+              children: [
+                Image.asset('assets/images/origami.png',
+                    height: 100, width: 100),
+                Text('OrigamiEC')
+              ],
+            ),
+          ),
+          Image.asset('assets/images/logo.png', height: 110, width: 110)
+        ],
+      )
+    ]);
   }
 
   @override
