@@ -5,4 +5,4 @@ spring:
     active: dev
 logging:
   file:
-    name: C:/servers_files/logs/firmaec.log
+    name: D:/servers_files/logs/firmaec.log
