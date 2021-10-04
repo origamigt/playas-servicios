@@ -1,10 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/response-create.dart';
+import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/response_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
-//import 'package:auto_route/auto_route.dart';
 
 class ConfirmarPagoPage extends StatefulWidget {
   static const String route = '/pagos/transaccionExitosa/*';
@@ -18,7 +19,6 @@ class ConfirmarPagoPage extends StatefulWidget {
 class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Size? size;
   bool activar = false;
@@ -66,7 +66,8 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
 
   @override
   Widget build(BuildContext context) {
-    //load(//context.vRouter.url.replaceAll('${ConfirmarPagoPage.route}?', ''));
+    print(context.router.toString());
+    //load(context.router.url.replaceAll('${ConfirmarPagoPage.route}?', ''));
     return Form(
         key: _formKey,
         child: PageComponent(
@@ -187,7 +188,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
         ),
         child: ElevatedButton(
           onPressed: () async {
-            ////context.vRouter.to(HomePage.route);
+            context.router.navigateNamed(HomePage.route);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
