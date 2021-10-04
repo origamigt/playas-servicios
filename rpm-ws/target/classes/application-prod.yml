@@ -1,0 +1,80 @@
+
+spring:
+  application:
+    name: WS-ZERVICES
+  datasource:
+    url: jdbc:postgresql://192.168.16.212:5432/rpm_playas_ventanilla
+    username: sisapp
+    password: sisapp98
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 5
+      pool-name: WSRp
+      max-lifetime: 30000
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: app
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 3
+    appname: WSRP-ZERVICES
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+
+
+app:
+
+  correo: tramites.registro.playas@gmail.com
+  claveCorreo: p14y45@c0rre0
+  hostCorreo: smtp.gmail.com
+  portCorreo: 587
+  entidad: REGISTRO MUNICIPAL CANTON PLAYAS
+
+  outputDir: /servers_files/tramites/
+
+  userSgr: ventanilla
+  passSgr: regproloja
+
+  dominio: https://rpv.digital/
+  docUrl: jdbc:postgresql://192.168.16.212:5432/rpm_playas_archivos
+  dbDocUser: sisapp
+  dbDocPass: sisapp98
+
+  logo: http://rpv.digital/rmppm.png
+  urlPdfFirmado: http://127.0.0.1:8085/rpm-ventanilla/api/documento/
+  urlPersona: 192.168.100.2:8785/api/dinardap/aplicacion/
+  urlFichaRegistral: http://192.168.200.17:8790/api/rpl/fichaRegistral/ventanilla?numFicha=
+  apiSms: http://200.124.240.36/api/sms.php?token=4PruebaOficina&no=
+
+  rpFacturas: http://192.168.200.15:8780/api/facturacionElectronica/consultaFacturasContribuyente/
+  rpConsultarTramite: http://127.0.0.1:8080/sgr/rest/ventanilla/consultar/tramite/
+  rpIniciarTramite: http://127.0.0.1:8080/sgr/rest/ventanilla/iniciarTramiteOnline
+  rpActualizarDocumentos: http://127.0.0.1:8080/sgr/rest/ventanilla/updatePubSolicitud
+  rpActualizarRequisitos: http://127.0.0.1:8080/sgr/rest/ventanilla/actualizarRequisitos
+  rpConsultarOidDocument: http://127.0.0.1:8080/sgr/rest/ventanilla/certificado/codigo/
+  rpConsultarOidInscripcion: http://127.0.0.1:8080/sgr/rest/ventanilla/inscripcion/codigo/
+  rpConsultarOid: http://127.0.0.1:8080/sgr/rest/ventanilla/documento/codigo/
+  rpEntregaTramiteAPP: http://127.0.0.1:8080/sgr/rest/ventanilla/entregaTramiteAPP/tramite/
+  rpActoInscripciones: http://127.0.0.1:8080/sgr/rest/ventanilla/inscripciones
+  rpIniciarTramiteSolicitudInscripcion: http://127.0.0.1:8080/sgr/rest/ventanilla/iniciarTramiteSolicitudInscripcion
+  rpIniciarTramiteInscripcion: http://127.0.0.1:8080/sgr/rest/ventanilla/iniciarTramiteInscripcion
+
+  payphoneError: CONEXIÓN NO DISPONIBLE CON EL PROVEEDOR DE PAGOS
+  payphoneTransactionCreate: https://pay.payphonetodoesposible.com/api/v2/transaction/Create
+  payphoneReverseClient: https://pay.payphonetodoesposible.com/api/Reverse/Client
+
+  payphoneBtnPago: https://pay.payphonetodoesposible.com/api/button/Prepare
+  payphoneBtnApiCoding: ee95f4cf71854320845a48c88b62841c
+  payphoneBtnBearerApiToken: O5hqiFdOgklx3az8GHjzNiBEr0cZh8CKs5vRR75d--JCdzumsFRZrhiLAskoLsuwnEkHFD2n25YOndg1fH7dIlX3XSTHqdMy50qSiV4RpykLGnPxKgF3s7UIB1w1PH68EoCkYpTXhlhcFW96OQOMFy7nhjyvFw57wXCKLGfa1AfdmemzIv9pUVDskdBa3llP_RLMyrYfvYKmwXEu-8YSpEKpiH_HIFoh0NjMvK9ibrMLRs8TI0eutEwwB_6JaCaZDoxDu5Du3topPoVsHs0J0ZJh_TNAk_jCtZ4-SEboYllY8pqlLBedtQrT7c9yBccma1xBiX15MvpjGI0fGoGb09Of20w
+
+  payphoneConfirmPago: https://pay.payphonetodoesposible.com/api/button/V2/Confirm
+
+  firmaElectronica: http://127.0.0.1:8781/api/firmaElectronica/

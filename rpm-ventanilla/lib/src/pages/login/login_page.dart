@@ -4,7 +4,7 @@ import 'desktop_mode.dart';
 import 'mobile_mode.dart';
 
 class LoginPage extends StatelessWidget {
-  static const String route = '/';
+  static const String route = '/iniciarSesion';
 
   @override
   Widget build(BuildContext context) {

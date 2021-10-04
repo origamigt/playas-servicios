@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/acto.dart';
+import 'package:playas/src/models/menu.dart';
+import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/widgets/acto_widget.dart';
@@ -12,15 +14,23 @@ import 'package:universal_platform/universal_platform.dart';
 
 class HomePage extends StatelessWidget {
   bool isWeb = UniversalPlatform.isWeb;
-  static const String route = '/inicio';
+  static const String route = '/';
   AuthProvider? authProvider;
   final _actosProvider = ActosProvider();
   bool auth = false;
+  List<Menu> menusHome = [];
+
   @override
   Widget build(BuildContext context) {
     authProvider = Provider.of<AuthProvider>(context);
     auth = authProvider!.loggedInStatus == Status.LoggedIn ? true : false;
     _actosProvider.findActosPopulares();
+    menusHome = [];
+    if (!auth) {
+      menusHome.add(Menu(
+          'Iniciar sesión', LoginPage.route, Colors.pinkAccent, Icons.login));
+    }
+    menusHome.addAll(menus(isWeb));
     return Scaffold(
       bottomNavigationBar: Container(
         height: 0,
@@ -62,7 +72,7 @@ class HomePage extends StatelessWidget {
             height: 15,
           ),
           MenuCard(
-            menus: menus(isWeb),
+            menus: menusHome,
             auth: auth,
           ),
         ],

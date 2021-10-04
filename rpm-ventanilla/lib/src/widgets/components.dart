@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/cerrar_sesion_page.dart';
+import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -79,7 +80,7 @@ Widget menuCard(BuildContext context, Menu menu, bool isWeb, bool auth) {
         borderRadius: BorderRadius.all(Radius.circular(16)),
         onTap: () {
           if (menu.route == CertificadoWebPage.route ||
-              menu.route == VerificarDocPage.route) {
+              menu.route == VerificarDocPage.route || menu.route == LoginPage.route) {
             context.router.navigateNamed(menu.route);
           } else if (auth) {
             if (menu.route != CerrarSesionPage.route) {
