@@ -1,4 +1,4 @@
-import 'dart:js' as js;
+//import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:playas/src/configs/constants.dart';
@@ -12,6 +12,7 @@ import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 //import 'package:auto_route/auto_route.dart';
 
 class PagoInscripcionPage extends StatefulWidget {
@@ -263,7 +264,14 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
               );
             }
           } else {
-            js.context.callMethod('open', [rest.linkPago, '_self']);
+            await launch(
+              rest.linkPago!,
+              forceSafariVC: true,
+              forceWebView: true,
+              enableJavaScript: true,
+
+            );
+            //js.context.callMethod('open', [rest.linkPago, '_self']);
           }
         }
       } else {

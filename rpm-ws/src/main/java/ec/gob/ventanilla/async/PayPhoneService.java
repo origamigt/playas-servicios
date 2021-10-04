@@ -193,7 +193,8 @@ public class PayPhoneService {
 
     public CreateBtn linkPagoPayPhone(PubSolicitud pubSolicitud) {
         try {
-            String url = appProps.getDominio() + "pagos/transaccionExitosa/";
+            String url = appProps.getDominio() + "/pagos/transaccionExitosa/*";
+            System.out.println(url);
             Gson gson = new Gson();
             Double result = pubSolicitud.getTotal() * 100.0;
             Integer total = result.intValue();
@@ -204,6 +205,7 @@ public class PayPhoneService {
             transactionCreate.setAmountWithoutTax(total);
             transactionCreate.setCurrency("USD");
             transactionCreate.setResponseUrl(url + "?code=" + new MD5PasswordEncoder().encode(url + pubSolicitud.getId()));
+            System.out.println(transactionCreate.getResponseUrl());
             if (pubSolicitud.getEstado().equals("INSCRIPCION")) {
                 transactionCreate.setReference("Trámite " + pubSolicitud.getNumeroTramiteInscripcion().toString());
             } else {

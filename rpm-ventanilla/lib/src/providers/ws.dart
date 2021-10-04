@@ -5,7 +5,9 @@ import 'package:playas/src/configs/rpm_preferences.dart';
 import 'package:playas/src/models/user.dart';
 
 const SERVER_IP = '127.0.0.1:8085';
-
+const isDev = true;
+//const SERVER_IP = 'rpv.digital';
+//const isDev = false;
 //const SERVER_IP = '192.168.1.24:8718';
 //const SERVER_IP = '190.57.139.138';
 //const SERVER_IP = '192.168.100.211:8718';
@@ -81,7 +83,7 @@ Future<User?> loginAPP(String user, String clave) async {
     if (response.statusCode == 200) {
       try {
         Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
-            as Map<String, dynamic>;
+        as Map<String, dynamic>;
 
         User u = User().fromJson(map);
         u.clave = clave;
@@ -104,10 +106,11 @@ Future<User?> loginAPP(String user, String clave) async {
 
 findAll(String url, bool auth) async {
   try {
-    print(Uri.http(SERVER_IP, url));
+    Uri uri = isDev
+        ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response =
-        await http.get(Uri.http(SERVER_IP, url), headers: header);
+    await http.get(uri, headers: header);
     return json.decode(utf8.decode(response.bodyBytes));
   } catch (e) {
     print(e);
@@ -117,10 +120,11 @@ findAll(String url, bool auth) async {
 
 findAllResponse(String url, bool auth) async {
   try {
-    print(Uri.http(SERVER_IP, url));
+    Uri uri = isDev
+        ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response =
-        await http.get(Uri.http(SERVER_IP, url), headers: header);
+    await http.get(uri, headers: header);
     return response;
   } catch (e) {
     print(e);
@@ -130,15 +134,17 @@ findAllResponse(String url, bool auth) async {
 
 find(String url, bool auth) async {
   try {
+    Uri uri = isDev
+        ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response =
-        await http.get(Uri.http(SERVER_IP, url), headers: header);
+    await http.get(uri, headers: header);
 
     var jsTask = response.bodyBytes;
 
     if (jsTask.length > 0) {
       Map<String, dynamic> map =
-          json.decode(utf8.decode(jsTask)) as Map<String, dynamic>;
+      json.decode(utf8.decode(jsTask)) as Map<String, dynamic>;
       return map;
     } else {
       return null;
@@ -148,19 +154,20 @@ find(String url, bool auth) async {
   }
 }
 
-findParameters(
-    String url, Map<String, dynamic> queryParameters, bool auth) async {
+findParameters(String url, Map<String, dynamic> queryParameters,
+    bool auth) async {
   try {
-    print(Uri.http(SERVER_IP, url, queryParameters).toString());
+    Uri uri = isDev
+        ? Uri.http(SERVER_IP, url, queryParameters) : Uri.https(SERVER_IP, '/ws/' + url, queryParameters);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http
-        .get(Uri.http(SERVER_IP, url, queryParameters), headers: header);
+        .get(uri, headers: header);
 
     var jsTask = response.bodyBytes;
 
     if (jsTask.length > 0) {
       Map<String, dynamic> map =
-          json.decode(utf8.decode(jsTask)) as Map<String, dynamic>;
+      json.decode(utf8.decode(jsTask)) as Map<String, dynamic>;
       return map;
     } else {
       return null;
@@ -173,53 +180,14 @@ findParameters(
 save(String url, Object data, bool auth) async {
   http.Response? response;
   try {
+    Uri uri = isDev
+        ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     response = await http
-        .post(Uri.http(SERVER_IP, url), body: jsonEncode(data), headers: header)
+        .post(uri, body: jsonEncode(data), headers: header)
         .timeout(const Duration(seconds: 30));
   } catch (e) {
     print(e);
   }
   return response;
-}
-
-update(String url, Object data, bool auth) async {
-  try {
-    Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
-    http.Response response = await http
-        .put(Uri.http(SERVER_IP, url), body: jsonEncode(data), headers: header)
-        .timeout(const Duration(seconds: 30));
-
-    var jsTask = response.body;
-    if (jsTask.length > 0) {
-      Map<String, dynamic> map = jsonDecode(jsTask) as Map<String, dynamic>;
-      return map;
-    } else {
-      return null;
-    }
-  } catch (e) {
-    return null;
-  }
-}
-
-Future<String?> updateJWT(String usr, String clave) async {
-  try {
-    String url = '/ws/authenticate';
-    http.Response response = await http.post(Uri.https(SERVER_IP, url),
-        body: json.encode({"usuario": usr, "claveword": clave}),
-        headers: headerNoAuth);
-    if (response.statusCode == 200) {
-      Map<String, dynamic> map =
-          jsonDecode(response.body) as Map<String, dynamic>;
-
-      var jwt = map['token'];
-      await spDelete(kJWT);
-      await spSaveValue(kJWT, jwt);
-      return jwt;
-    } else {
-      return null;
-    }
-  } catch (e) {
-    return null;
-  }
 }

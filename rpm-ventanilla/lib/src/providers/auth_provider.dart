@@ -63,9 +63,11 @@ class AuthProvider with ChangeNotifier {
     usr.clave = password;
     usr.usuario = email;
     usr.habilitado = true;
+    String path = '/rpm-ventanilla/api/autentificacion';
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
 
-    http.Response response = await http.post(
-        Uri.http(SERVER_IP, '/rpm-ventanilla/api/autentificacion'),
+    http.Response response = await http.post(uri,
         body: json.encode({"username": email, "password": password}),
         headers: headerNoAuth);
 
@@ -78,11 +80,11 @@ class AuthProvider with ChangeNotifier {
       var jwt = map['token'];
       await spDelete(kJWT);
       await spSaveValue(kJWT, jwt);
-
-      response = await http.post(
-          Uri.http(SERVER_IP, '/rpm-ventanilla/api/usuario/loginUser'),
-          body: json.encode(usr),
-          headers: await mapHeaderAuth());
+      path = '/rpm-ventanilla/api/usuario/loginUser';
+      uri =
+          isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+      response = await http.post(uri,
+          body: json.encode(usr), headers: await mapHeaderAuth());
 
       try {
         map = json.decode(utf8.decode(response.bodyBytes))
@@ -122,12 +124,16 @@ class AuthProvider with ChangeNotifier {
     String path = tipo
         ? '/rpm-ventanilla/api/usuario/consultar'
         : '/rpm-ventanilla/api/usuario/consultar/recuperar';
-    http.Response response = await http.post(Uri.http(SERVER_IP, path),
+
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+
+    http.Response response = await http.post(uri,
         body: json.encode(registrationData), headers: headerNoAuth);
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-    print(response.body);
+    //   print(response.body);
     if (response.statusCode == 200) {
       _registeredInStatus = StatusRegistro.NotRegistered;
       notifyListeners();
@@ -165,11 +171,12 @@ class AuthProvider with ChangeNotifier {
 
     _registeredInStatus = StatusRegistro.CodigoEnviando;
     notifyListeners();
+    String path = '/rpm-ventanilla/api/correo/generarCodigoRegistro';
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
 
-    http.Response response = await http.post(
-        Uri.http(SERVER_IP, '/rpm-ventanilla/api/correo/generarCodigoRegistro'),
-        body: json.encode(verificacion),
-        headers: headerNoAuth);
+    http.Response response = await http.post(uri,
+        body: json.encode(verificacion), headers: headerNoAuth);
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
@@ -223,11 +230,11 @@ class AuthProvider with ChangeNotifier {
     Map<String, dynamic> verificacion = CodigoVerificacion().jsonRegistro(cv);
     _registeredInStatus = StatusRegistro.ValidarCodCargando;
     notifyListeners();
-
-    http.Response response = await http.post(
-        Uri.http(SERVER_IP, '/rpm-ventanilla/api/correo/validarCodigoRegistro'),
-        body: json.encode(verificacion),
-        headers: headerNoAuth);
+    String path = '/rpm-ventanilla/api/correo/validarCodigoRegistro';
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+    http.Response response = await http.post(uri,
+        body: json.encode(verificacion), headers: headerNoAuth);
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
@@ -263,11 +270,11 @@ class AuthProvider with ChangeNotifier {
 
     _registeredInStatus = StatusRegistro.ValidarCodCargando;
     notifyListeners();
-
-    http.Response response = await http.post(
-        Uri.http(SERVER_IP, '/rpm-ventanilla/api/correo/validarCodigo'),
-        body: json.encode(verificacion),
-        headers: headerNoAuth);
+    String path = '/rpm-ventanilla/api/correo/validarCodigo';
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+    http.Response response = await http.post(uri,
+        body: json.encode(verificacion), headers: headerNoAuth);
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
@@ -300,12 +307,11 @@ class AuthProvider with ChangeNotifier {
 
     _registeredInStatus = StatusRegistro.ClaveActualizando;
     notifyListeners();
-
-    http.Response response = await http.post(
-        Uri.http(
-            SERVER_IP, '/rpm-ventanilla/api/usuario/actualizarContrasenia'),
-        body: json.encode(registrationData),
-        headers: headerNoAuth);
+    String path = '/rpm-ventanilla/api/usuario/actualizarContrasenia';
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+    http.Response response = await http.post(uri,
+        body: json.encode(registrationData), headers: headerNoAuth);
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;

@@ -24,7 +24,6 @@ class CertificadoProvider extends ChangeNotifier {
 
     _status = StatusCertificadoProv.Searching;
     notifyListeners();
-
     http.Response? response = await findAllResponse(
         '/rpm-ventanilla/api/documento/codigo/$codigo/tipo/$tipo', true);
 

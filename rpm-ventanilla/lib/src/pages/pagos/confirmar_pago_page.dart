@@ -46,15 +46,19 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
     super.initState();
   }
 
-  void load(String urlPago) {
-    print(urlPago);
-    params = urlPago.split('&');
-
-    param1 = params[0].split('=');
+  void load( Map<String, dynamic> _params  ) {
+ //   print(urlPago);
+    //params = urlPago.split('&');
+    //_params['code'];
+    /*param1 = params[0].split('=');
     param2 = params[1].split('=');
-    param3 = params[2].split('=');
+    param3 = params[2].split('=');*/
 
-    String url = dominio + ConfirmarPagoPage.route + param2[1];
+    param1 =  _params['code'];
+    param2 =  _params['id'];
+    param3 =  _params['clientTransactionId'];
+
+    String url = dominio + '#/'+ ConfirmarPagoPage.route + param2[1];
 
     if (generateMd5(url) == param1[1]) {
       validos = true;
@@ -66,7 +70,12 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
 
   @override
   Widget build(BuildContext context) {
-    print(context.router.toString());
+    /*print('context.routeData.path');
+    print(context.routeData.pathParams);
+    print(context.routeData.name);
+    print(context.routeData.queryParams.toString());
+    print(context.routeData.toString());*/
+    load(context.routeData.queryParams.rawMap);
     //load(context.router.url.replaceAll('${ConfirmarPagoPage.route}?', ''));
     return Form(
         key: _formKey,

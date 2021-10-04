@@ -1,10 +1,12 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/acto_requisito.dart';
 import 'package:playas/src/providers/tramite_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RepositorioPage extends StatefulWidget {
   static const String route = '/misDocumentos';
@@ -14,6 +16,7 @@ class RepositorioPage extends StatefulWidget {
 }
 
 class _RepositorioPageState extends State<RepositorioPage> {
+  bool isWeb = UniversalPlatform.isWeb;
   List<ActoRequisito> requisitos = [];
   Size? size;
   final _formKey = GlobalKey<FormState>();
@@ -129,10 +132,18 @@ class _RepositorioPageState extends State<RepositorioPage> {
             }));
   }
 
-  void downloadFile(String url) {
-    print(url);
-    AnchorElement anchorElement = new AnchorElement(href: url);
-    anchorElement.download = url;
-    anchorElement.click();
+  void downloadFile(String url) async {
+    //print(url);
+    if (isWeb) {
+      await launch(
+        url,
+        forceSafariVC: true,
+        forceWebView: true,
+        enableJavaScript: true,
+      );
+    }
+    //AnchorElement anchorElement = new AnchorElement(href: url);
+    //anchorElement.download = url;
+    // anchorElement.click();
   }
 }

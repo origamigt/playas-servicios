@@ -1,4 +1,4 @@
-import 'dart:js' as js;
+//import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +17,7 @@ import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PropiedadPage extends StatefulWidget {
   static const String route = '/propiedad';
@@ -696,7 +697,13 @@ class PropiedadPageState extends State<PropiedadPage> {
               );
             }
           } else {
-            js.context.callMethod('open', [rest.linkPago, '_self']);
+            await launch(
+              rest.linkPago!,
+              forceSafariVC: true,
+              forceWebView: true,
+              enableJavaScript: true,
+            );
+            //js.context.callMethod('open', [rest.linkPago, '_self']);
           }
         }
       } else {

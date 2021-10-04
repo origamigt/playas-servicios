@@ -61,7 +61,6 @@ class TramiteProvider {
   }
 
   Future<List<Solicitud>>? findMisSolicitudes(int usuario) async {
-    print('/rpm-ventanilla/api/solicitud/solicitudes/usuario/$usuario');
     List<dynamic>? collection = await findAll(
         '/rpm-ventanilla/api/solicitud/solicitudes/usuario/$usuario', true);
     List<Solicitud>? solicitudes =

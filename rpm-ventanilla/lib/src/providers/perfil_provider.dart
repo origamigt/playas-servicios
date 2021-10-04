@@ -92,11 +92,11 @@ class PerfilProvider extends ChangeNotifier {
     _status = StatusPerfil.Searching;
     notifyListeners();
 
-    http.Response response = await http.post(
-        Uri.http(
-            SERVER_IP, '/rpm-ventanilla/api/usuario/actualizarContrasenia'),
-        body: json.encode(registrationData),
-        headers: headerNoAuth);
+    http.Response response = await save(
+        '/rpm-ventanilla/api/persona/actualizar',
+        json.encode(registrationData),
+        false);
+    ;
 
     Map<String, dynamic> map =
         json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
