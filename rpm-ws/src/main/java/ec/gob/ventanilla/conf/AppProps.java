@@ -11,10 +11,16 @@ public class AppProps {
     private String logo;
     @Value("${app.urlPdfFirmado}")
     private String urlPdfFirmado;
-    @Value("${app.urlPersona}")
-    private String urlPersona;
+    @Value("${app.urlDinardap}")
+    private String urlDinardap;
+    @Value("${app.usuarioDinardap}")
+    private String usuarioDinardap;
+    @Value("${app.claveDinardap}")
+    private String claveDinardap;
     @Value("${app.urlFichaRegistral}")
     private String urlFichaRegistral;
+    @Value("${app.apiSms}")
+    private String apiSms;
 
     @Value("${app.userSgr}")
     private String userSgr;
@@ -53,17 +59,7 @@ public class AppProps {
     private String payphoneTransactionCreate;
     @Value("${app.payphoneReverseClient}")
     private String payphoneReverseClient;
-    @Value("${app.payphoneApiCoding}")
-    private String payphoneApiCoding;
-    @Value("${app.payphoneBearerApiToken}")
-    private String payphoneBearerApiToken;
 
-    @Value("${app.payphoneLinkPago}")
-    private String payphoneLinkPago;
-    @Value("${app.payphoneLinkApiCoding}")
-    private String payphoneLinkApiCoding;
-    @Value("${app.payphoneLinkBearerApiToken}")
-    private String payphoneLinkBearerApiToken;
 
     @Value("${app.payphoneBtnPago}")
     private String payphoneBtnPago;
@@ -96,6 +92,9 @@ public class AppProps {
     @Value("${app.dbDocPass}")
     private String dbDocPass;
 
+    @Value("${app.firmaElectronica}")
+    private String firmaElectronica;
+
     public String getLogo() {
         return logo;
     }
@@ -120,12 +119,29 @@ public class AppProps {
         this.urlPdfFirmado = urlPdfFirmado;
     }
 
-    public String getUrlPersona() {
-        return urlPersona;
+
+    public String getUrlDinardap() {
+        return urlDinardap;
     }
 
-    public void setUrlPersona(String urlPersona) {
-        this.urlPersona = urlPersona;
+    public void setUrlDinardap(String urlDinardap) {
+        this.urlDinardap = urlDinardap;
+    }
+
+    public String getUsuarioDinardap() {
+        return usuarioDinardap;
+    }
+
+    public void setUsuarioDinardap(String usuarioDinardap) {
+        this.usuarioDinardap = usuarioDinardap;
+    }
+
+    public String getClaveDinardap() {
+        return claveDinardap;
+    }
+
+    public void setClaveDinardap(String claveDinardap) {
+        this.claveDinardap = claveDinardap;
     }
 
     public String getUrlFichaRegistral() {
@@ -232,21 +248,6 @@ public class AppProps {
         this.payphoneReverseClient = payphoneReverseClient;
     }
 
-    public String getPayphoneApiCoding() {
-        return payphoneApiCoding;
-    }
-
-    public void setPayphoneApiCoding(String payphoneApiCoding) {
-        this.payphoneApiCoding = payphoneApiCoding;
-    }
-
-    public String getPayphoneBearerApiToken() {
-        return payphoneBearerApiToken;
-    }
-
-    public void setPayphoneBearerApiToken(String payphoneBearerApiToken) {
-        this.payphoneBearerApiToken = payphoneBearerApiToken;
-    }
 
     public String getCorreo() {
         return correo;
@@ -344,30 +345,6 @@ public class AppProps {
         this.rpActualizarRequisitos = rpActualizarRequisitos;
     }
 
-    public String getPayphoneLinkPago() {
-        return payphoneLinkPago;
-    }
-
-    public void setPayphoneLinkPago(String payphoneLinkPago) {
-        this.payphoneLinkPago = payphoneLinkPago;
-    }
-
-    public String getPayphoneLinkApiCoding() {
-        return payphoneLinkApiCoding;
-    }
-
-    public void setPayphoneLinkApiCoding(String payphoneLinkApiCoding) {
-        this.payphoneLinkApiCoding = payphoneLinkApiCoding;
-    }
-
-    public String getPayphoneLinkBearerApiToken() {
-        return payphoneLinkBearerApiToken;
-    }
-
-    public void setPayphoneLinkBearerApiToken(String payphoneLinkBearerApiToken) {
-        this.payphoneLinkBearerApiToken = payphoneLinkBearerApiToken;
-    }
-
     public String getPayphoneBtnPago() {
         return payphoneBtnPago;
     }
@@ -424,6 +401,19 @@ public class AppProps {
         this.dbDocPass = dbDocPass;
     }
 
+    public String getFirmaElectronica() {
+        return firmaElectronica;
+    }
 
+    public void setFirmaElectronica(String firmaElectronica) {
+        this.firmaElectronica = firmaElectronica;
+    }
 
+    public String getApiSms() {
+        return apiSms;
+    }
+
+    public void setApiSms(String apiSms) {
+        this.apiSms = apiSms;
+    }
 }

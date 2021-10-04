@@ -20,10 +20,10 @@ public interface PubSolicitudRepository extends PagingAndSortingRepository<PubSo
 
     @Query("SELECT solicitudes "
             + "FROM PubSolicitud solicitudes"
-            + " WHERE solicitudes.user.id= ?1 " //and solicitudes.numeroTramite is not null "
+            + " WHERE solicitudes.user.id= ?1 and solicitudes.numeroTramite is not null "
             //+ " and solicitudes.fechaIngreso is not null "
             + " ORDER BY solicitudes.fechaIngreso DESC")
-    List<PubSolicitud> findPubSolicitudByUserId(Integer usuario);
+    List<PubSolicitud> findPubSolicitudByUser(Integer usuario, Pageable pageable);
 
     @Query("SELECT ps FROM PubSolicitud ps WHERE ps.id = ?1")
     PubSolicitud encontrarPorId(Long id);

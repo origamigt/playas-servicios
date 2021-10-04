@@ -18,7 +18,7 @@ public class Acto {
     private Double valor;
     private String tiempoEntrega;
     private String requisito;
-    private String urlRp;
+    private String abrv;
     private Boolean certificado;
     private Boolean tramiteBanca;
     @Transient
@@ -99,12 +99,12 @@ public class Acto {
         this.requisito = requisito;
     }
 
-    public String getUrlRp() {
-        return urlRp;
+    public String getAbrv() {
+        return abrv;
     }
 
-    public void setUrlRp(String urlRp) {
-        this.urlRp = urlRp;
+    public void setAbrv(String abrv) {
+        this.abrv = abrv;
     }
 
     public Boolean getCertificadoNoPoseerBien() {

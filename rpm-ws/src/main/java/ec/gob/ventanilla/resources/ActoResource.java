@@ -20,6 +20,11 @@ public class ActoResource {
     @Autowired
     private ActoServices actoServices;
 
+    @RequestMapping(value = "actosPopulares", method = RequestMethod.GET)
+    public ResponseEntity<?> findAllActosMasUsados() {
+        return new ResponseEntity<>(actoServices.findAll(), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "actos", method = RequestMethod.GET)
     public ResponseEntity<?> findAllActos() {
         return new ResponseEntity<>(actoServices.findAll(), HttpStatus.OK);

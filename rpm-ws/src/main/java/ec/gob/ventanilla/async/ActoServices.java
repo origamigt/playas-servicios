@@ -37,7 +37,6 @@ public class ActoServices {
     }
 
     public List<Acto> findActoInscripciones() {
-
         RestTemplate restTemplate = new RestTemplate();
         Acto[] actosRest = restTemplate.getForObject(appProps.getRpActosInscripciones(), Acto[].class);
         List<Acto> actos = Arrays.asList(actosRest);

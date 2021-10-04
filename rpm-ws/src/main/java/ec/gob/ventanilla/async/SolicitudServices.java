@@ -5,6 +5,7 @@
  */
 package ec.gob.ventanilla.async;
 
+import ec.gob.ventanilla.conf.AppProps;
 import ec.gob.ventanilla.entity.PubSolicitud;
 import ec.gob.ventanilla.entity.SolicitudActo;
 import ec.gob.ventanilla.entity.SolicitudRequisito;
@@ -13,18 +14,29 @@ import ec.gob.ventanilla.model.payphone.CreateBtn;
 import ec.gob.ventanilla.repository.PubSolicitudRepository;
 import ec.gob.ventanilla.repository.SolicitudActoRepository;
 import ec.gob.ventanilla.repository.SolicitudRequisitoRepository;
+import ec.gob.ventanilla.util.OmegaUploader;
 import ec.gob.ventanilla.util.SisVars;
 import ec.gob.ventanilla.util.Util;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.Transient;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author ORIGAMI
  */
 @Service
@@ -40,6 +52,10 @@ public class SolicitudServices {
     private SGRService sgrService;
     @Autowired
     private PayPhoneService payPhoneService;
+    @Autowired
+    private OmegaUploader omegaUploader;
+    @Autowired
+    private AppProps appProps;
 
     public PubSolicitud registrarSolicitudCertificados(PubSolicitud pubSolicitud) {
         pubSolicitud.setIngresado(Boolean.FALSE);
@@ -54,6 +70,21 @@ public class SolicitudServices {
         pubSolicitud = pubSolicitudRepository.save(pubSolicitud);
         if (pubSolicitud.getEstado().equals("V")) {
             sgrService.iniciarTramite(pubSolicitud);
+        } else {
+            CreateBtn response = payPhoneService.linkPagoPayPhone(pubSolicitud);
+            if (response != null && response.getPaymentId() != null) {
+                pubSolicitud.setLinkPago(response.getPayWithCard());
+                pubSolicitud.setPayWithPayPhone(response.getPayWithPayPhone());
+                pubSolicitud.setPaymentId(response.getPaymentId());
+
+                pubSolicitud.setLinkPago(response.getPayWithCard());
+                pubSolicitud.setPayWithPayPhone(response.getPayWithPayPhone());
+                pubSolicitud.setPaymentId(response.getPaymentId());
+            } else {
+                pubSolicitud.setLinkPago("");
+                pubSolicitud.setLinkPago("");
+            }
+            pubSolicitudRepository.save(pubSolicitud);
         }
         return pubSolicitud;
     }
@@ -70,8 +101,13 @@ public class SolicitudServices {
         pubSolicitud.setRequisitos(requisitos);
         for (ActoRequisito r : requisitos) {
             SolicitudRequisito sr = new SolicitudRequisito();
+            if (r.getArchivo() != null) {
+                Long doc = omegaUploader.uploadFile(new ByteArrayInputStream(r.getArchivo()),
+                        r.getNombreArchivo(), "application/pdf", appProps.getDocUrl());
+                sr.setDocumento(doc);
+                r.setDocumento(doc);
+            }
             sr.setSolicitud(pubSolicitud);
-            sr.setDocumento(r.getDocumento());
             sr.setRequisitoActo(r.getRequisitoActo());
             sr.setIdActo(r.getIdActo());
             sr.setActo(r.getActo());
@@ -190,8 +226,10 @@ public class SolicitudServices {
         return pubSolicitud;
     }
 
-    public PubSolicitud registrarSolicitudInscripcionesPagoEnLinea(PubSolicitud pubSolicitud) {
+    public PubSolicitud registrarSolicitudInscripcionesPagoEnLinea(PubSolicitud solicitud) {
+        PubSolicitud pubSolicitud = pubSolicitudRepository.encontrarPorId(solicitud.getId());
         pubSolicitud.setIngresado(Boolean.FALSE);
+        pubSolicitud.setTotal(solicitud.getTotal());
         pubSolicitud.setProcesando(Boolean.FALSE);
         pubSolicitud.setTieneNotificacion(Boolean.FALSE);
         pubSolicitud.setFechaSolicitud(new Date());
@@ -207,5 +245,33 @@ public class SolicitudServices {
         pubSolicitud = pubSolicitudRepository.save(pubSolicitud);
         return pubSolicitud;
     }
+
+    public List<ActoRequisito> requisitosUsuarios(Integer usuario) {
+        List<ActoRequisito> actoRequisitos = new ArrayList<>();
+        List<PubSolicitud> pubSolicituds = pubSolicitudRepository.findPubSolicitudByUser(usuario, PageRequest.of(0, 50));
+        if (pubSolicituds != null && !pubSolicituds.isEmpty()) {
+            List<SolicitudRequisito> requisitos = new ArrayList<>();
+            for (PubSolicitud solicitud : pubSolicituds) {
+                List<SolicitudRequisito> req = requisitoRepository.findAllBySolicitud_Id(solicitud.getId());
+                requisitos.addAll(req);
+            }
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            for (SolicitudRequisito sr : requisitos) {
+                if (sr.getDocumento() != null) {
+                    ActoRequisito req = new ActoRequisito();
+                    req.setId(sr.getId());
+                    req.setIdActo(sr.getIdActo());
+                    req.setActo(sr.getActo());
+                    req.setIdRequisito(sr.getIdRequisito());
+                    req.setRequisito(sr.getRequisito());
+                    req.setFecha(dateFormat.format(sr.getFecha()));
+                    req.setNombreArchivo(appProps.getUrlPdfFirmado() + "descargarRequisito/" + sr.getDocumento() + ".pdf");
+                    actoRequisitos.add(req);
+                }
+            }
+        }
+        return actoRequisitos;
+    }
+
 
 }

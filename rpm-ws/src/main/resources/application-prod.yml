@@ -3,7 +3,7 @@ spring:
   application:
     name: WS-ZERVICES
   datasource:
-    url: jdbc:postgresql://192.168.100.3:5432/rpm_playas_ventanilla
+    url: jdbc:postgresql://192.168.16.212:5432/rpm_playas_ventanilla
     username: sisapp
     password: sisapp98
     platform: postgres
@@ -32,29 +32,30 @@ eureka:
 
 app:
 
-  correo: desarrollo.rploja@gmail.com
-  claveCorreo: Sistemas_2021
+  correo: tramites.registro.playas@gmail.com
+  claveCorreo: p14y45@c0rre0
   hostCorreo: smtp.gmail.com
   portCorreo: 587
-  entidad: REGISTRO DE LA PROPIEDAD DEL CANTÓN LOJA
+  entidad: REGISTRO MUNICIPAL CANTON PLAYAS
 
-  outputDir: C:/servers_files/fd/
+  outputDir: /servers_files/tramites/
 
   userSgr: ventanilla
   passSgr: regproloja
 
-  dominio: http://127.0.0.1:9090/
-  docUrl: jdbc:postgresql://192.168.200.18:5432/sgr_tramite_archivo
-  dbDocUser: rploja
-  dbDocPass: XL9kDtKQtxyI25awCxnW
+  dominio: https://rpv.digital/
+  docUrl: jdbc:postgresql://192.168.16.212:5432/rpm_playas_archivos
+  dbDocUser: sisapp
+  dbDocPass: sisapp98
 
-  logo: http://127.0.0.1:9090/docs/images/certificados/logo.png
-  urlPdfFirmado: http://127.0.0.1:8770/api/document/movil/image/
-  urlPersona: http://192.168.200.13:8790/api/rpl/persona/aplicacion/
+  logo: http://rpv.digital/rmppm.png
+  urlPdfFirmado: http://127.0.0.1:8085/rpm-ventanilla/api/documento/
+  urlPersona: 192.168.100.2:8785/api/dinardap/aplicacion/
   urlFichaRegistral: http://192.168.200.17:8790/api/rpl/fichaRegistral/ventanilla?numFicha=
+  apiSms: http://200.124.240.36/api/sms.php?token=4PruebaOficina&no=
 
   rpFacturas: http://192.168.200.15:8780/api/facturacionElectronica/consultaFacturasContribuyente/
-  rpConsultarTramite: http://127.0.0.1:8080/sgr/rest/ventanilla/consultar/tramite/cedula/
+  rpConsultarTramite: http://127.0.0.1:8080/sgr/rest/ventanilla/consultar/tramite/
   rpIniciarTramite: http://127.0.0.1:8080/sgr/rest/ventanilla/iniciarTramiteOnline
   rpActualizarDocumentos: http://127.0.0.1:8080/sgr/rest/ventanilla/updatePubSolicitud
   rpActualizarRequisitos: http://127.0.0.1:8080/sgr/rest/ventanilla/actualizarRequisitos
@@ -69,12 +70,6 @@ app:
   payphoneError: CONEXIÓN NO DISPONIBLE CON EL PROVEEDOR DE PAGOS
   payphoneTransactionCreate: https://pay.payphonetodoesposible.com/api/v2/transaction/Create
   payphoneReverseClient: https://pay.payphonetodoesposible.com/api/Reverse/Client
-  payphoneApiCoding: cb4a52b3d49e4f63bce03c002d82a9ba
-  payphoneBearerApiToken: 1SxMsTDYSlPY-s2sKSFNMqCUrAWejDvI_TtuCPZHz_hHM-rokhuzKeSrhPI_SDXz-vDjKiaVIKaN4Vjl363wG8Jn6twd8PyFkOauq_reDCsJzAfGftHOZWS5DwZNKgCMPxD9Pw9dLtPHPm4dxTGLmU3VsSLR184r47OMdBBMr_9gedZwihX7cAafB2jroDaidK6Z48APrnlFZeIabVH7esQ9nLuqk6GN2pB8PQLQajHrDBptwZAFqPT3O7LlORgKRYcU4jlJ8aDPsxNyLdez90eHJL95cTwslYjVdkh6gtfSWqB8n1b7_Atyt9vti7LhHtsGLQ
-
-  payphoneLinkPago: https://pay.payphonetodoesposible.com/api/Links
-  payphoneLinkApiCoding: ee95f4cf71854320845a48c88b62841c
-  payphoneLinkBearerApiToken: O5hqiFdOgklx3az8GHjzNiBEr0cZh8CKs5vRR75d--JCdzumsFRZrhiLAskoLsuwnEkHFD2n25YOndg1fH7dIlX3XSTHqdMy50qSiV4RpykLGnPxKgF3s7UIB1w1PH68EoCkYpTXhlhcFW96OQOMFy7nhjyvFw57wXCKLGfa1AfdmemzIv9pUVDskdBa3llP_RLMyrYfvYKmwXEu-8YSpEKpiH_HIFoh0NjMvK9ibrMLRs8TI0eutEwwB_6JaCaZDoxDu5Du3topPoVsHs0J0ZJh_TNAk_jCtZ4-SEboYllY8pqlLBedtQrT7c9yBccma1xBiX15MvpjGI0fGoGb09Of20w
 
   payphoneBtnPago: https://pay.payphonetodoesposible.com/api/button/Prepare
   payphoneBtnApiCoding: ee95f4cf71854320845a48c88b62841c
@@ -82,3 +77,4 @@ app:
 
   payphoneConfirmPago: https://pay.payphonetodoesposible.com/api/button/V2/Confirm
 
+  firmaElectronica: http://127.0.0.1:8781/api/firmaElectronica/

@@ -5,6 +5,8 @@
  */
 package ec.gob.ventanilla.model;
 
+import javax.persistence.Transient;
+
 /**
  *
  * @author ORIGAMI
@@ -19,6 +21,10 @@ public class ActoRequisito {
     private String requisito;
     private Long documento;
     private Boolean requerido;
+    private String nombreArchivo;
+    private String fecha;
+    private byte[] archivo;
+
 
     public ActoRequisito() {
     }
@@ -87,4 +93,27 @@ public class ActoRequisito {
         this.requerido = requerido;
     }
 
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
+    public byte[] getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(byte[] archivo) {
+        this.archivo = archivo;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
 }

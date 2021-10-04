@@ -62,7 +62,7 @@ public class PayPhoneService {
             String card = gson.toJson(tarjeta);
 
             byte[] inputBytes = card.getBytes("UTF-8");
-            byte[] keyC = appProps.getPayphoneApiCoding().getBytes("UTF-8");
+            byte[] keyC = null;//appProps.getPayphoneApiCoding().getBytes("UTF-8");
 
             PaddedBufferedBlockCipher cipher = new PaddedBufferedBlockCipher(new CBCBlockCipher(new AESEngine()));
             ParametersWithIV keyParamWithIV = new ParametersWithIV(new KeyParameter(keyC), new byte[16]);
@@ -97,7 +97,7 @@ public class PayPhoneService {
             HttpPost httpPost = new HttpPost(appProps.getPayphoneTransactionCreate());
             httpPost.setEntity(new StringEntity(gson.toJson(transactionCreate), "UTF-8"));
             httpPost.setHeader("Content-type", "application/json; charset=utf-8");
-            httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneBearerApiToken());
+            //  httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneBearerApiToken());
             HttpResponse httpResponse = httpClient.execute(httpPost);
             if (httpResponse != null) {
                 BufferedReader in = new BufferedReader(
@@ -157,7 +157,7 @@ public class PayPhoneService {
             HttpPost httpPost = new HttpPost(appProps.getPayphoneReverseClient());
             httpPost.setEntity(new StringEntity(gson.toJson(reverse), "UTF-8"));
             httpPost.setHeader("Content-type", "application/json; charset=utf-8");
-            httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneBearerApiToken());
+            //   httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneBearerApiToken());
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
 
@@ -193,7 +193,7 @@ public class PayPhoneService {
 
     public CreateBtn linkPagoPayPhone(PubSolicitud pubSolicitud) {
         try {
-            String url = appProps.getDominio() + "pagos/success.xhtml";
+            String url = appProps.getDominio() + "pagos/transaccionExitosa/";
             Gson gson = new Gson();
             Double result = pubSolicitud.getTotal() * 100.0;
             Integer total = result.intValue();
@@ -217,7 +217,7 @@ public class PayPhoneService {
             HttpPost httpPost = new HttpPost(appProps.getPayphoneBtnPago());
             httpPost.setEntity(new StringEntity(gson.toJson(transactionCreate), "UTF-8"));
             httpPost.setHeader("Content-type", "application/json; charset=utf-8");
-            httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneLinkBearerApiToken());
+            httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneBtnBearerApiToken());
             HttpResponse httpResponse = httpClient.execute(httpPost);
             if (httpResponse != null) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent(), "UTF-8"), 8);
@@ -247,19 +247,18 @@ public class PayPhoneService {
 
     public ResponseCreate verificarPagoBtn(ResponseBtn responseBtn) {
         PubSolicitud solicitud = solicitudRepository.encontrarPorId(Long.valueOf(responseBtn.getClientTxId()));
-
-        ResponseCreate responseCreate = new ResponseCreate();
-
         try {
+            ResponseCreate responseCreate = new ResponseCreate();
             if (solicitud != null && !solicitud.getProcesando()) {
                 solicitud.setProcesando(Boolean.TRUE);
                 solicitud = solicitudRepository.save(solicitud);
                 Gson gson = new Gson();
+                System.out.println(gson.toJson(responseBtn));
                 HttpClient httpClient = HttpClientBuilder.create().build();
                 HttpPost httpPost = new HttpPost(appProps.getPayphoneConfirmPago());
                 httpPost.setEntity(new StringEntity(gson.toJson(responseBtn), "UTF-8"));
                 httpPost.setHeader("Content-type", "application/json; charset=utf-8");
-                httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneLinkBearerApiToken());
+                httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneBtnBearerApiToken());
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 if (httpResponse != null) {
                     BufferedReader in = new BufferedReader(
@@ -270,21 +269,24 @@ public class PayPhoneService {
                         sb.append(inputLine);
                     }
                     in.close();
+                    System.out.println("sb.toString: " + sb.toString());
                     responseCreate = gson.fromJson(sb.toString(), ResponseCreate.class);
                     if (responseCreate != null) {
+                        System.out.println("responseCreate:  " + responseCreate.toString());
                         if (responseCreate.getStatusCode() != null) {
                             responseCreate.setFecha(new Date());
                             responseCreate.setIdSolicitud(solicitud.getId());
                             responseCreate.setActo(solicitud.getTipoSolicitud() == 0 ? ("INSCRIPCIÓN TRÁMITE #" + solicitud.getNumeroTramiteInscripcion()) : actoRepository.findById(solicitud.getTipoSolicitud()).get().getActo());
                             responseCreate.setTotal(solicitud.getTotal());
-                            responseCreateRepository.save(responseCreate);
+                            responseCreate = responseCreateRepository.save(responseCreate);
+
                             if (responseCreate.getStatusCode().equals("3")) {
                                 if (solicitud.getTipoSolicitud() != 0) {
                                     sgrService.iniciarTramite(solicitud);
                                 } else {
                                     sgrService.iniciarTramiteInscripcion(solicitud);
                                 }
-
+                                return responseCreate;
                             } else {
                                 emailService.sendMail(solicitud.getSolCorreo(), "Solicitud de Trámite",
                                         htmlRechazoTramite(responseCreate.getMessage()));
@@ -300,15 +302,17 @@ public class PayPhoneService {
                     emailService.sendMail(solicitud.getSolCorreo(), "Solicitud de Trámite", htmlRechazoTramite(appProps.getPayphoneError()));
                 }
             } else {
-                responseCreate = responseCreateRepository.findByTransactionId(responseBtn.getId().toString());
+                responseCreate = responseCreateRepository.findFirstByTransactionIdOrderByIdDesc(responseBtn.getId().toString());
             }
-
+//            System.out.println(responseCreate.toString());
+            return responseCreate;
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
             emailService.sendMail(solicitud.getSolCorreo(), "Solicitud de Trámite", htmlRechazoTramite(appProps.getPayphoneError()));
+
         }
-        return responseCreate;
+        return null;
     }
 
     private String htmlRechazoTramite(String razon) {

@@ -18,4 +18,6 @@ public interface SolicitudRequisitoRepository extends CrudRepository<SolicitudRe
 
     List<SolicitudRequisito> findAllBySolicitud_IdAndTipo(Long id, String tipo);
 
+    List<SolicitudRequisito> findAllBySolicitud_Id(Long id);
+
 }

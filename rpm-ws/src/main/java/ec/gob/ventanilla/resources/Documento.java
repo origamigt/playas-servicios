@@ -2,12 +2,17 @@ package ec.gob.ventanilla.resources;
 
 //import com.google.gson.Gson;
 
+import ec.gob.ventanilla.async.SGRService;
 import ec.gob.ventanilla.conf.AppProps;
 import ec.gob.ventanilla.entity.AppLogs;
 import ec.gob.ventanilla.entity.ImagesCertificados;
+import ec.gob.ventanilla.entity.PubPersona;
 import ec.gob.ventanilla.model.DataModel;
+import ec.gob.ventanilla.model.DocumentoFD;
+import ec.gob.ventanilla.model.DocumentoModel;
 import ec.gob.ventanilla.repository.AppLogsRepository;
 import ec.gob.ventanilla.util.OmegaUploader;
+import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -34,262 +39,123 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/document")
+@RequestMapping("/rpm-ventanilla/api/documento")
 public class Documento {
 
     @Autowired
     private OmegaUploader omegaUploader;
-
     @Autowired
-    private AppLogsRepository appLogsRepository;
+    private SGRService sgrService;
     @Autowired
     private AppProps appProps;
-    private AppLogs appLogs;
 
-    @RequestMapping(value = "/codigoVerificacion/{codigoVerificacion}", method = RequestMethod.GET)
-    public ResponseEntity<?> existeCertificado(@PathVariable(name = "codigoVerificacion") String codigoVerificacion) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-
-        appLogs = new AppLogs(new Date(), "/api/document/codigoVerificacion/" + codigoVerificacion, null, "existeCertificado", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            Long oidDocumento = restTemplate.getForObject(appProps.getRpConsultarOidDocument() + codigoVerificacion,
-                    Long.class);
-            DataModel dataModel = new DataModel(oidDocumento != null || oidDocumento > 0 ? "EXISTE" : "INVÁLIDO");
-            return new ResponseEntity<>(dataModel, HttpStatus.OK);
-        } catch (RestClientException e) {
-            System.out.println(e);
-            return new ResponseEntity<>(new DataModel("INVÁLIDO"), HttpStatus.OK);
-        }
-    }
-
-    @RequestMapping(value = "/codigoVerificacionInscripcion/{codigoVerificacion}", method = RequestMethod.GET)
-    public ResponseEntity<?> existeInscripcion(@PathVariable(name = "codigoVerificacion") String codigoVerificacion) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-
-        appLogs = new AppLogs(new Date(), "/api/document/codigoVerificacionInscripcion/" + codigoVerificacion, null, "existeCertificado", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            Long oidDocumento = restTemplate.getForObject(appProps.getRpConsultarOidDocument() + codigoVerificacion,
-                    Long.class);
-            DataModel dataModel = new DataModel(oidDocumento != null || oidDocumento > 0 ? "EXISTE" : "INVÁLIDO");
-            return new ResponseEntity<>(dataModel, HttpStatus.OK);
-        } catch (RestClientException e) {
-            System.out.println(e);
-            return new ResponseEntity<>(new DataModel("INVÁLIDO"), HttpStatus.OK);
-        }
-    }
-
-    @RequestMapping(value = "/web/{codigoVerificacion}", method = RequestMethod.GET, produces = "application/pdf")
-    public ResponseEntity<byte[]> downloadPDFFile(@PathVariable String codigoVerificacion) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-
-        appLogs = new AppLogs(new Date(), "/api/document/web/" + codigoVerificacion, null, "downloadPDFFile", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
-
-        String pathFile = pathFileCertificado(codigoVerificacion);
-
-        Path path = Paths.get(pathFile);
-        byte[] pdfContents = null;
-
-        try {
-            pdfContents = Files.readAllBytes(path);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=" + codigoVerificacion + ".pdf");
-        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(
-                pdfContents, headers, HttpStatus.OK);
-        return responseEntity;
-
-    }
-
-    @RequestMapping(value = "/webinscripcion/{codigoVerificacion}", method = RequestMethod.GET, produces = "application/pdf")
-    public ResponseEntity<byte[]> downloadPDFFileInscripcion(@PathVariable String codigoVerificacion) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-
-        appLogs = new AppLogs(new Date(), "/api/document/webinscripcion/" + codigoVerificacion, null, "downloadPDFFileInscripcion", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
-
-        String pathFile = pathFileInscripcion(codigoVerificacion);
-
-        Path path = Paths.get(pathFile);
-        byte[] pdfContents = null;
-
-        try {
-            pdfContents = Files.readAllBytes(path);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=" + codigoVerificacion + ".pdf");
-        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(
-                pdfContents, headers, HttpStatus.OK);
-        return responseEntity;
-
-    }
-
-    @RequestMapping(value = "/movil/{codigoVerificacion}", method = RequestMethod.GET)
-    public List<ImagesCertificados> downloadPDFFileImage(@PathVariable String codigoVerificacion) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-
-        appLogs = new AppLogs(new Date(), "/api/document/movil/" + codigoVerificacion, null, "downloadPDFFileImage", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
-
-        String pathFile = pathFileCertificado(codigoVerificacion);
+    @RequestMapping(value = "/codigo/{codigoVerificacion}/tipo/{tipo}", method = RequestMethod.GET)
+    public List<ImagesCertificados> downloadPDFFileImage2(@PathVariable String codigoVerificacion,
+                                                          @PathVariable String tipo) {
+        Integer codigo = tipo.equals("C") ? 1 : 2;
+        String descripcion = pathFileDocumento(codigoVerificacion, "/informacion/", codigo);
+        String pathFile = pathFileDocumento(codigoVerificacion, "/tipo/", codigo);
         List<ImagesCertificados> files = new ArrayList<>();
+        files.add(new ImagesCertificados(descripcion));
         if (pathFile != null) {
             String fileName, tempName;
             BufferedImage bim;
-
             try (final PDDocument document = PDDocument.load(new File(pathFile))) {
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
                 for (int page = 0; page < document.getNumberOfPages(); ++page) {
                     bim = pdfRenderer.renderImageWithDPI(page, 500, ImageType.RGB);
                     tempName = codigoVerificacion + "-" + page + ".png";
-                    fileName = appProps.getOutputDir() + tempName;
-                    files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + tempName));
+                    fileName = appProps.getOutputDir() + "imagenes_tramites/" + tempName;
+                    files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "imagen/" + tempName));
                     ImageIOUtil.writeImage(bim, fileName, 500);
                 }
-                document.close();
-
             } catch (IOException e) {
-                files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "sin_resultados.png"));
+                files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "imagen/" + "sin_resultados.png"));
                 System.err.println("Exception while trying to create pdf document - " + e);
             }
         } else {
-            files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "sin_resultados.png"));
+            files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "imagen/" + "sin_resultados.png"));
         }
         return files;
     }
 
-    @RequestMapping(value = "/movil/image/{name}", method = RequestMethod.GET)
-    public @ResponseBody
+    private String pathFileDocumento(String codigoVerificacion, String path, Integer tipo) {
+        String pathFile;
+        RestTemplate restTemplate = new RestTemplate();
+        if (!path.contains("informacion")) {
+            Long oidDocumento = restTemplate.getForObject(appProps.getRpConsultarOid() + codigoVerificacion + path + tipo, Long.class);
+            if (oidDocumento > 0L) {
+                pathFile = appProps.getOutputDir() + codigoVerificacion + ".pdf";
+            } else {
+                pathFile = appProps.getOutputDir() + "documento_no_encontrado.pdf";
+            }
+            if (oidDocumento > 0L) {
+                File file = new File(pathFile);
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    omegaUploader.streamFile(oidDocumento, fos, appProps.getDocUrl());
+                } catch (IOException e) {
+                    System.out.println(e);
+                    return null;
+                }
+            }
+        } else {
+            pathFile = restTemplate.getForObject(appProps.getRpConsultarOid() + codigoVerificacion + path + tipo, String.class);
+        }
+        return pathFile;
+    }
 
-    byte[] getImage(@PathVariable String name) throws IOException {
-        File initialFile = new File(appProps.getOutputDir() + name + ".png");
+    @RequestMapping(value = "/imagen/{nombre}", method = RequestMethod.GET)
+    public @ResponseBody
+    byte[] getImage(@PathVariable String nombre) throws IOException {
+        File initialFile = new File(appProps.getOutputDir() + "imagenes_tramites/" + nombre + ".png");
         InputStream targetStream = new FileInputStream(initialFile);
         return IOUtils.toByteArray(targetStream);
     }
 
-    private String pathFileCertificado(String codigoVerificacion) {
-
-        RestTemplate restTemplate = new RestTemplate();
-        Long oidDocumento = restTemplate.getForObject(appProps.getRpConsultarOidDocument() + codigoVerificacion, Long.class);
-        String pathFile;
-        if (oidDocumento > 0L) {
-            pathFile = appProps.getOutputDir() + codigoVerificacion + ".pdf";
-        } else {
-            pathFile = appProps.getOutputDir() + "documento_no_encontrado.pdf";
-        }
-        if (oidDocumento > 0L) {
-            File file = new File(pathFile);
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                omegaUploader.streamFile(oidDocumento, fos, appProps.getDocUrl());
-                fos.close();
-            } catch (IOException e) {
-                return null;
-            }
-            return pathFile;
-        }
-        return pathFile;
-    }
-
-    private String pathFileInscripcion(String codigoVerificacion) {
-
-        RestTemplate restTemplate = new RestTemplate();
-        Long oidDocumento = restTemplate.getForObject(appProps.getRpConsultarOidInscripcion() + codigoVerificacion, Long.class);
-        String pathFile;
-        if (oidDocumento > 0L) {
-            pathFile = appProps.getOutputDir() + codigoVerificacion + ".pdf";
-        } else {
-            pathFile = appProps.getOutputDir() + "documento_no_encontrado.pdf";
-        }
-        if (oidDocumento > 0L) {
-            File file = new File(pathFile);
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                omegaUploader.streamFile(oidDocumento, fos, appProps.getDocUrl());
-                fos.close();
-            } catch (IOException e) {
-                return null;
-            }
-            return pathFile;
-        }
-        return pathFile;
-    }
-
-    @RequestMapping(value = "/validation/{codigoVerificacion}/tipo/{type}", method = RequestMethod.GET, produces = "application/pdf")
-    public ResponseEntity<byte[]> downloadPDFFile(@PathVariable String codigoVerificacion, @PathVariable Integer type) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        appLogs = new AppLogs(new Date(), "/api/document/validation/" + codigoVerificacion, null, "downloadPDFFile", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
-        String pathFile = this.pathFileDocumento(codigoVerificacion, type);
-        Path path = Paths.get(pathFile);
-        byte[] pdfContents = null;
+    @RequestMapping(value = "/verificarArchivo", method = RequestMethod.POST)
+    public ResponseEntity<?> verificarArchivo(@RequestBody DocumentoModel model) {
         try {
-            pdfContents = Files.readAllBytes(path);
-        } catch (IOException e) {
-            System.out.println(e);
+            return new ResponseEntity<>(sgrService.validarDocumentoFD(model), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=" + codigoVerificacion + ".pdf");
-        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(pdfContents, headers, HttpStatus.OK);
-        return responseEntity;
     }
 
-    private String pathFileDocumento(String codigoVerificacion, Integer tipo) {
-        RestTemplate restTemplate = new RestTemplate();
-        Long oidDocumento = restTemplate.getForObject(appProps.getRpConsultarOid() + codigoVerificacion + "/tipo/" + tipo, Long.class);
-        String pathFile = appProps.getOutputDir() + codigoVerificacion + ".pdf";
-        File file = new File(pathFile);
+    @RequestMapping(value = "/descargarRequisito/{id}", method = RequestMethod.GET, produces =
+            "application/pdf")
+    public ResponseEntity<byte[]> downloadPDFFile(@PathVariable String id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=Requisito_.pdf");
+
+        return new ResponseEntity<>(documento(id), headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/descargarRequisito", method = RequestMethod.POST)
+    public ResponseEntity<?> descargarRequisito(@RequestBody DocumentoModel model) {
+        try {
+            return new ResponseEntity<>(sgrService.validarDocumentoFD(model), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+    }
+
+    private byte[] documento(String documento) {
+        File file = new File(appProps.getOutputDir() + "Requisito_" + documento);
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            omegaUploader.streamFile(oidDocumento, fos, appProps.getDocUrl());
-            fos.close();
+            omegaUploader.streamFile(Long.parseLong(documento.replaceAll(".pdf", "")), fos, appProps.getDocUrl());
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
-        return pathFile;
-    }
-
-    @RequestMapping(value = "/movil/documento/{codigoVerificacion}/tipo/{type}", method = RequestMethod.GET)
-    public List<ImagesCertificados> downloadPDFFileImage2(@PathVariable String codigoVerificacion, @PathVariable Integer type) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        appLogs = new AppLogs(new Date(), "/api/document/movil/" + codigoVerificacion, null, "downloadPDFFileImage", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
-        String pathFile = this.pathFileDocumento(codigoVerificacion, type);
-        List<ImagesCertificados> files = new ArrayList<>();
-        if (pathFile != null) {
-            String fileName, tempName;
-            BufferedImage bim;
-            try (final PDDocument document = PDDocument.load(new File(pathFile))) {
-                PDFRenderer pdfRenderer = new PDFRenderer(document);
-                for (int page = 0; page < document.getNumberOfPages(); ++page) {
-                    bim = pdfRenderer.renderImageWithDPI(page, 500, ImageType.RGB);
-                    tempName = codigoVerificacion + "-" + page + ".png";
-                    fileName = appProps.getOutputDir() + tempName;
-                    files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + tempName));
-                    ImageIOUtil.writeImage(bim, fileName, 500);
-                }
-                document.close();
-            } catch (IOException e) {
-                files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + " sin_resultados.png"));
-                System.err.println("Exception while trying to create pdf document - " + e);
-            }
-        } else {
-            files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + " sin_resultados.png"));
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            return null;
         }
-        return files;
+
+
     }
 
 }
