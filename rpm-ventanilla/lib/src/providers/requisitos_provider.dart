@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:playas/src/models/acto_requisito.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
 enum StatusRequisitos { Unknown, Searching, Found, NoFound }
 
-class RequisitosProvider extends ChangeNotifier implements ReassembleHandler {
+class RequisitosProvider extends ChangeNotifier {
   @override
   void reassemble() {
     print('Did hot-reload');

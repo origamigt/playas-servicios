@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NosotrosPage extends StatefulWidget {
   static const String route = '/acercaDe';
@@ -60,25 +59,37 @@ class _NosotrosPageState extends State<NosotrosPage> {
       tituloWidget(context, 'Visión'),
       subTituloWidget(context,
           'Posesionar a esta institución, dentro de cinco años,  como un ente de calidad y eficacia en la entrega de nuestros servicios; trabajando bajo esquemas jurídico-técnicos y tecnológicos actualizados, para impulsar un proceso de crecimiento del servicio público, con profesionalismo y responsabilidad, asegurando un mejoramiento continuo.'),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+      //Image.asset('assets/images/logo.png', height: 110, width: 110),
+      Column(
         children: [
           GestureDetector(
             onTap: () async {
-              await canLaunch('https://origamiec.com/')
+              /*await canLaunch('https://origamiec.com/')
                   ? await launch('https://origamiec.com/')
-                  : mensajeError(context, 'No se puede redirigir a https://origamiec.com/');
+                  : mensajeError(context,
+                      'No se puede redirigir a https://origamiec.com/');*/
             },
-            child: Column(
-              children: [
-                Image.asset('assets/images/origami.png',
-                    height: 100, width: 100),
-                Text('OrigamiEC')
-              ],
+            child: Image.asset(
+              'assets/images/origami.png',
+              height: 150,
+              width: 200,
             ),
           ),
-          Image.asset('assets/images/logo.png', height: 110, width: 110)
+          Text(
+            'Apasionados en la optimización y la transformación digital',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          Text(
+            'proporcionando soluciones integrales que redunden en una atención de calidad a la ciudadanía',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          Text(
+            '2021 © All rigth reserved',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline5,
+          ),
         ],
       )
     ]);

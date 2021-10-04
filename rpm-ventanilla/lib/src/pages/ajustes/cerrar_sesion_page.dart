@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:provider/provider.dart';
-import 'package:vrouter/vrouter.dart';
+////import 'package:vrouter/vrouter.dart';
 
 class CerrarSesionPage extends StatelessWidget {
   static const String route = '/cerrarSesion';
@@ -65,7 +64,7 @@ class CerrarSesionPage extends StatelessWidget {
           onPressed: () async {
             userProvider!.cerrarSesion();
             authProvider!.setAuthState(Status.NotLoggedIn);
-            context!.vRouter.to(LoginPage.route);
+            //context!.vRouter.to(LoginPage.route);
           },
         ),
         // usually buttons at the bottom of the dialog

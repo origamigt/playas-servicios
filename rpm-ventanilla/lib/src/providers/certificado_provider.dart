@@ -5,16 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:playas/src/models/images-certificados.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
 enum StatusCertificadoProv { Unknown, Searching, Found, NoFound }
 
-class CertificadoProvider extends ChangeNotifier implements ReassembleHandler {
-  @override
-  void reassemble() {
-    print('Did hot-reload');
-  }
-
+class CertificadoProvider extends ChangeNotifier {
   StatusCertificadoProv _status = StatusCertificadoProv.Unknown;
 
   StatusCertificadoProv get status => _status;

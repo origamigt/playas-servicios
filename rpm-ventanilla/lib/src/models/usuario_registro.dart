@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 class UsuarioRegistro {
   int? personaId;
   String? identificacion;
@@ -9,6 +11,8 @@ class UsuarioRegistro {
   String? correo;
   String? correoCodificado;
   bool? creado;
+  Uint8List? archivo;
+  String? tipo;
 
   UsuarioRegistro();
 
@@ -22,6 +26,7 @@ class UsuarioRegistro {
       ..celular = json['celular'] as String? ?? null
       ..clave = json['clave'] as String? ?? null
       ..correo = json['correo'] as String? ?? null
+      ..tipo = json['tipo'] as String? ?? null
       ..creado = json['creado'] as bool? ?? null
       ..correoCodificado = json['correoCodificado'] as String? ?? null;
   }
@@ -37,6 +42,8 @@ class UsuarioRegistro {
         'correo': instance.correo,
         'creado': instance.creado,
         'correoCodificado': instance.correoCodificado,
+        'archivo': instance.archivo,
+        'tipo': instance.tipo,
       };
 
   Map<String, dynamic> toJson() => {
@@ -50,5 +57,7 @@ class UsuarioRegistro {
         'correo': correo,
         'creado': creado,
         'correoCodificado': correoCodificado,
+        'archivo': archivo,
+        'tipo': tipo,
       };
 }

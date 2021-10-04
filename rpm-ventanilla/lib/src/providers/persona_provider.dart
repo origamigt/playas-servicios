@@ -6,16 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:playas/src/models/consulta_persona.dart';
 import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
 enum StatusPersonProv { Unknown, Searching, SearchingFact, Found, NoFound }
 
-class PersonaProvider extends ChangeNotifier implements ReassembleHandler {
-  @override
-  void reassemble() {
-    print('Did hot-reload');
-  }
-
+class PersonaProvider extends ChangeNotifier {
   StatusPersonProv _personaStatusPersonProv = StatusPersonProv.Unknown;
 
   StatusPersonProv get personaStatusPersonProv => _personaStatusPersonProv;

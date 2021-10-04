@@ -41,11 +41,6 @@ class VRouterApp extends StatefulWidget {
 }
 
 class _VRouterAppState extends State<VRouterApp> {
-  final _navigatorKeys = [
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>()
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -79,6 +74,8 @@ class _VRouterAppState extends State<VRouterApp> {
       }
 
       return VRouter(
+        logs: VLogs.info,
+        // Defines which logs to show, info is the default
         debugShowCheckedModeBanner: false,
         title:
             'Registro Municipal de la Propiedad y Mercantil del Cantón de Playas',
@@ -89,7 +86,7 @@ class _VRouterAppState extends State<VRouterApp> {
         ],
         supportedLocales: [const Locale('es'), const Locale('en')],
         theme: widget.themeData!,
-        mode: VRouterMode.history,
+        mode: VRouterMode.hash,
         initialUrl: LoginPage.route,
         routes: [
           VWidget(
@@ -130,7 +127,7 @@ class _VRouterAppState extends State<VRouterApp> {
               beforeEnter: (vRedirector) async {
                 switch (authProvider.loggedInStatus) {
                   case Status.NotLoggedIn:
-                    vRedirector.to(LoginPage.route);
+                    vRedirector.to(LoginPage.route, isReplacement: true);
                     break;
                   default:
                     break;

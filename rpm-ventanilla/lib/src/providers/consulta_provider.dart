@@ -3,16 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/datos-proforma.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
 enum StatusConsultaProv { Unknown, Searching, Found, NoFound }
 
-class ConsultaProvider extends ChangeNotifier implements ReassembleHandler {
-  @override
-  void reassemble() {
-    print('Did hot-reload');
-  }
-
+class ConsultaProvider extends ChangeNotifier {
   StatusConsultaProv _status = StatusConsultaProv.Unknown;
 
   StatusConsultaProv get status => _status;

@@ -4,13 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/user.dart';
-import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/menu-login-card.dart';
 import 'package:provider/provider.dart';
-import 'package:vrouter/vrouter.dart';
+//import 'package:vrouter/vrouter.dart';
 
 class LoginForm extends StatelessWidget {
   final paddingTopForm,
@@ -144,65 +143,6 @@ class LoginFormState extends State<LoginForm> {*/
                 menus: menusLogin,
               ),
               SizedBox(height: heightSize! * 0.02),
-              /*
-            Container(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                    onPressed: () {
-                      //RpmApplication.router.navigateTo(context, RegistrarsePage.route);
-                      //context.vRouter.push('/home');
-                      context.vRouter.to(RegistrarsePage.route);
-                    },
-                    child: Text('Registrarse',
-                        style: GoogleFonts.sourceCodePro(
-                            fontSize: widthSize! * fontSizeForgotPassword,
-                            fontWeight: FontWeight.w900,
-                            color: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .color!)))),
-            Container(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                  onPressed: () {
-                    context.vRouter.to(RecuperarPage.route);
-                  },
-                  child: Text('Recuperar contraseña',
-                      style: GoogleFonts.sourceCodePro(
-                          fontSize: widthSize! * fontSizeForgotPassword,
-                          fontWeight: FontWeight.w900,
-                          color:
-                              Theme.of(context).textTheme.bodyText1!.color!))),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                  onPressed: () {
-                    context.vRouter.to(RecuperarPage.route);
-                  },
-                  child: Text('Ingresar como invitado',
-                      style: GoogleFonts.sourceCodePro(
-                          fontSize: widthSize! * fontSizeForgotPassword,
-                          fontWeight: FontWeight.w900,
-                          color:
-                              Theme.of(context).textTheme.bodyText1!.color!))),
-            ),
-            Container(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                    onPressed: () {
-                      //RpmApplication.router.navigateTo(context, RegistrarsePage.route);
-                      //context.vRouter.push('/home');
-                      context.vRouter.to(RegistrarsePage.route);
-                    },
-                    child: Text('Registrarse como entidad verificadora',
-                        style: GoogleFonts.sourceCodePro(
-                            fontSize: widthSize! * fontSizeForgotPassword,
-                            fontWeight: FontWeight.w900,
-                            color: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .color!)))),*/
             ])),
           ),
         ));
@@ -243,7 +183,7 @@ class LoginFormState extends State<LoginForm> {*/
       if (response['status']) {
         User user = response['user'];
         Provider.of<UsuarioProvider>(context!, listen: false).setUser(user);
-        context!.vRouter.to(HomePage.route);
+        //context!.vRouter.to(HomePage.route);
       } else {
         mensajeError(context!, response['message']);
       }

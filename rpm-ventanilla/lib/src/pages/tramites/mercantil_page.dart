@@ -41,11 +41,11 @@ class MercantilState extends State<MercantilPage> {
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
 
-  TextEditingController identificacionFactCtrl = TextEditingController();
+/*  TextEditingController identificacionFactCtrl = TextEditingController();
   TextEditingController datosPersonaFactCtrl = TextEditingController();
   TextEditingController direccionFactCtrl = TextEditingController();
   TextEditingController telefonoFactCtrl = TextEditingController();
-  TextEditingController correoFactCtrl = TextEditingController();
+  TextEditingController correoFactCtrl = TextEditingController();*/
 
   TextEditingController obsCtrl = TextEditingController();
   TextEditingController otroMotivoCtrl = TextEditingController();
@@ -85,12 +85,11 @@ class MercantilState extends State<MercantilPage> {
       telefonoCtrl.text = persona.telefono1!;
       correoCtrl.text = persona.correo1!;
 
-      identificacionFactCtrl.text = persona.cedRuc!;
-
+      /*identificacionFactCtrl.text = persona.cedRuc!;
       datosPersonaFactCtrl.text = nombres;
       direccionFactCtrl.text = persona.direccion!;
       telefonoFactCtrl.text = persona.telefono1!;
-      correoFactCtrl.text = persona.correo1!;
+      correoFactCtrl.text = persona.correo1!;*/
     });
 
     return Form(
@@ -138,18 +137,18 @@ class MercantilState extends State<MercantilPage> {
                   ),
             cantidadWidget(),
             observacionWidget(),
-            tituloWidget(context, 'Datos del solicitante'),
+            tituloWidget(context, 'Datos del solicitante y factura'),
             identificacionWidget(),
             nombresWidget(),
             direccionWidget(),
             telefonoWidget(),
             correoWidget(),
-            tituloWidget(context, 'Datos de la factura'),
+            /*  tituloWidget(context, 'Datos de la '),
             identificacionFactWidget(),
             nombresFactWidget(),
             direccionFactWidget(),
             telefonoFactWidget(),
-            correoFactWidget(),
+            correoFactWidget(),*/
             SizedBox(
               height: 15,
             ),
@@ -338,7 +337,7 @@ class MercantilState extends State<MercantilPage> {
       context,
       'Identificación',
       TextFormField(
-        controller: identificacionFactCtrl,
+        //controller: identificacionFactCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -365,7 +364,7 @@ class MercantilState extends State<MercantilPage> {
         context,
         'Datos personales',
         TextFormField(
-          controller: datosPersonaFactCtrl,
+          //controller: datosPersonaFactCtrl,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Ingrese los nombres para la factura';
@@ -385,7 +384,7 @@ class MercantilState extends State<MercantilPage> {
         context,
         'Dirección',
         TextFormField(
-          controller: direccionFactCtrl,
+          //   controller: direccionFactCtrl,
           validator: (value) {
             if (value!.isEmpty) {
               return 'Ingrese la dirección para la factura';
@@ -405,7 +404,7 @@ class MercantilState extends State<MercantilPage> {
         context,
         'Correo electrónico',
         TextFormField(
-          controller: correoFactCtrl,
+          // controller: correoFactCtrl,
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.email,
@@ -426,7 +425,7 @@ class MercantilState extends State<MercantilPage> {
         context,
         'Teléfono',
         TextFormField(
-          controller: telefonoFactCtrl,
+          //     controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -448,11 +447,11 @@ class MercantilState extends State<MercantilPage> {
             return;
           }
         } else {
-          if (identificacionFactCtrl.text.isEmpty) {
+          /*if (identificacionFactCtrl.text.isEmpty) {
             mensajeError(context,
                 'Ingrese la identificación de quien se emitirá la factura');
             return;
-          }
+          }*/
         }
         buscarPersona(tipo);
       },
@@ -497,11 +496,11 @@ class MercantilState extends State<MercantilPage> {
             telefonoCtrl.text,
             correoCtrl.text,
             estadoCivilSol,
-            identificacionFactCtrl.text,
-            datosPersonaFactCtrl.text,
-            direccionFactCtrl.text,
-            telefonoFactCtrl.text,
-            correoFactCtrl.text,
+            identificacionCtrl.text,
+            datosPersonaCtrl.text,
+            direccionCtrl.text,
+            telefonoCtrl.text,
+            correoCtrl.text,
             '',
             '',
             acto!,
@@ -565,7 +564,7 @@ class MercantilState extends State<MercantilPage> {
     successfulMessage = personaProvider!.buscarPersona(
         tipo == 'SOLICITANTE'
             ? identificacionCtrl.text
-            : identificacionFactCtrl.text,
+            : 'identificacionFactCtrl.text',
         tipo);
 
     successfulMessage.then((response) {
@@ -581,12 +580,12 @@ class MercantilState extends State<MercantilPage> {
             correoCtrl.text = persona.correo1 ?? '';
             estadoCivilSol = persona.estadoCivil ?? '';
           } else {
-            identificacionFactCtrl.text = persona.cedRuc!;
+            /* identificacionFactCtrl.text = persona.cedRuc!;
             datosPersonaFactCtrl.text =
                 (persona.apellidos ?? '') + ' ' + (persona.nombres ?? '');
             direccionFactCtrl.text = persona.direccion ?? '';
             telefonoFactCtrl.text = persona.telefono1 ?? '';
-            correoFactCtrl.text = persona.correo1 ?? '';
+            correoFactCtrl.text = persona.correo1 ?? '';*/
           }
         });
       } else {

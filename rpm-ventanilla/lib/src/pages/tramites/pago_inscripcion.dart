@@ -12,7 +12,7 @@ import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:vrouter/vrouter.dart';
+////import 'package:vrouter/vrouter.dart';
 
 class PagoInscripcionPage extends StatefulWidget {
   static const String route = '/inscripciones/pagoInscripcion';
@@ -61,7 +61,7 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
 
   @override
   Widget build(BuildContext context) {
-    load(context.vRouter.url.replaceAll('${PagoInscripcionPage.route}?', ''));
+    //load(//context.vRouter.url.replaceAll('${PagoInscripcionPage.route}?', ''));
     pagoProvider = Provider.of<PagoProvider>(context);
     return Form(
         key: _formKey,

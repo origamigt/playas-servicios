@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:playas/src/models/acto.dart';
-import 'package:playas/src/pages/tramites/inscripciones_page.dart';
-import 'package:playas/src/pages/tramites/mercantil_page.dart';
-import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
-import 'package:playas/src/pages/tramites/personal_page.dart';
-import 'package:playas/src/pages/tramites/propiedad_page.dart';
 import 'package:playas/src/widgets/components.dart';
-import 'package:vrouter/vrouter.dart';
+//import 'package:vrouter/vrouter.dart';
 
 class ActoCard extends StatelessWidget {
   final List<Acto>? actos;
@@ -48,19 +43,19 @@ class ActoCard extends StatelessWidget {
                 if (auth!) {
                   switch (acto.abrv) {
                     case 'CERT-NO':
-                      context.vRouter.to(NoposeerBienPage.route);
+                      //context.vRouter.to(NoposeerBienPage.route);
                       break;
                     case 'CERT-HIST':
-                      context.vRouter.to(PropiedadPage.route);
+                      //context.vRouter.to(PropiedadPage.route);
                       break;
                     case 'INS':
-                      context.vRouter.to(InscripcionesPage.route);
+                      //context.vRouter.to(InscripcionesPage.route);
                       break;
                     case 'CERT-PERS':
-                      context.vRouter.to(PersonalPage.route);
+                      //context.vRouter.to(PersonalPage.route);
                       break;
                     case 'CERT-MERC':
-                      context.vRouter.to(MercantilPage.route);
+                      //context.vRouter.to(MercantilPage.route);
                       break;
                   }
                 } else {

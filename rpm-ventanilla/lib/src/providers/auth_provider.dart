@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -44,6 +45,11 @@ class AuthProvider with ChangeNotifier {
 
   void setAuthState(Status authState) {
     _loggedInStatus = authState;
+    notifyListeners();
+  }
+
+  void setRegisterState(StatusRegistro registerState) {
+    _registeredInStatus = registerState;
     notifyListeners();
   }
 
@@ -194,7 +200,9 @@ class AuthProvider with ChangeNotifier {
       String direccion,
       String clave,
       int personaid,
-      bool creado) async {
+      bool creado,
+      String tipo,
+      Uint8List? archivo) async {
     var result;
     UsuarioRegistro ur = UsuarioRegistro();
     ur.personaId = personaid;
@@ -204,6 +212,8 @@ class AuthProvider with ChangeNotifier {
     ur.celular = celular;
     ur.clave = clave;
     ur.creado = creado;
+    ur.tipo = tipo;
+    ur.archivo = archivo;
 
     CodigoVerificacion cv = CodigoVerificacion();
     cv.correo = correo;

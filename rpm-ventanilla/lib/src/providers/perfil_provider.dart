@@ -8,16 +8,10 @@ import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
 enum StatusPerfil { Unknown, Searching, Found, NoFound }
 
-class PerfilProvider extends ChangeNotifier implements ReassembleHandler {
-  @override
-  void reassemble() {
-    print('Did hot-reload');
-  }
-
+class PerfilProvider extends ChangeNotifier {
   StatusPerfil _status = StatusPerfil.Unknown;
 
   StatusPerfil get status => _status;

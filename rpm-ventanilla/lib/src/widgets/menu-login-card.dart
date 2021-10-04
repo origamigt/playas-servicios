@@ -1,7 +1,8 @@
+//import 'package:vrouter/vrouter.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:vrouter/vrouter.dart';
 
 class MenuLoginCard extends StatelessWidget {
   bool isWeb = UniversalPlatform.isWeb;
@@ -47,7 +48,8 @@ class MenuLoginCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(5)),
           onTap: () {
-            context!.vRouter.to(menu.route);
+            //context!.vRouter.to(menu.route);
+            context!.router.navigateNamed(menu.route);
           },
           child: Container(
             padding: EdgeInsets.only(bottom: 5, right: 5, left: 5),

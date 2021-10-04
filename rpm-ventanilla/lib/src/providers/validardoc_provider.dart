@@ -7,16 +7,10 @@ import 'package:http/http.dart' as http;
 import 'package:playas/src/models/archivo.dart';
 import 'package:playas/src/models/documento.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
 enum StatusValidarDoc { Unknown, Searching, Found, NoFound }
 
-class ValidarDocProvider extends ChangeNotifier implements ReassembleHandler {
-  @override
-  void reassemble() {
-    print('Did hot-reload');
-  }
-
+class ValidarDocProvider extends ChangeNotifier {
   StatusValidarDoc _status = StatusValidarDoc.Unknown;
 
   StatusValidarDoc get status => _status;

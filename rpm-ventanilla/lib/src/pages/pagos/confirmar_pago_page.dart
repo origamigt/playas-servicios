@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/response-create.dart';
-import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/response_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
-import 'package:vrouter/vrouter.dart';
+////import 'package:vrouter/vrouter.dart';
 
 class ConfirmarPagoPage extends StatefulWidget {
   static const String route = '/pagos/transaccionExitosa';
@@ -48,6 +47,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
   }
 
   void load(String urlPago) {
+    print(urlPago);
     params = urlPago.split('&');
 
     param1 = params[0].split('=');
@@ -66,7 +66,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
 
   @override
   Widget build(BuildContext context) {
-    load(context.vRouter.url.replaceAll('${ConfirmarPagoPage.route}?', ''));
+    //load(//context.vRouter.url.replaceAll('${ConfirmarPagoPage.route}?', ''));
     return Form(
         key: _formKey,
         child: PageComponent(
@@ -187,7 +187,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
         ),
         child: ElevatedButton(
           onPressed: () async {
-            context.vRouter.to(HomePage.route);
+            ////context.vRouter.to(HomePage.route);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(

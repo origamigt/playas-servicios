@@ -639,7 +639,7 @@ class PropiedadPageState extends State<PropiedadPage> {
           controller: anioInscripcionCtrl,
           maxLength: 4,
           validator: (value) {
-            if (value!.isNotEmpty && value.length != null) {
+            if (value!.isNotEmpty && value.length != 4) {
               return 'Debe ingresar un año valido';
             }
           },
@@ -655,6 +655,7 @@ class PropiedadPageState extends State<PropiedadPage> {
   }
 
   doProcesarPago() {
+    print('doProcesarPago');
     final Future<Map<String, dynamic>> successfulMessage = pagoProvider!
         .procesarPago(
             motivo,

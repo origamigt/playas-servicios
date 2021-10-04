@@ -13,11 +13,7 @@ import 'package:provider/provider.dart';
 
 enum StatusPago { Unknown, Procesing, Done, Error }
 
-class PagoProvider extends ChangeNotifier implements ReassembleHandler {
-  @override
-  void reassemble() {
-    print('Did hot-reload');
-  }
+class PagoProvider extends ChangeNotifier {
 
   StatusPago _status = StatusPago.Unknown;
 

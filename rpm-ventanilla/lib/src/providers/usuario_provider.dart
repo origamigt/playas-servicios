@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
-class UsuarioProvider extends ChangeNotifier implements ReassembleHandler {
+class UsuarioProvider extends ChangeNotifier {
   User? user; //an instance of a user
   String? errorMessage; //error message
   bool loading = false; //loading the page
-
-  @override
-  void reassemble() {
-    print('Did hot-reload');
-  }
 
   bool isLoading() {
     return loading; //return true if the app is loading the data

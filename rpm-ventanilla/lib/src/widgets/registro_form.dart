@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,11 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:playas/src/models/codigo.dart';
 import 'package:playas/src/models/usuario_registro.dart';
-import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:provider/provider.dart';
-import 'package:vrouter/vrouter.dart';
+//import 'package:vrouter/vrouter.dart';
 
 class RegistrarseForm extends StatefulWidget {
   final paddingTopForm,
@@ -38,10 +38,11 @@ class RegistrarseForm extends StatefulWidget {
       this.errorFormMessage);
 
   @override
-  LoginFormState createState() => LoginFormState();
+  RegistrarseFormState createState() => RegistrarseFormState();
 }
 
-class LoginFormState extends State<RegistrarseForm> {
+class RegistrarseFormState extends State<RegistrarseForm>
+    with AfterLayoutMixin<RegistrarseForm> {
   final _formKey = GlobalKey<FormState>();
 
   bool obscureText = true;
@@ -62,8 +63,14 @@ class LoginFormState extends State<RegistrarseForm> {
   double? heightSize;
 
   @override
+  void afterFirstLayout(BuildContext context) {
+    auth!.setRegisterState(StatusRegistro.Unknown);
+  }
+
+  @override
   Widget build(BuildContext context) {
     auth = Provider.of<AuthProvider>(context);
+
     widthSize = MediaQuery.of(context).size.width;
     heightSize = MediaQuery.of(context).size.height;
     return Form(
@@ -90,6 +97,12 @@ class LoginFormState extends State<RegistrarseForm> {
 
   Widget datosRegistro() {
     return Column(children: <Widget>[
+      Align(
+          alignment: Alignment.center,
+          child: Text('Registrarse',
+              style: GoogleFonts.sourceCodePro(
+                fontSize: widthSize! * widget.fontSizeTextField,
+              ))),
       Align(
           alignment: Alignment.centerLeft,
           child: Text('Identificación',
@@ -159,7 +172,7 @@ class LoginFormState extends State<RegistrarseForm> {
       Align(
           alignment: Alignment.centerLeft,
           child: Text(
-              'Fecha de expedición de si es cédula o fecha de inicio de actividades o si es RUC',
+              'Fecha de expedición de si es cédula o fecha de inicio de actividades si es RUC',
               style: GoogleFonts.sourceCodePro(
                 fontSize: widthSize! * widget.fontSizeTextField,
               ))),
@@ -168,7 +181,7 @@ class LoginFormState extends State<RegistrarseForm> {
           onSaved: (value) => _fecha = value,
           validator: (value) {
             if (value!.isEmpty) {
-              return 'Ingrese la fecha de expedición de si es cédula o fecha de inicio de actividades o si es RUC';
+              return 'Ingrese la fecha de expedición de si es cédula o fecha de inicio de actividades si es RUC';
             }
           },
           readOnly: true,
@@ -492,7 +505,9 @@ class LoginFormState extends State<RegistrarseForm> {
             direccionCtrl.text,
             claveCtrl.text,
             usuario!.personaId!,
-            false);
+            false,
+            'NORMAL',
+            null);
 
     successfulMessage.then((response) {
       if (response['status']) {
@@ -516,7 +531,7 @@ class LoginFormState extends State<RegistrarseForm> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1),
                         onPressed: () async {
-                          context.vRouter.to(LoginPage.route);
+                          //context.vRouter.to(LoginPage.route);
                         },
                       ),
                     )

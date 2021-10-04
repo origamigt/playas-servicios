@@ -178,8 +178,6 @@ class VerificarDocPageState extends State<VerificarDocPage> {
         children: [
           tituloWidget2(context, 'Información Firmante'),
           subTituloWidget2(context, certificado.informacionFirmante!),
-          tituloWidget2(context, 'Cargo'),
-          subTituloWidget2(context, certificado.datosUsuario!.cargo!),
           tituloWidget2(context, 'Información Entidad Certificadora'),
           subTituloWidget2(
               context, certificado.informacionEntidadCertificadora!),

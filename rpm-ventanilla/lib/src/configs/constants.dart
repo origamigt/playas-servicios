@@ -13,6 +13,7 @@ import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
 import 'package:playas/src/pages/ciudadania/mistramites_page.dart';
 import 'package:playas/src/pages/ciudadania/repositorio_page.dart';
 import 'package:playas/src/pages/home_page.dart';
+import 'package:playas/src/pages/login/entidad_page.dart';
 import 'package:playas/src/pages/login/recuperar_page.dart';
 import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/pages/nosotros/nosotros_page.dart';
@@ -20,6 +21,9 @@ import 'package:playas/src/pages/verificar/certificadomov_page.dart';
 import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
 import 'package:playas/src/widgets/components.dart';
+
+const String appName =
+    'Registro Municipal de la Propiedad y Mercantil del Cantón de Playas';
 
 List<Menu> menus(isWeb) {
   return [
@@ -60,8 +64,8 @@ List<Menu> menusLogin = [
       Icons.admin_panel_settings_outlined),
   Menu('Ingresar como invitado', HomePage.route, colorBandera3,
       Icons.pets_rounded),
-  Menu('Registrarse como entidad verificadora', RegistrarsePage.route,
-      colorPrimary, Icons.apartment),
+  Menu('Registrarse como entidad verificadora', EntidadPage.route, colorPrimary,
+      Icons.apartment),
 ];
 
 List<Data> motivosSolicitud = [
