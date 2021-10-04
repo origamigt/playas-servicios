@@ -3,7 +3,7 @@ import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:provider/provider.dart';
-////import 'package:vrouter/vrouter.dart';
+//import 'package:auto_route/auto_route.dart';
 
 class CerrarSesionPage extends StatelessWidget {
   static const String route = '/cerrarSesion';

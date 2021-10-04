@@ -1,15 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/user.dart';
+import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/menu-login-card.dart';
 import 'package:provider/provider.dart';
-//import 'package:vrouter/vrouter.dart';
 
 class LoginForm extends StatelessWidget {
   final paddingTopForm,
@@ -183,7 +184,7 @@ class LoginFormState extends State<LoginForm> {*/
       if (response['status']) {
         User user = response['user'];
         Provider.of<UsuarioProvider>(context!, listen: false).setUser(user);
-        //context!.vRouter.to(HomePage.route);
+        context!.router.navigateNamed(HomePage.route);
       } else {
         mensajeError(context!, response['message']);
       }

@@ -157,7 +157,7 @@ class AppRouter extends _i26.RootStackRouter {
         _i26.RouteConfig(EntidadRoute.name, path: '/registrarEntidad'),
         _i26.RouteConfig(HomeRoute.name, path: '/inicio'),
         _i26.RouteConfig(ConfirmarPagoRoute.name,
-            path: '/pagos/transaccionExitosa'),
+            path: '/pagos/transaccionExitosa/*'),
         _i26.RouteConfig(VerificarDocRoute.name, path: '/verificarDocumento'),
         _i26.RouteConfig(CertificadoMovRoute.name,
             path: '/validarCertificadoQR'),
@@ -234,7 +234,7 @@ class HomeRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for [_i6.ConfirmarPagoPage]
 class ConfirmarPagoRoute extends _i26.PageRouteInfo<void> {
-  const ConfirmarPagoRoute() : super(name, path: '/pagos/transaccionExitosa');
+  const ConfirmarPagoRoute() : super(name, path: '/pagos/transaccionExitosa/*');
 
   static const String name = 'ConfirmarPagoRoute';
 }

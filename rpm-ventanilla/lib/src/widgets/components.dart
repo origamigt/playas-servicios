@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/cerrar_sesion_page.dart';
@@ -5,7 +6,6 @@ import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-//import 'package:vrouter/vrouter.dart';
 
 Color colorPrimary = Color(0xFF2D2E74);
 Color colorSecond = Color(0xFF189247);
@@ -78,14 +78,12 @@ Widget menuCard(BuildContext context, Menu menu, bool isWeb, bool auth) {
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(16)),
         onTap: () {
-          //RpmApplication.router.navigateTo(context, menu.route);
-          //ConnectedRoutes.to(context, menu.route);
           if (menu.route == CertificadoWebPage.route ||
               menu.route == VerificarDocPage.route) {
-            //context.vRouter.to(menu.route);
+            context.router.navigateNamed(menu.route);
           } else if (auth) {
             if (menu.route != CerrarSesionPage.route) {
-              //context.vRouter.to(menu.route);
+              context.router.navigateNamed(menu.route);
             } else {
               Navigator.of(context).push(PageRouteBuilder(
                   opaque: false,

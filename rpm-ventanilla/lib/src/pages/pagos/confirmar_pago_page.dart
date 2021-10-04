@@ -4,10 +4,10 @@ import 'package:playas/src/models/response-create.dart';
 import 'package:playas/src/providers/response_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
-////import 'package:vrouter/vrouter.dart';
+//import 'package:auto_route/auto_route.dart';
 
 class ConfirmarPagoPage extends StatefulWidget {
-  static const String route = '/pagos/transaccionExitosa';
+  static const String route = '/pagos/transaccionExitosa/*';
 
   ConfirmarPagoPage();
 

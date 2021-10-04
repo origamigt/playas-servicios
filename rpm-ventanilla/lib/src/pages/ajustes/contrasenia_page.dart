@@ -10,7 +10,7 @@ import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
-////import 'package:vrouter/vrouter.dart';
+//import 'package:auto_route/auto_route.dart';
 
 class ContraseniaPage extends StatefulWidget {
   static const route = '/actualizarContrasenia';

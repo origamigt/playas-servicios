@@ -11,7 +11,7 @@ import 'package:playas/src/routes/rpm_routes.dart';
 import 'package:playas/src/routes/rpm_vroutes.dart';
 import 'package:playas/src/widgets/theme-manager.dart';
 import 'package:provider/provider.dart';
-//import 'package:vrouter/vrouter.dart';
+import 'package:auto_route/auto_route.dart';
 
 void main() {
   //window.document.onContextMenu.listen((evt) => evt.preventDefault());

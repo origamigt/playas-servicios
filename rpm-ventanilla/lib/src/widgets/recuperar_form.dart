@@ -1,13 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:playas/src/models/codigo.dart';
 import 'package:playas/src/models/usuario_registro.dart';
+import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:provider/provider.dart';
-//import 'package:vrouter/vrouter.dart';
 
 class RecuperarForm extends StatefulWidget {
   final paddingTopForm,
@@ -495,7 +496,7 @@ class RecuperarState extends State<RecuperarForm> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1),
                         onPressed: () async {
-                          //context.vRouter.to(LoginPage.route);
+                          context.router.navigateNamed(LoginPage.route);
                         },
                       ),
                     )

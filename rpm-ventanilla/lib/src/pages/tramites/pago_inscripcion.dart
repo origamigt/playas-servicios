@@ -12,7 +12,7 @@ import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-////import 'package:vrouter/vrouter.dart';
+//import 'package:auto_route/auto_route.dart';
 
 class PagoInscripcionPage extends StatefulWidget {
   static const String route = '/inscripciones/pagoInscripcion';
