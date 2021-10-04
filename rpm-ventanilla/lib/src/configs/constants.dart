@@ -27,6 +27,7 @@ const String appName =
 
 List<Menu> menus(isWeb) {
   return [
+
     Menu('Consultar trámites', BuscarPage.route, Colors.lightBlueAccent,
         Icons.search),
     Menu(
@@ -69,23 +70,21 @@ List<Menu> menusLogin = [
 ];
 
 List<Data> motivosSolicitud = [
-  Data().initData(100, 'Demanda'),
-  Data().initData(101, 'Garantía'),
-  Data().initData(102, 'Donación'),
-  Data().initData(103, 'Embargo'),
-  Data().initData(104, 'Hipoteca'),
-  Data().initData(105, 'Prohibición'),
-  Data().initData(106, 'CompraVenta'),
-  Data().initData(107, 'Interdicción'),
-  Data().initData(108, 'Trámite municipal'),
-  Data().initData(109, 'Trámite personal'),
-  Data().initData(110, 'Trámite judicial'),
-  Data().initData(111, 'Juicio de alimentos'),
-  Data().initData(112, 'Partición extrajudicial'),
-  Data().initData(113, 'Línea de fábrica'),
-  Data().initData(114, 'Permiso de construcción'),
-  Data().initData(115, 'Informe de nueva linderación'),
-  Data().initData(116, 'Otros'),
+  Data().initData(25, 'TRÁMITE MUNICIPAL'),
+  Data().initData(26, 'MEDIDOR DE AGUA POTABLE'),
+  Data().initData(27, 'COMPRAVENTA'),
+  Data().initData(31, 'TRAMITE JUDICIAL'),
+  Data().initData(32, 'MEDIDOR DE LUZ'),
+  Data().initData(33, 'SOLICITUD CERTIFICADO LINDEROS '),
+  Data().initData(41, 'INSTUCIONES BANCARIAS'),
+  Data().initData(42, 'TRAMITE EN NOTARIA'),
+  Data().initData(43, 'DONACION'),
+  Data().initData(44, 'LEGALIZACION DE BIEN '),
+  Data().initData(45, 'PARA MATRICULAR'),
+  Data().initData(46, 'CASAS COMERCIALES'),
+  Data().initData(47, 'INSTITUCIONES PUBLICAS'),
+  Data().initData(48, 'SOLICITUD PARA CERTIFICADO DE AVALUO'),
+  Data().initData(-1, 'Otros'),
 ];
 
 List<Data> tiposBusqueda = [

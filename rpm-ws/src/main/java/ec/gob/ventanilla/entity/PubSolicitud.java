@@ -139,8 +139,6 @@ public class PubSolicitud implements Serializable {
     private String estado;
     private Boolean tipoPago;  //TRUE: VENTANILLA FALSE: PAGO EN LINEA
     private Integer cantidad;
-    private Integer anioUltimaTransferencia = 0;
-    private Integer anioAntecedenteSolicitado = 0;
     private Boolean ingresado;
     private String tipoFormulario;
     private Boolean tieneNotificacion;
@@ -161,21 +159,6 @@ public class PubSolicitud implements Serializable {
     private Long fechaSolicitudLong;
     @Transient
     private Long fechaInscripcionLong;
-    public Integer getAnioUltimaTranferencia() {
-        return anioUltimaTransferencia;
-    }
-
-    public void setAnioUltimaTransferencia(Integer anioUltimaTransferencia) {
-        this.anioUltimaTransferencia = anioUltimaTransferencia;
-    }
-
-    public Integer getAnioAntecedenteSolicitado() {
-        return anioAntecedenteSolicitado;
-    }
-
-    public void setAnioAntecedenteSolicitado(Integer anioAntecedenteSolicitado) {
-        this.anioAntecedenteSolicitado = anioAntecedenteSolicitado;
-    }
 
     public PubSolicitud(String propApellidos, String propNombres, String propCedula,
                         Integer tipoSolicitud, Integer motivoSolicitud, String otroMotivo, Long numeroTramite,
@@ -724,10 +707,6 @@ public class PubSolicitud implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public Integer getAnioUltimaTransferencia() {
-        return anioUltimaTransferencia;
-    }
-
     public Boolean getIngresado() {
         return ingresado;
     }
@@ -818,8 +797,6 @@ public class PubSolicitud implements Serializable {
                 + ", estado='" + estado + '\''
                 + ", tipoPago=" + tipoPago
                 + ", cantidad=" + cantidad
-                + ", anioUltimaTransferencia=" + anioUltimaTransferencia
-                + ", anioAntecedenteSolicitado=" + anioAntecedenteSolicitado
                 + ", ingresado=" + ingresado
                 + ", acto='" + acto + '\''
                 + ", avance=" + avance

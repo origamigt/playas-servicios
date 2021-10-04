@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ResponseCreateRepository extends CrudRepository<ResponseCreate, Long> {
     
-    ResponseCreate findByTransactionId(String id);
+    ResponseCreate findFirstByTransactionIdOrderByIdDesc(String id);
     
 }

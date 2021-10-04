@@ -6,6 +6,7 @@
 package ec.gob.ventanilla.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import ec.gob.ventanilla.model.UsuarioRegistro;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,19 +23,16 @@ public class CodigoCorreo {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "codigo")
     private String codigo;
-    @Column(name = "correo")
     private String correo;
-    @Column(name = "validado")
+    private String celular;
     private Boolean validado;
     @JsonIgnore
-    @Column(name = "fecha")
     private Date fecha;
-    @Column(name = "persona")
     private String persona;
-    @Column(name = "identificacion")
     private String identificacion;
+    @Transient
+    private UsuarioRegistro usuarioRegistro;
 
     public CodigoCorreo() {
     }
@@ -95,4 +93,19 @@ public class CodigoCorreo {
         this.validado = validado;
     }
 
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public UsuarioRegistro getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+
+    public void setUsuarioRegistro(UsuarioRegistro usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
+    }
 }

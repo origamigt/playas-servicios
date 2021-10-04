@@ -14,43 +14,29 @@ public class AclUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "usuario", nullable = false)
-    private String username;
-    @Column(name = "clave", nullable = false)
-    private String pass;
-    @Column(name = "habilitado")
+    private String usuario;
+    private String clave;
+    private String observacion;
     private Boolean habilitado;
+    private Long documento;
     @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "rol", nullable = false)
     private AclRol rol;
-    //@JsonIgnore
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "persona")
     private PubPersona persona;
-//    @Column(name = "token")
-//    private String token;
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<PubSolicitud> solicitudes;
     @Transient
-    private String urlRp;
-    @Transient
     private Integer personaID;
 
-    public void fill(String username, String pass, Boolean habilitado, AclRol rol, PubPersona persona) {
-        this.setUsername(username);
-        this.setPass(pass);
-        this.setHabilitado(habilitado);
-        this.setRol(rol);
-        this.setPersona(persona);
-    }
-
-    public AclUser(Integer id, String username, String pass, Boolean habilitado, PubPersona persona) {
+    public AclUser(Integer id, String usuario, String clave, Boolean habilitado, PubPersona persona) {
         super();
         this.id = id;
-        this.username = username;
-        this.pass = pass;
+        this.usuario = usuario;
+        this.clave = clave;
         this.habilitado = habilitado;
         this.persona = persona;
     }
@@ -74,20 +60,20 @@ public class AclUser implements Serializable {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public String getPass() {
-        return pass;
+    public String getClave() {
+        return clave;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public AclRol getRol() {
@@ -114,7 +100,7 @@ public class AclUser implements Serializable {
         this.persona = persona;
     }
 
-//    public String getToken() {
+    //    public String getToken() {
 //        return token;
 //    }
 //
@@ -167,23 +153,19 @@ public class AclUser implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "AclUser{"
-                + "id=" + id
-                + ", username='" + username + '\''
-                + ", pass='" + pass + '\''
-                + ", habilitado=" + habilitado
-                + ", rol=" + rol
-                + ", persona=" + persona
-                + '}';
+    public String getObservacion() {
+        return observacion;
     }
 
-    public String getUrlRp() {
-        return urlRp;
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
-    public void setUrlRp(String urlRp) {
-        this.urlRp = urlRp;
+    public Long getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Long documento) {
+        this.documento = documento;
     }
 }

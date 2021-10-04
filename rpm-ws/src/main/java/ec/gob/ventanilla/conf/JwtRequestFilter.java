@@ -35,20 +35,32 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        response.setHeader("Access-Control-Allow-Origin","*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Requested-With, remember-me");
 
-        if(!request.getRequestURI().equals("/rpm-ventanilla/api/autentificacion")){
+        if (!request.getRequestURI().equals("/rpm-ventanilla/api/autentificacion")
+                && !request.getRequestURI().equals("/rpm-ventanilla/api/actosInscricipciones")
+                && !request.getRequestURI().equals("/rpm-ventanilla/api/pagos/verificarPago")
+                && !request.getRequestURI().equals("/rpm-ventanilla/api/actosPopulares")
+                && !request.getRequestURI().equals("/rpm-ventanilla/api/usuario/actualizarContrasenia")
+                && !request.getRequestURI().equals("/rpm-ventanilla/api/usuario/activarUsuarioEntidad")
+                && !request.getRequestURI().equals("/rpm-ventanilla/api/correo/generarCodigoRegistro")
+                && !request.getRequestURI().equals("/rpm-ventanilla/api/correo/validarCodigoRegistro")
+                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/actos/id/")
+                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/usuario/consultar")
+                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/requisitos/")
+                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/documento/imagen/")
+                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion")
+        ) {
             final String requestTokenHeader = request.getHeader("Authorization");
-            System.out.println(request.getHeaderNames().nextElement());
             String username = null;
             String jwtToken = null;
 // JWT Token is in the form "Bearer token". Remove Bearer word and get
 // only the Token
-            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer")) {
                 jwtToken = requestTokenHeader.substring(7);
                 try {
                     username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -82,7 +94,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
 
             }
-        }else {
+        } else {
             chain.doFilter(request, response);
         }
     }

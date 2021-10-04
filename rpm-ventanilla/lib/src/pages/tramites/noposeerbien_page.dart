@@ -131,7 +131,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             Wrap(
               children: motivosWidget(),
             ),
-            motivo.id == 116
+            motivo.id == -1
                 ? otroMotivoWidget()
                 : SizedBox(
                     height: 10,
@@ -180,7 +180,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             ),
           ),
           validator: (value) {
-            if (motivo.id == 116 && value!.isEmpty) {
+            if (motivo.id == -1 && value!.isEmpty) {
               return 'Ingrese el motivo de su solicitud!';
             }
           },

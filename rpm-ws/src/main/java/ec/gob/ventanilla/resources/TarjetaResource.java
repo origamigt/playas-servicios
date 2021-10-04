@@ -30,20 +30,11 @@ public class TarjetaResource {
     @Autowired
     private PayPhoneService payPhoneService;
 
-    @Autowired
-    private AppLogsRepository appLogsRepository;
 
-    private AppLogs appLogs;
-
-    private Gson gson;
 
     @RequestMapping(value = "/tarjeta", method = RequestMethod.POST)
     public ResponseEntity<PubSolicitud> pagoEnLineaPayPhone(@RequestBody Tarjeta tarjeta) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        gson = new Gson();
-
-        PubSolicitud pubSolicitud = pubSolicitudRepository.findById(tarjeta.getIdSolicitud()).get();
+         PubSolicitud pubSolicitud = pubSolicitudRepository.findById(tarjeta.getIdSolicitud()).get();
         pubSolicitud.setEstado("A");
         pubSolicitud = pubSolicitudRepository.save(pubSolicitud);
         payPhoneService.payOnlinePayPhone(tarjeta, pubSolicitud);
@@ -52,10 +43,7 @@ public class TarjetaResource {
 
     @RequestMapping(value = "reverso/solicitud/{solicitud}", method = RequestMethod.GET)
     public ResponseEntity<Integer> pagoEnLineaPayPhone(@PathVariable Integer solicitud) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        appLogs = new AppLogs(new Date(), "/api/pagos/reverso/solicitud/" + solicitud, null, " pagoEnLineaPayPhone", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
+
         // payPhoneService.reverseOnlinePayPhone(solicitud.longValue());
         return new ResponseEntity<>(solicitud, HttpStatus.OK);
     }

@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (usuario == null) {
             throw new UsernameNotFoundException(String.format("Usuario no encontrado", username));
         } else {
-            return new User(username, usuario.getPass(),
+            return new User(username, usuario.getClave(),
                     new ArrayList<>());
         }
 
@@ -32,11 +32,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String usuario) throws UsernameNotFoundException {
-        AclUser u = usuarioRepository.findByUsername(usuario);
+        AclUser u = usuarioRepository.findByUsuario(usuario);
         if (u == null) {
             throw new UsernameNotFoundException(String.format("Usuario no encontrado", usuario));
         } else {
-            return new User(usuario, u.getPass(),
+            return new User(usuario, u.getClave(),
                     new ArrayList<>());
         }
 

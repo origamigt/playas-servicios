@@ -31,7 +31,7 @@ public class Util {
         return client1;
     }
 
-    public static String getMailHtmlRecuperarClave(Long idUser, String user, String dominio) {
+    public static String getMailHtmlRecuperarClave(Integer idUser, String user, String dominio) {
         try {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.HOUR, 24);
@@ -53,22 +53,20 @@ public class Util {
         }
     }
 
-    public static String getHtmlAprobarUsuario(AclUser aclUser, String dominio) {
+    public static String getHtmlCodigoVerificacion(String codigo, String dominio) {
         try {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.HOUR, 24);
             StringBuilder sb = new StringBuilder();
             // cabecera:
-            sb.append("<div> <img src=\"").append(dominio).append("resources/images/mailhead1.png\" /> </div>");
-            sb.append("<h1> Activación de Usuario </h1>");
+            sb.append("<div> <img src=\"").append(dominio).append("\" /> </div>");
+            sb.append("<h1> Código de Verificación <br> " + codigo + "</br> </h1>");
             // mensaje:
-            String mensaje = "Este correo tiene una validez de 24 horas.<br/>"
-                    + "Para la activación del Usuario hacer clic en el siguiente enlace: "
-                    + "<a href=\"" + dominio + "registro/activarUsuario.xhtml?code1=" + aclUser.getId() + "&code2="
-                    + aclUser.getUsername() + "&code3=" + cal.getTimeInMillis() + "\" target=\"_new\">AQUI.</a>";
+            String mensaje = "Este código permanecerá activo durante 5 minutos y es válido por una sola ocasión. <br/>";
             sb.append("<p>").append(mensaje).append("</p>");
             // footer:
 
+            sb.append("</center>");
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,16 +74,17 @@ public class Util {
         }
     }
 
-    public static String getHtmlCodigoVerificacion(String codigo, String dominio) {
+
+    public static String getHtmlActivacionUsuario(String obs, String dominio) {
         try {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.HOUR, 24);
             StringBuilder sb = new StringBuilder();
             // cabecera:
-            sb.append("<div> <img src=\"").append(dominio).append("resources/images/mailhead1.png\" /> </div>");
-            sb.append("<h1> Código de Verificación <br> " + codigo + "</br> </h1>");
+            sb.append("<div> <img src=\"").append(dominio).append("\" /> </div>");
+            sb.append("<h1> Estimado usuario <br> " + obs + "</br> </h1>");
             // mensaje:
-            String mensaje = "Este código permanecerá activo durante 5 minutos y es válido por una sola ocasión. <br/>";
+            String mensaje = "No responda a este correo. <br/>";
             sb.append("<p>").append(mensaje).append("</p>");
             // footer:
 

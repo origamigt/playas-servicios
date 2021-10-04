@@ -151,11 +151,11 @@ class AppRouter extends _i26.RootStackRouter {
 
   @override
   List<_i26.RouteConfig> get routes => [
-        _i26.RouteConfig(LoginRoute.name, path: '/'),
+        _i26.RouteConfig(LoginRoute.name, path: '/iniciarSesion'),
         _i26.RouteConfig(RegistrarseRoute.name, path: '/registrarse'),
         _i26.RouteConfig(RecuperarRoute.name, path: '/recuperar'),
         _i26.RouteConfig(EntidadRoute.name, path: '/registrarEntidad'),
-        _i26.RouteConfig(HomeRoute.name, path: '/inicio'),
+        _i26.RouteConfig(HomeRoute.name, path: '/'),
         _i26.RouteConfig(ConfirmarPagoRoute.name,
             path: '/pagos/transaccionExitosa/*'),
         _i26.RouteConfig(VerificarDocRoute.name, path: '/verificarDocumento'),
@@ -199,7 +199,7 @@ class AppRouter extends _i26.RootStackRouter {
 
 /// generated route for [_i1.LoginPage]
 class LoginRoute extends _i26.PageRouteInfo<void> {
-  const LoginRoute() : super(name, path: '/');
+  const LoginRoute() : super(name, path: '/iniciarSesion');
 
   static const String name = 'LoginRoute';
 }
@@ -227,7 +227,7 @@ class EntidadRoute extends _i26.PageRouteInfo<void> {
 
 /// generated route for [_i5.HomePage]
 class HomeRoute extends _i26.PageRouteInfo<void> {
-  const HomeRoute() : super(name, path: '/inicio');
+  const HomeRoute() : super(name, path: '/');
 
   static const String name = 'HomeRoute';
 }

@@ -22,6 +22,7 @@ public class ResponseCreate implements Serializable {
     private String messageCode;
     private String status;
     private String statusCode;
+    private String transactionStatus;
     private String transactionId;
     private String clientTransactionId;
     @Expose(serialize = false, deserialize = false)
@@ -30,7 +31,6 @@ public class ResponseCreate implements Serializable {
     private Date fecha;
     private String acto;
     private Double total;
-    private String transactionStatus;
     private String email;
     private String phoneNumber;
     private String document;
@@ -43,25 +43,6 @@ public class ResponseCreate implements Serializable {
     private String deferred;
     private String recap;
     private Double amount;
-
-    public Long getIdSolicitud() {
-        return idSolicitud;
-    }
-
-    public void setIdSolicitud(Long idSolicitud) {
-        this.idSolicitud = idSolicitud;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public ResponseCreate() {
-    }
 
     public Long getId() {
         return id;
@@ -87,6 +68,14 @@ public class ResponseCreate implements Serializable {
         this.authorizationCode = authorizationCode;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public String getMessageCode() {
         return messageCode;
     }
@@ -109,59 +98,6 @@ public class ResponseCreate implements Serializable {
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getClientTransactionId() {
-        return clientTransactionId;
-    }
-
-    public void setClientTransactionId(String clientTransactionId) {
-        this.clientTransactionId = clientTransactionId;
-    }
-
-    @Override
-    public String toString() {
-        return "ResponseCreate{"
-                + "cardToken='" + cardToken + '\''
-                + ", authorizationCode='" + authorizationCode + '\''
-                + ", messageCode='" + messageCode + '\''
-                + ", status='" + status + '\''
-                + ", statusCode='" + statusCode + '\''
-                + ", transactionId='" + transactionId + '\''
-                + ", clientTransactionId='" + clientTransactionId + '\''
-                + '}';
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getActo() {
-        return acto;
-    }
-
-    public void setActo(String acto) {
-        this.acto = acto;
-    }
-
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
     }
 
     public String getTransactionStatus() {
@@ -268,4 +204,83 @@ public class ResponseCreate implements Serializable {
         this.amount = amount;
     }
 
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public String getClientTransactionId() {
+        return clientTransactionId;
+    }
+
+    public void setClientTransactionId(String clientTransactionId) {
+        this.clientTransactionId = clientTransactionId;
+    }
+
+    public Long getIdSolicitud() {
+        return idSolicitud;
+    }
+
+    public void setIdSolicitud(Long idSolicitud) {
+        this.idSolicitud = idSolicitud;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getActo() {
+        return acto;
+    }
+
+    public void setActo(String acto) {
+        this.acto = acto;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseCreate{" +
+                "id=" + id +
+                ", cardToken='" + cardToken + '\'' +
+                ", authorizationCode='" + authorizationCode + '\'' +
+                ", message='" + message + '\'' +
+                ", messageCode='" + messageCode + '\'' +
+                ", status='" + status + '\'' +
+                ", statusCode='" + statusCode + '\'' +
+                ", transactionStatus='" + transactionStatus + '\'' +
+                ", transactionId='" + transactionId + '\'' +
+                ", clientTransactionId='" + clientTransactionId + '\'' +
+                ", idSolicitud=" + idSolicitud +
+                ", fecha=" + fecha +
+                ", acto='" + acto + '\'' +
+                ", total=" + total +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", document='" + document + '\'' +
+                ", cardType='" + cardType + '\'' +
+                ", cardBrandCode='" + cardBrandCode + '\'' +
+                ", cardBrand='" + cardBrand + '\'' +
+                ", bin='" + bin + '\'' +
+                ", lastDigits='" + lastDigits + '\'' +
+                ", deferredMessage='" + deferredMessage + '\'' +
+                ", deferred='" + deferred + '\'' +
+                ", recap='" + recap + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

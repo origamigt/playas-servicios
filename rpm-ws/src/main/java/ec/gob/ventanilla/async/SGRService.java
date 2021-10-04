@@ -1,11 +1,17 @@
 package ec.gob.ventanilla.async;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ec.gob.ventanilla.conf.AppProps;
 import ec.gob.ventanilla.entity.AclUser;
 import ec.gob.ventanilla.entity.PubSolicitud;
 import ec.gob.ventanilla.model.DatosProforma;
+import ec.gob.ventanilla.model.DocumentoFD;
+import ec.gob.ventanilla.model.DocumentoModel;
+import ec.gob.ventanilla.model.FirmaElectronica;
 import ec.gob.ventanilla.repository.PubSolicitudRepository;
+import ec.gob.ventanilla.util.JsonDateDeserializer;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -16,7 +22,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -151,6 +162,11 @@ public class SGRService {
             httpPost.setEntity(new StringEntity(gson.toJson(solicitud), "UTF-8"));
             httpPost.setHeader("Content-type", "application/json; charset=utf-8");
 
+
+
+            System.out.println(appProps.getRpIniciarTramiteInscripcion());
+            System.out.println(gson.toJson(solicitud));
+
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             Future<HttpResponse> futureResponse = executorService.submit(() -> httpClient.execute(httpPost));
             HttpResponse httpResponse = futureResponse.get(60, TimeUnit.SECONDS);
@@ -184,7 +200,6 @@ public class SGRService {
         }
     }
 
-    @Async
     public DatosProforma actualizarRequisitosInscripcion(PubSolicitud solicitud) {
         DatosProforma datosProforma = null;
         try {
@@ -227,6 +242,50 @@ public class SGRService {
             e.printStackTrace();
         }
         return datosProforma;
+    }
+
+    public DocumentoFD validarDocumentoFD(DocumentoModel model) {
+        DocumentoFD documentoFD = new DocumentoFD();
+        try {
+            File directory = new File(appProps.getOutputDir());
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+            GsonBuilder builder = new GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
+                    .registerTypeAdapter(Date.class, new JsonDateDeserializer());
+            Gson gson = builder.create();
+            FirmaElectronica firmaElectronica = new FirmaElectronica();
+            String archivo = appProps.getOutputDir() + model.getNombre();
+
+
+            FileUtils.writeByteArrayToFile(new File(archivo), model.getMultipartFile());
+
+            firmaElectronica.setArchivoFirmado(archivo);
+
+            HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpPost httpPost = new HttpPost(appProps.getFirmaElectronica() + "verificarDocumento");
+            httpPost.setEntity(new StringEntity(gson.toJson(firmaElectronica), "UTF-8"));
+            httpPost.setHeader("Content-type", "application/json; charset=utf-8");
+
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            Future<HttpResponse> futureResponse = executorService.submit(() -> httpClient.execute(httpPost));
+            HttpResponse httpResponse = futureResponse.get(60, TimeUnit.SECONDS);
+            if (httpResponse != null) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent(), StandardCharsets.UTF_8), 8);
+                String inputLine;
+                StringBuilder sb = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    sb.append(inputLine);
+                }
+                System.out.println(sb.toString());
+                in.close();
+                documentoFD = gson.fromJson(sb.toString(), DocumentoFD.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            documentoFD.setProcess("Error al validar");
+        }
+        return documentoFD;
     }
 
 }

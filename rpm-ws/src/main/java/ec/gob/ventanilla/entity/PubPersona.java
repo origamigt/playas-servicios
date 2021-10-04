@@ -15,64 +15,28 @@ public class PubPersona {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "ced_ruc")
     private String cedRuc;
-    @Column(name = "nombres")
     private String nombres;
-    @Column(name = "apellidos")
     private String apellidos;
-    @Column(name = "tipo_documento", length = 1)
     private String tipoDocumento;
-    @Column(name = "tipo_persona", length = 1)
-    private String tipoPersona;
-    @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
     private Date fechaCreacion;
-    @Column(name = "fecha_nacimiento")
     @Expose(deserialize = false, serialize = false)
     @JsonIgnore
     private Date fechaNacimiento;
-    @Column(name = "direccion")
     private String direccion;
-    @Column(name = "telefono1")
     private String telefono1;
-    @Column(name = "telefono2")
     private String telefono2;
-    @Column(name = "correo1")
     private String correo1;
-
-    @Column(name = "correo2")
-    private String correo2;
-    @Column(name = "estado")
     private Boolean estado = true;
     @JsonIgnore
     @OneToOne(mappedBy = "persona")
     private AclUser usuario;
-
-    @Column(name = "estado_civil")
     private String estadoCivil;
-    @Column(name = "genero", length = 1)
-    private String genero;
-    @Column(name = "discapacidad")
-    private Short discapacidad;
-    @Column(name = "derecho")
-    private Short derecho;
-    @Column(name = "alcance")
-    private Short alcance;
-    @Column(name = "tipo_persona_ws")
-    private Short tipoPersonaWs;
-    @Column(name = "numero_casa", length = 100)
-    private String numeroCasa;
-    @Column
     private String nombreConyuge;
-    @Column
     private String apellidoConyuge;
-    @Transient
-    private Long fechaNacimientoLong;
-//CAMPO PARA LA EXPEDICION DE LA CEDULA E INICIO DE ACTIVIDADES
-    @Transient
-    private Long fechaExpedicionLong;
+    private String fechaExpiracion;
     @Column(name = "fecha_expedicion")
     @Expose(deserialize = false, serialize = false)
     @Temporal(TemporalType.DATE)
@@ -80,11 +44,15 @@ public class PubPersona {
     private Date fechaExpedicion;
     @Transient
     private String correoCodificado;
-    
+    @Transient
+    private Long fechaNacimientoLong;
+    //CAMPO PARA LA EXPEDICION DE LA CEDULA E INICIO DE ACTIVIDADES
+    @Transient
+    private Long fechaExpedicionLong;
+
     public PubPersona() {
     }
 
-    
 
     public Long getId() {
         return id;
@@ -116,14 +84,6 @@ public class PubPersona {
 
     public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
-    }
-
-    public String getTipoPersona() {
-        return tipoPersona;
-    }
-
-    public void setTipoPersona(String tipoPersona) {
-        this.tipoPersona = tipoPersona;
     }
 
     public Date getFechaCreacion() {
@@ -174,14 +134,6 @@ public class PubPersona {
         this.correo1 = correo1;
     }
 
-    public String getCorreo2() {
-        return correo2;
-    }
-
-    public void setCorreo2(String correo2) {
-        this.correo2 = correo2;
-    }
-
     public Boolean getEstado() {
         return estado;
     }
@@ -214,53 +166,6 @@ public class PubPersona {
         this.estadoCivil = estadoCivil;
     }
 
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public Short getDiscapacidad() {
-        return discapacidad;
-    }
-
-    public void setDiscapacidad(Short discapacidad) {
-        this.discapacidad = discapacidad;
-    }
-
-    public Short getDerecho() {
-        return derecho;
-    }
-
-    public void setDerecho(Short derecho) {
-        this.derecho = derecho;
-    }
-
-    public Short getAlcance() {
-        return alcance;
-    }
-
-    public void setAlcance(Short alcance) {
-        this.alcance = alcance;
-    }
-
-    public Short getTipoPersonaWs() {
-        return tipoPersonaWs;
-    }
-
-    public void setTipoPersonaWs(Short tipoPersonaWs) {
-        this.tipoPersonaWs = tipoPersonaWs;
-    }
-
-    public String getNumeroCasa() {
-        return numeroCasa;
-    }
-
-    public void setNumeroCasa(String numeroCasa) {
-        this.numeroCasa = numeroCasa;
-    }
 
     @Override
     public int hashCode() {
@@ -308,36 +213,6 @@ public class PubPersona {
         this.apellidoConyuge = apellidoConyuge;
     }
 
-    @Override
-    public String
-    toString() {
-        return "PubPersona{" +
-                "id=" + id +
-                ", cedRuc='" + cedRuc + '\'' +
-                ", nombres='" + nombres + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", tipoDocumento='" + tipoDocumento + '\'' +
-                ", tipoPersona='" + tipoPersona + '\'' +
-                ", fechaCreacion=" + fechaCreacion +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", direccion='" + direccion + '\'' +
-                ", telefono1='" + telefono1 + '\'' +
-                ", telefono2='" + telefono2 + '\'' +
-                ", correo1='" + correo1 + '\'' +
-                ", correo2='" + correo2 + '\'' +
-                ", estado=" + estado +
-                //", usuario=" + usuario +
-                ", estadoCivil='" + estadoCivil + '\'' +
-                ", genero='" + genero + '\'' +
-                ", discapacidad=" + discapacidad +
-                ", derecho=" + derecho +
-                ", alcance=" + alcance +
-                ", tipoPersonaWs=" + tipoPersonaWs +
-                ", numeroCasa='" + numeroCasa + '\'' +
-                ", nombreConyuge='" + nombreConyuge + '\'' +
-                ", apellidoConyuge='" + apellidoConyuge + '\'' +
-                '}';
-    }
 
     public Long getFechaNacimientoLong() {
         return fechaNacimientoLong;
@@ -370,4 +245,14 @@ public class PubPersona {
     public void setCorreoCodificado(String correoCodificado) {
         this.correoCodificado = correoCodificado;
     }
+
+    public String getFechaExpiracion() {
+        return fechaExpiracion;
+    }
+
+    public void setFechaExpiracion(String fechaExpiracion) {
+        this.fechaExpiracion = fechaExpiracion;
+    }
+
+
 }
