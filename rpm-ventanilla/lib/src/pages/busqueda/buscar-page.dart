@@ -6,6 +6,7 @@ import 'package:playas/src/providers/consulta_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class BuscarPage extends StatefulWidget {
   static const String route = '/consultarTramite';
@@ -17,6 +18,7 @@ class BuscarPage extends StatefulWidget {
 }
 
 class _BuscarPageState extends State<BuscarPage> {
+  bool isWeb = UniversalPlatform.isWeb;
   ConsultaProvider? tramiteProvider;
   final _formKey = GlobalKey<FormState>();
   DatosProforma? _datosProforma;
@@ -42,7 +44,7 @@ class _BuscarPageState extends State<BuscarPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Consulta de trámites'),
+          header: tituloPagina(context, 'Consulta de trámites', isWeb),
           body: body(),
           footer: Container(),
         ));

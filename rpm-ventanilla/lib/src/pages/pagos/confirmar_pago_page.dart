@@ -6,6 +6,7 @@ import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/response_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class ConfirmarPagoPage extends StatefulWidget {
   static const String route = '/pagos/transaccionExitosa/*';
@@ -19,7 +20,7 @@ class ConfirmarPagoPage extends StatefulWidget {
 class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
-
+  bool isWeb = UniversalPlatform.isWeb;
   Size? size;
   bool activar = false;
   bool validos = false;
@@ -46,19 +47,19 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
     super.initState();
   }
 
-  void load( Map<String, dynamic> _params  ) {
- //   print(urlPago);
+  void load(Map<String, dynamic> _params) {
+    //   print(urlPago);
     //params = urlPago.split('&');
     //_params['code'];
     /*param1 = params[0].split('=');
     param2 = params[1].split('=');
     param3 = params[2].split('=');*/
 
-    param1 =  _params['code'];
-    param2 =  _params['id'];
-    param3 =  _params['clientTransactionId'];
+    param1 = _params['code'];
+    param2 = _params['id'];
+    param3 = _params['clientTransactionId'];
 
-    String url = dominio + '#/'+ ConfirmarPagoPage.route + param2[1];
+    String url = dominio + '#/' + ConfirmarPagoPage.route + param2[1];
 
     if (generateMd5(url) == param1[1]) {
       validos = true;
@@ -80,7 +81,7 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Confirmación de pago'),
+          header: tituloPagina(context, 'Confirmación de pago', isWeb),
           body: body(),
           footer: Container(),
         ));

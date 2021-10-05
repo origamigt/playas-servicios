@@ -5,6 +5,7 @@ import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/tramite_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class MisTramitesPage extends StatefulWidget {
   static const String route = '/misTramites';
@@ -14,6 +15,7 @@ class MisTramitesPage extends StatefulWidget {
 }
 
 class _MisTramitesPageState extends State<MisTramitesPage> {
+  bool isWeb = UniversalPlatform.isWeb;
   static final formatter = DateFormat('dd-MM-yyyy');
   List<Solicitud> _pubSolicitudes = [];
 
@@ -41,7 +43,7 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Mis solicitudes'),
+          header: tituloPagina(context, 'Mis solicitudes', isWeb),
           body: body(),
           footer: Container(),
         ));

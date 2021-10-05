@@ -194,7 +194,7 @@ public class PayPhoneService {
     public CreateBtn linkPagoPayPhone(PubSolicitud pubSolicitud) {
         try {
             String url = appProps.getDominio() + "/pagos/transaccionExitosa/*";
-            System.out.println(url);
+            //System.out.println(url);
             Gson gson = new Gson();
             Double result = pubSolicitud.getTotal() * 100.0;
             Integer total = result.intValue();

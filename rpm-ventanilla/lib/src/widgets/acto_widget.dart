@@ -31,7 +31,7 @@ class ActoCard extends StatelessWidget {
                 color: Colors.grey, activeColor: Colors.lightBlue)),
         layout: SwiperLayout.DEFAULT,
         indicatorLayout: PageIndicatorLayout.SCALE,
-        control: SwiperControl(),
+        control: isWeb! ? SwiperControl() : null,
         fade: 1.0,
         loop: true,
         itemWidth: _screenSize.width,

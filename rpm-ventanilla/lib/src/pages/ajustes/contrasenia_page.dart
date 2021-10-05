@@ -10,6 +10,7 @@ import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 //import 'package:auto_route/auto_route.dart';
 
 class ContraseniaPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class ContraseniaPage extends StatefulWidget {
 }
 
 class ContraseniaPageState extends State<ContraseniaPage> {
+  bool isWeb = UniversalPlatform.isWeb;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
   PerfilProvider? perfilProvider;
@@ -64,7 +66,7 @@ class ContraseniaPageState extends State<ContraseniaPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Actualizar contraseña'),
+          header: tituloPagina(context, 'Actualizar contraseña', isWeb),
           body: body(),
           footer: Container(),
         ));

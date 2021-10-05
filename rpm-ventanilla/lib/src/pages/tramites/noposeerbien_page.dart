@@ -97,7 +97,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Certificado de no poseer bienes'),
+          header:
+              tituloPagina(context, 'Certificado de no poseer bienes', isWeb),
           body: body(),
           footer: Container(),
         ));
@@ -586,7 +587,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
               forceSafariVC: true,
               forceWebView: true,
               enableJavaScript: true,
-
             );
             //js.context.callMethod('open', [rest.linkPago, '_self']);
           }

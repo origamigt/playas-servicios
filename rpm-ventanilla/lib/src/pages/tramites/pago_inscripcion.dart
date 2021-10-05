@@ -67,7 +67,7 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Inscripción en linea'),
+          header: tituloPagina(context, 'Inscripción en linea', isWeb),
           body: body(),
           footer: Container(),
         ));
@@ -269,7 +269,6 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
               forceSafariVC: true,
               forceWebView: true,
               enableJavaScript: true,
-
             );
             //js.context.callMethod('open', [rest.linkPago, '_self']);
           }

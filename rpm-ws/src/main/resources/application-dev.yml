@@ -48,7 +48,7 @@ app:
   dbDocUser: sisapp
   dbDocPass: sisapp98
 
-  logo: hhttp://rpv.digital/rmppm.png
+  logo: https://rpv.digital/rmppm.png
   urlPdfFirmado: http://127.0.0.1:8085/rpm-ventanilla/api/documento/
   urlDinardap: http://200.124.240.62:8785/api/dinardap/aplicacion/
   usuarioDinardap: Em0T-D1n4rD4p

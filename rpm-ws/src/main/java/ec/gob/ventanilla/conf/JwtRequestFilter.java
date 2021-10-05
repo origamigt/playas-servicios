@@ -41,19 +41,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Requested-With, remember-me");
 
-        if (!request.getRequestURI().equals("/rpm-ventanilla/api/autentificacion")
-                && !request.getRequestURI().equals("/rpm-ventanilla/api/actosInscricipciones")
-                && !request.getRequestURI().equals("/rpm-ventanilla/api/pagos/verificarPago")
-                && !request.getRequestURI().equals("/rpm-ventanilla/api/actosPopulares")
-                && !request.getRequestURI().equals("/rpm-ventanilla/api/usuario/actualizarContrasenia")
-                && !request.getRequestURI().equals("/rpm-ventanilla/api/usuario/activarUsuarioEntidad")
-                && !request.getRequestURI().equals("/rpm-ventanilla/api/correo/generarCodigoRegistro")
-                && !request.getRequestURI().equals("/rpm-ventanilla/api/correo/validarCodigoRegistro")
-                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/actos/id/")
-                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/usuario/consultar")
-                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/requisitos/")
-                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/documento/imagen/")
-                && !request.getRequestURI().startsWith("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion")
+        if (!request.getRequestURI().contains("/rpm-ventanilla/api/autentificacion")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/actosInscricipciones")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/pagos/verificarPago")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/actosPopulares")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/actualizarContrasenia")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/activarUsuarioEntidad")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/correo/generarCodigoRegistro")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/correo/validarCodigoRegistro")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/actos/id/")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/consultar")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/requisitos/")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/documento/imagen/")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion")
         ) {
             final String requestTokenHeader = request.getHeader("Authorization");
             String username = null;

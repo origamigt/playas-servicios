@@ -40,7 +40,7 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Validar certificado'),
+          header: tituloPagina(context, 'Validar certificado', true),
           body: body(),
           footer: Container(),
         ));

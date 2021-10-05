@@ -96,7 +96,7 @@ class MercantilState extends State<MercantilPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Certificado mercantil'),
+          header: tituloPagina(context, 'Certificado mercantil', isWeb),
           body: body(),
           footer: Container(),
         ));
@@ -534,7 +534,7 @@ class MercantilState extends State<MercantilPage> {
               forceWebView: true,
               enableJavaScript: true,
             );
-           // js.context.callMethod('open', [rest.linkPago, '_self']);
+            // js.context.callMethod('open', [rest.linkPago, '_self']);
           }
         }
       } else {

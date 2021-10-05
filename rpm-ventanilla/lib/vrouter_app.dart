@@ -55,8 +55,6 @@ class _VRouterAppState extends State<VRouterApp> {
           authProvider.setAuthState(Status.NotLoggedIn);
         }
       });
-
-      //authProvider.
     });
   }
 

@@ -11,8 +11,11 @@ import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/menu-login-card.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
-class LoginForm extends StatelessWidget {
+//class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
+  bool isWeb = UniversalPlatform.isWeb;
   final paddingTopForm,
       fontSizeTextField,
       fontSizeTextFormField,
@@ -38,23 +41,26 @@ class LoginForm extends StatelessWidget {
       this.fontSizeSnackBar,
       this.errorFormMessage);
 
-  /*@override
+  @override
   LoginFormState createState() => LoginFormState();
 }
 
-class LoginFormState extends State<LoginForm> {*/
+class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  BuildContext? context;
+  //BuildContext? context;
   AuthProvider? auth;
-  String? _username, _password;
-  double? widthSize;
 
+  //String? _username, _password;
+  double? widthSize;
+  TextEditingController _username = TextEditingController();
+  TextEditingController _password = TextEditingController();
   double? heightSize;
   ScrollController scrollController =
       ScrollController(initialScrollOffset: 0.0);
+
   @override
   Widget build(BuildContext context) {
-    this.context = context;
+    //this.context = context;
     auth = Provider.of<AuthProvider>(context);
     widthSize = MediaQuery.of(context).size.width;
     heightSize = MediaQuery.of(context).size.height;
@@ -73,46 +79,49 @@ class LoginFormState extends State<LoginForm> {*/
                   alignment: Alignment.center,
                   child: Text('Iniciar sesión',
                       style: GoogleFonts.sourceCodePro(
-                        fontSize: widthSize! * fontSizeTextField,
+                        fontSize: widthSize! * widget.fontSizeTextField,
                       ))),
-              SizedBox(height: 10),
+              SizedBox(height: 15),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text('Identificación',
                       style: GoogleFonts.sourceCodePro(
-                        fontSize: widthSize! * fontSizeTextField,
+                        fontSize: widthSize! * widget.fontSizeTextField,
                       ))),
-              TextFormField(
-                onSaved: (value) => _username = value,
-                validator: (value) {
+              TextField(
+                //  key: _k1,
+                controller: _username,
+                /* validator: (value) {
                   if (value!.isEmpty) {
                     return 'Ingrese su identificación!';
                   }
-                },
+                },*/
                 style: TextStyle(
-                    color: Colors.black, fontSize: fontSizeTextFormField),
+                    color: Colors.black,
+                    fontSize: widget.fontSizeTextFormField),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.person,
-                    size: widthSize! * iconFormSize,
+                    size: widthSize! * widget.iconFormSize,
                   ),
                   errorStyle: TextStyle(
                       color: Colors.red,
-                      fontSize: widthSize! * errorFormMessage),
+                      fontSize: widthSize! * widget.errorFormMessage),
                 ),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: heightSize! * spaceBetweenFields),
+              SizedBox(height: heightSize! * widget.spaceBetweenFields),
               Align(
                   alignment: Alignment.centerLeft,
                   child: Text('Contraseña',
                       style: GoogleFonts.sourceCodePro(
-                        fontSize: widthSize! * fontSizeTextField,
+                        fontSize: widthSize! * widget.fontSizeTextField,
                       ))),
               TextFormField(
-                  onSaved: (value) => _password = value,
+                  //key: _k2,
+                  controller: _password,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Ingrese su contraseña para continuar!';
@@ -123,19 +132,19 @@ class LoginFormState extends State<LoginForm> {*/
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.lock,
-                      size: widthSize! * iconFormSize,
+                      size: widthSize! * widget.iconFormSize,
                     ),
                     labelStyle: TextStyle(color: Colors.white),
                     errorStyle: TextStyle(
                         color: Colors.red,
-                        fontSize: widthSize! * errorFormMessage),
+                        fontSize: widthSize! * widget.errorFormMessage),
                   ),
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                    fontSize: fontSizeTextFormField,
+                    fontSize: widget.fontSizeTextFormField,
                     color: Colors.black,
                   )),
-              SizedBox(height: heightSize! * spaceBetweenFieldAndButton),
+              SizedBox(height: heightSize! * widget.spaceBetweenFieldAndButton),
               auth!.loggedInStatus == Status.Authenticating
                   ? loading("Iniciando sesión...")
                   : btnLogin(),
@@ -152,11 +161,11 @@ class LoginFormState extends State<LoginForm> {*/
   Widget btnLogin() {
     return Container(
       height: 45,
-      width: MediaQuery.of(context!).size.width,
+      width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor:
-                MaterialStateProperty.all(Theme.of(context!).primaryColor),
+                MaterialStateProperty.all(Theme.of(context).primaryColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -170,23 +179,23 @@ class LoginFormState extends State<LoginForm> {*/
           },
           child: Text('Ingresar',
               style: GoogleFonts.sourceCodePro(
-                fontSize: widthSize! * fontSizeButton,
+                fontSize: widthSize! * widget.fontSizeButton,
               ))),
     );
   }
 
   doLogin() {
     final Future<Map<String, dynamic>> successfulMessage =
-        auth!.login(_username!, _password!);
+        auth!.login(_username.text, _password.text);
 
     successfulMessage.then((response) {
       print(response.toString());
       if (response['status']) {
         User user = response['user'];
-        Provider.of<UsuarioProvider>(context!, listen: false).setUser(user);
-        context!.router.navigateNamed(HomePage.route);
+        Provider.of<UsuarioProvider>(context, listen: false).setUser(user);
+        context.router.navigateNamed(HomePage.route);
       } else {
-        mensajeError(context!, response['message']);
+        mensajeError(context, response['message']);
       }
     });
   }

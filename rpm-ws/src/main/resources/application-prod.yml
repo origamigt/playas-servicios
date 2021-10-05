@@ -7,17 +7,18 @@ spring:
     username: sisapp
     password: sisapp98
     platform: postgres
-    driver-class-name: org.postgresql.Driver
+    #driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
       minimum-idle: 5
       pool-name: WSRp
       max-lifetime: 30000
   jpa:
+    database: POSTGRESQL
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: app
 
 eureka:
@@ -31,7 +32,6 @@ eureka:
 
 
 app:
-
   correo: tramites.registro.playas@gmail.com
   claveCorreo: p14y45@c0rre0
   hostCorreo: smtp.gmail.com
@@ -43,29 +43,33 @@ app:
   userSgr: ventanilla
   passSgr: regproloja
 
-  dominio: https://rpv.digital/
+  dominio: https://rpv.digital/#
   docUrl: jdbc:postgresql://192.168.16.212:5432/rpm_playas_archivos
   dbDocUser: sisapp
   dbDocPass: sisapp98
 
-  logo: http://rpv.digital/rmppm.png
-  urlPdfFirmado: http://127.0.0.1:8085/rpm-ventanilla/api/documento/
+  logo: https://rpv.digital/rmppm.png
+  urlPdfFirmado: https://rpv.digital/ws/rpm-ventanilla/api/documento/
+  urlDinardap: http://200.124.240.62:8785/api/dinardap/aplicacion/
+  usuarioDinardap: Em0T-D1n4rD4p
+  claveDinardap: IbBTF;e;Fomj0du4H@M5
+
   urlPersona: 192.168.100.2:8785/api/dinardap/aplicacion/
-  urlFichaRegistral: http://192.168.200.17:8790/api/rpl/fichaRegistral/ventanilla?numFicha=
+  urlFichaRegistral: http://192.168.16.211/sigeri-playas/api/rpl/fichaRegistral/ventanilla?numFicha=
   apiSms: http://200.124.240.36/api/sms.php?token=4PruebaOficina&no=
 
   rpFacturas: http://192.168.200.15:8780/api/facturacionElectronica/consultaFacturasContribuyente/
-  rpConsultarTramite: http://127.0.0.1:8080/sgr/rest/ventanilla/consultar/tramite/
-  rpIniciarTramite: http://127.0.0.1:8080/sgr/rest/ventanilla/iniciarTramiteOnline
-  rpActualizarDocumentos: http://127.0.0.1:8080/sgr/rest/ventanilla/updatePubSolicitud
-  rpActualizarRequisitos: http://127.0.0.1:8080/sgr/rest/ventanilla/actualizarRequisitos
-  rpConsultarOidDocument: http://127.0.0.1:8080/sgr/rest/ventanilla/certificado/codigo/
-  rpConsultarOidInscripcion: http://127.0.0.1:8080/sgr/rest/ventanilla/inscripcion/codigo/
-  rpConsultarOid: http://127.0.0.1:8080/sgr/rest/ventanilla/documento/codigo/
-  rpEntregaTramiteAPP: http://127.0.0.1:8080/sgr/rest/ventanilla/entregaTramiteAPP/tramite/
-  rpActoInscripciones: http://127.0.0.1:8080/sgr/rest/ventanilla/inscripciones
-  rpIniciarTramiteSolicitudInscripcion: http://127.0.0.1:8080/sgr/rest/ventanilla/iniciarTramiteSolicitudInscripcion
-  rpIniciarTramiteInscripcion: http://127.0.0.1:8080/sgr/rest/ventanilla/iniciarTramiteInscripcion
+  rpConsultarTramite: http://192.168.16.211/sigeri-playas/rest/ventanilla/consultar/tramite/
+  rpIniciarTramite: http://192.168.16.211/sigeri-playas/rest/ventanilla/iniciarTramiteOnline
+  rpActualizarDocumentos: http://192.168.16.211/sigeri-playas/rest/ventanilla/updatePubSolicitud
+  rpActualizarRequisitos: http://192.168.16.211/sigeri-playas/rest/ventanilla/actualizarRequisitos
+  rpConsultarOidDocument: http://192.168.16.211/sigeri-playas/rest/ventanilla/certificado/codigo/
+  rpConsultarOidInscripcion: http://192.168.16.211/sigeri-playas/rest/ventanilla/inscripcion/codigo/
+  rpConsultarOid: http://192.168.16.211/sigeri-playas/rest/ventanilla/documento/codigo/
+  rpEntregaTramiteAPP: http://192.168.16.211/sigeri-playas/rest/ventanilla/entregaTramiteAPP/tramite/
+  rpActoInscripciones: http://192.168.16.211/sigeri-playas/rest/ventanilla/inscripciones
+  rpIniciarTramiteSolicitudInscripcion: http://192.168.16.211/sigeri-playas/rest/ventanilla/iniciarTramiteSolicitudInscripcion
+  rpIniciarTramiteInscripcion: http://192.168.16.211/sigeri-playas/rest/ventanilla/iniciarTramiteInscripcion
 
   payphoneError: CONEXIÓN NO DISPONIBLE CON EL PROVEEDOR DE PAGOS
   payphoneTransactionCreate: https://pay.payphonetodoesposible.com/api/v2/transaction/Create
@@ -77,4 +81,4 @@ app:
 
   payphoneConfirmPago: https://pay.payphonetodoesposible.com/api/button/V2/Confirm
 
-  firmaElectronica: http://127.0.0.1:8781/api/firmaElectronica/
+  firmaElectronica: http://192.168.16.211:8781/api/firmaElectronica/

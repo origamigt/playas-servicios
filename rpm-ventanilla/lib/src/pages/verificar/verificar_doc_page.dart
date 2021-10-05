@@ -8,6 +8,7 @@ import 'package:playas/src/providers/validardoc_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class VerificarDocPage extends StatefulWidget {
   static const String route = '/verificarDocumento';
@@ -17,6 +18,7 @@ class VerificarDocPage extends StatefulWidget {
 }
 
 class VerificarDocPageState extends State<VerificarDocPage> {
+  bool isWeb = UniversalPlatform.isWeb;
   ValidarDocProvider? validarDocProvider;
   String? extension = 'pdf';
   List<PlatformFile>? archivos;
@@ -33,7 +35,7 @@ class VerificarDocPageState extends State<VerificarDocPage> {
     return Form(
       key: _formKey,
       child: PageComponent(
-        header: tituloPagina(context, 'Verificar documentos'),
+        header: tituloPagina(context, 'Verificar documentos', isWeb),
         body: body(),
         footer: Container(),
       ),
@@ -108,6 +110,7 @@ class VerificarDocPageState extends State<VerificarDocPage> {
                                 alignment: Alignment.center,
                                 child: Text(
                                   name,
+                                  textAlign: TextAlign.center,
                                 ),
                               );
                             },

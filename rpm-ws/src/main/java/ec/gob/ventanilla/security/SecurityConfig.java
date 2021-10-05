@@ -74,6 +74,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rpm-ventanilla/api/correo/validarCodigoRegistro").permitAll()
                 .antMatchers("/rpm-ventanilla/api/documento/imagen/**").permitAll()
                 .antMatchers("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion").permitAll()
+
+
+
+                .antMatchers("/ws/rpm-ventanilla/api/autentificacion").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/usuario/consultar").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/usuario/actualizarContrasenia").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/usuario/activarUsuarioEntidad").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/usuario/consultar/recuperar").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/actosInscricipciones").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/actos/id/**").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/actosPopulares").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/requisitos/**").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/correo/generarCodigoRegistro").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/pagos/verificarPago").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/correo/validarCodigoRegistro").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/documento/imagen/**").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion").permitAll()
+
                 .anyRequest().authenticated().and()
                 .httpBasic().realmName("Servicios Online").and().requestCache().requestCache(new NullRequestCache());
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

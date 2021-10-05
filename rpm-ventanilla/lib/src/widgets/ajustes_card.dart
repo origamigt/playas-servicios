@@ -19,7 +19,7 @@ class AjustesCard extends StatelessWidget {
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: Responsive({
-              mobileScreenScope: 1,
+              mobileScreenScope: 2,
               tabletScreenScope: 3,
               desktopScreenScope: 3
             }).resolve(context)!,

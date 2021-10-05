@@ -8,6 +8,7 @@ import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class PerfilPage extends StatefulWidget {
   static const route = '/perfil';
@@ -17,6 +18,7 @@ class PerfilPage extends StatefulWidget {
 }
 
 class PerfilPageState extends State<PerfilPage> {
+  bool isWeb = UniversalPlatform.isWeb;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
   PerfilProvider? perfilProvider;
@@ -50,7 +52,7 @@ class PerfilPageState extends State<PerfilPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Perfil'),
+          header: tituloPagina(context, 'Perfil', isWeb),
           body: body(),
           footer: Container(),
         ));

@@ -34,7 +34,7 @@ class _RepositorioPageState extends State<RepositorioPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Mis documentos'),
+          header: tituloPagina(context, 'Mis documentos', isWeb),
           body: body(),
           footer: Container(),
         ));

@@ -3,10 +3,11 @@ import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class TramitesPage extends StatelessWidget {
   static const String route = '/tramites';
-
+  bool isWeb = UniversalPlatform.isWeb;
   final _actosProvider = ActosProvider();
   BuildContext? context;
 
@@ -19,7 +20,7 @@ class TramitesPage extends StatelessWidget {
         height: 0,
       ),
       body: PageComponent(
-        header: tituloPagina(context, 'Servicios en linea'),
+        header: tituloPagina(context, 'Servicios en linea', isWeb),
         body: _gridTramites(),
         footer: Container(),
       ),

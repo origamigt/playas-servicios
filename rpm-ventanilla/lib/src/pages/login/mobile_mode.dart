@@ -28,7 +28,7 @@ class _MobileModeState extends State<MobileMode> {*/
             child: SingleChildScrollView(
                 child: Column(children: [
               SizedBox(
-                height: 5,
+                height: 20,
               ),
               Image.asset('assets/images/logo.png',
                   height: heightSize! * 0.3, width: widthSize! * 0.6),

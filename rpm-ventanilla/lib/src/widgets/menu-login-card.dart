@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-
 import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -15,7 +14,7 @@ class MenuLoginCard extends StatelessWidget {
     final _screenSize = MediaQuery.of(context).size;
     this.context = context;
     return Container(
-      height: 90,
+      height: isWeb ? 90 : 100,
       child: GridView.builder(
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
@@ -65,7 +64,7 @@ class MenuLoginCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 2,
+                  height: isWeb ? 2 : 8,
                 ),
                 Text(
                   menu.descripcion,
@@ -74,7 +73,7 @@ class MenuLoginCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 8,
+                      fontSize: isWeb ? 8 : 10,
                       fontWeight: FontWeight.w900),
                 ),
               ],

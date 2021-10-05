@@ -90,7 +90,7 @@ class InscripcionesState extends State<InscripcionesPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Inscripciones en linea'),
+          header: tituloPagina(context, 'Inscripciones en linea', isWeb),
           body: body(),
           footer: Container(),
         ));

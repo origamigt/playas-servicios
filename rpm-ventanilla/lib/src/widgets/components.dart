@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/cerrar_sesion_page.dart';
 import 'package:playas/src/pages/login/login_page.dart';
+import 'package:playas/src/pages/verificar/certificadomov_page.dart';
 import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -63,6 +64,7 @@ Widget menuCard(BuildContext context, Menu menu, bool isWeb, bool auth) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     width: 122,
+    height: 160,
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -80,7 +82,9 @@ Widget menuCard(BuildContext context, Menu menu, bool isWeb, bool auth) {
         borderRadius: BorderRadius.all(Radius.circular(16)),
         onTap: () {
           if (menu.route == CertificadoWebPage.route ||
-              menu.route == VerificarDocPage.route || menu.route == LoginPage.route) {
+              menu.route == CertificadoMovPage.route ||
+              menu.route == VerificarDocPage.route ||
+              menu.route == LoginPage.route) {
             context.router.navigateNamed(menu.route);
           } else if (auth) {
             if (menu.route != CerrarSesionPage.route) {
@@ -205,7 +209,7 @@ Widget tituloWidget2(BuildContext? context, String txt) {
 Widget subTituloWidget(BuildContext? context, String txt) {
   return Container(
     alignment: Alignment.center,
-    margin: EdgeInsets.symmetric(vertical: 10),
+    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
     child: Text(
       txt,
       style: Theme.of(context!).textTheme.headline2,
@@ -224,7 +228,7 @@ Widget subTituloWidget2(BuildContext? context, String txt) {
   );
 }
 
-Widget tituloPagina(BuildContext? context, String txt) {
+Widget tituloPagina(BuildContext? context, String txt, bool isWeb) {
   return Container(
       margin: EdgeInsets.only(top: 10),
       child: Text(
@@ -233,7 +237,9 @@ Widget tituloPagina(BuildContext? context, String txt) {
         textAlign: TextAlign.center,
         softWrap: true,
         maxLines: 3,
-        style: Theme.of(context!).textTheme.headline1,
+        style: isWeb
+            ? Theme.of(context!).textTheme.headline1
+            : Theme.of(context!).textTheme.headline4,
       ));
 }
 

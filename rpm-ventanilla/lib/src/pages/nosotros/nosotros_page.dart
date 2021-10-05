@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NosotrosPage extends StatefulWidget {
   static const String route = '/acercaDe';
@@ -11,7 +13,7 @@ class NosotrosPage extends StatefulWidget {
 
 class _NosotrosPageState extends State<NosotrosPage> {
   final _formKey = GlobalKey<FormState>();
-
+  bool isWeb = UniversalPlatform.isWeb;
   @override
   initState() {
     super.initState();
@@ -27,7 +29,7 @@ class _NosotrosPageState extends State<NosotrosPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Sobre nosotros'),
+          header: tituloPagina(context, 'Sobre nosotros', isWeb),
           body: body(),
           footer: Container(),
         ));
@@ -64,10 +66,10 @@ class _NosotrosPageState extends State<NosotrosPage> {
         children: [
           GestureDetector(
             onTap: () async {
-              /*await canLaunch('https://origamiec.com/')
+              await canLaunch('https://origamiec.com/')
                   ? await launch('https://origamiec.com/')
                   : mensajeError(context,
-                      'No se puede redirigir a https://origamiec.com/');*/
+                      'No se puede redirigir a https://origamiec.com/');
             },
             child: Image.asset(
               'assets/images/origami.png',
@@ -90,6 +92,9 @@ class _NosotrosPageState extends State<NosotrosPage> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline5,
           ),
+          SizedBox(
+            height: 30,
+          )
         ],
       )
     ]);

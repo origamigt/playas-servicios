@@ -87,7 +87,7 @@ class PersonalState extends State<PersonalPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Certificado de ficha personal'),
+          header: tituloPagina(context, 'Certificado de ficha personal', isWeb),
           body: body(),
           footer: Container(),
         ));

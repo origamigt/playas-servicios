@@ -3,8 +3,10 @@ import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/widgets/ajustes_card.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class AjustesPage extends StatelessWidget {
+  bool isWeb = UniversalPlatform.isWeb;
   static const String route = '/ajustes';
 
   BuildContext? context;
@@ -17,7 +19,7 @@ class AjustesPage extends StatelessWidget {
         height: 0,
       ),
       body: PageComponent(
-        header: tituloPagina(context, 'Ajustes'),
+        header: tituloPagina(context, 'Ajustes', isWeb),
         body: gridMenus(),
         footer: Container(),
       ),

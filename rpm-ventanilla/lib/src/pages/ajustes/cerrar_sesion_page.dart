@@ -1,11 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:provider/provider.dart';
-//import 'package:auto_route/auto_route.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class CerrarSesionPage extends StatelessWidget {
+  bool isWeb = UniversalPlatform.isWeb;
   static const String route = '/cerrarSesion';
   UsuarioProvider? userProvider;
   AuthProvider? authProvider;
@@ -41,7 +44,7 @@ class CerrarSesionPage extends StatelessWidget {
                 },
               ),
             ),
-            tituloPagina(context, 'Cerrar sesión'),
+            tituloPagina(context, 'Cerrar sesión', isWeb),
             SizedBox(
               height: 10,
             ),
@@ -64,7 +67,7 @@ class CerrarSesionPage extends StatelessWidget {
           onPressed: () async {
             userProvider!.cerrarSesion();
             authProvider!.setAuthState(Status.NotLoggedIn);
-            //context!.vRouter.to(LoginPage.route);
+            context!.router.navigateNamed(HomePage.route);
           },
         ),
         // usually buttons at the bottom of the dialog

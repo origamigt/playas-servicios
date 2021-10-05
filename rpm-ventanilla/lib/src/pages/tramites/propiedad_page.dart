@@ -121,7 +121,8 @@ class PropiedadPageState extends State<PropiedadPage> {
     return Form(
         key: _formKey,
         child: PageComponent(
-          header: tituloPagina(context, 'Certificado de Historia de Dominio'),
+          header: tituloPagina(
+              context, 'Certificado de Historia de Dominio', isWeb),
           body: body(),
           footer: Container(),
         ));
