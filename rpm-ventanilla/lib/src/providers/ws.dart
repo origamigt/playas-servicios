@@ -69,42 +69,6 @@ signOut() async {
   return true;
 }
 
-Future<User?> loginAPP(String user, String clave) async {
-  try {
-    Map<String, String>? header = await mapHeaderAuth();
-    User usr = User();
-    usr.clave = clave;
-    usr.usuario = user;
-    usr.habilitado = true;
-    http.Response response = await http.post(
-        Uri.http(SERVER_IP, '/api/usuario/loginUser'),
-        body: json.encode(usr),
-        headers: header);
-    await PrefencesRPM.deleteAllKeys();
-    if (response.statusCode == 200) {
-      try {
-        Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
-            as Map<String, dynamic>;
-
-        User u = User().fromJson(map);
-        u.clave = clave;
-        var uJS = json.encode(u);
-        await PrefencesRPM.saveValue(kUser, uJS);
-        await PrefencesRPM.saveValue(kThereUser, kThereUserOK);
-        return u;
-      } catch (e) {
-        print(e);
-      }
-    } else {
-      await PrefencesRPM.saveValue(kThereUser, kThereUserNOTOK);
-      return null;
-    }
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 findAll(String url, bool auth) async {
   try {
     Uri uri =
