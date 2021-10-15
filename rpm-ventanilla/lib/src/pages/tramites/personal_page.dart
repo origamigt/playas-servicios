@@ -476,7 +476,7 @@ class PersonalState extends State<PersonalPage> {
                 }
               },
               child: Text(
-                'Procesar pago',
+                'Procesar solicitud',
               )),
         ));
   }

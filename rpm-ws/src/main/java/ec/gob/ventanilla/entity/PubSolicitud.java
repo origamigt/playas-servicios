@@ -5,6 +5,7 @@
  */
 package ec.gob.ventanilla.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import ec.gob.ventanilla.model.ActoRequisito;
 
@@ -54,6 +55,7 @@ public class PubSolicitud implements Serializable {
     @Column(name = "fecha_solicitud")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date fechaSolicitud;
     //ID ACTO =O
     @Column(name = "tipo_solicitud")

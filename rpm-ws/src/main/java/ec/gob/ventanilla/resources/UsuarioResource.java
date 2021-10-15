@@ -67,9 +67,10 @@ public class UsuarioResource {
                 if (personFind == null) {
                     personFind = personaService.buscarPersonaDinardap(usuarioRegistro.getIdentificacion());
                     if (personFind == null) {
-                        return new ResponseEntity<>(new DataModel("Conexión no disponible con el registro civil"), HttpStatus.ACCEPTED);
+                        return new ResponseEntity<>(new DataModel("Conexión no disponible con el registro civil, intentelo de nuevo màs tarde"), HttpStatus.ACCEPTED);
                     }
                     personFind.setCedRuc(usuarioRegistro.getIdentificacion());
+                    personFind.setFechaExpedicion(new Date(personFind.getFechaExpedicionLong()));
                     personFind = pubPersonaRepository.save(personFind);
                 }
                 if (personFind.getFechaExpedicion() == null) {
@@ -77,7 +78,7 @@ public class UsuarioResource {
                     if (persona != null && persona.getFechaExpedicion() != null) {
                         personFind.setFechaExpedicion(persona.getFechaExpedicion());
                     } else {
-                        return new ResponseEntity<>(new DataModel("Conexión no disponible con el registro civil"), HttpStatus.ACCEPTED);
+                        return new ResponseEntity<>(new DataModel("Conexión no disponible con el registro civil, intentelo de nuevo màs tarde"), HttpStatus.ACCEPTED);
                     }
                 }
                 Date usuarioFechaExpedicion = new SimpleDateFormat("yyyy-MM-dd").parse(usuarioRegistro.getFechaExpedicion());

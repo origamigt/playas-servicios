@@ -547,7 +547,7 @@ class InscripcionesState extends State<InscripcionesPage> {
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.symmetric(vertical: 10),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                  height: 85,
+                  height: 120,
                   width: size!.width - 20,
                   decoration: BoxDecoration(
                       color: Theme.of(context).backgroundColor,
@@ -560,7 +560,7 @@ class InscripcionesState extends State<InscripcionesPage> {
                       )),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
                         height: 3,
@@ -570,7 +570,7 @@ class InscripcionesState extends State<InscripcionesPage> {
                           Text(
                             item.requisito!,
                             style: Theme.of(context).textTheme.headline6,
-                            maxLines: 3,
+                            maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],

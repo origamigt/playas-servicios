@@ -22,14 +22,15 @@ public class PersonaService {
     public PubPersona buscarPersonaDinardap(String identificacion) {
 
         try {
+            System.out.println(appProps.getUrlDinardap() + identificacion);
             RestTemplate restTemplate = new RestTemplate(Util.getClientHttpRequestFactory(appProps.getUsuarioDinardap(),
                     appProps.getClaveDinardap()));
-            URI uri = new URI(appProps.getUrlDinardap() + "PLAYAS/persona/identificacion/" + identificacion);
+            URI uri = new URI(appProps.getUrlDinardap() + identificacion);
             ResponseEntity<PubPersona> contribuyente = restTemplate.getForEntity(uri, PubPersona.class);
             if (contribuyente.getBody() != null) {
                 //System.out.println(contribuyente.getBody().toString());
-                //contribuyente.getBody().setFechaExpedicion(new Date(contribuyente.getBody().getFechaExpedicionLong()));
-                //contribuyente.getBody().setFechaNacimiento(new Date(contribuyente.getBody().getFechaNacimientoLong()));
+                contribuyente.getBody().setFechaExpedicion(new Date(contribuyente.getBody().getFechaExpedicionLong()));
+                contribuyente.getBody().setFechaNacimiento(new Date(contribuyente.getBody().getFechaNacimientoLong()));
                 return contribuyente.getBody();
             }
         } catch (URISyntaxException | RestClientException e) {

@@ -4,6 +4,7 @@ import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
 import 'package:playas/src/pages/busqueda/buscar-page.dart';
 import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
+import 'package:playas/src/pages/ciudadania/misfacturas_page.dart';
 import 'package:playas/src/pages/ciudadania/mistramites_page.dart';
 import 'package:playas/src/pages/ciudadania/repositorio_page.dart';
 import 'package:playas/src/pages/home_page.dart';
@@ -82,6 +83,10 @@ import 'package:playas/src/routes/guard_router.dart';
         guards: [AuthGuard]),
     AutoRoute(
         page: NosotrosPage, path: NosotrosPage.route, guards: [AuthGuard]),
+    AutoRoute(
+        page: MisFacturasPage,
+        path: MisFacturasPage.route,
+        guards: [AuthGuard]),
   ],
 )
 class $AppRouter {}

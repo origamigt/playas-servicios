@@ -10,6 +10,7 @@ import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
 import 'package:playas/src/pages/busqueda/buscar-page.dart';
 import 'package:playas/src/pages/ciudadania/carpeta_ciudadana_page.dart';
+import 'package:playas/src/pages/ciudadania/misfacturas_page.dart';
 import 'package:playas/src/pages/ciudadania/mistramites_page.dart';
 import 'package:playas/src/pages/ciudadania/repositorio_page.dart';
 import 'package:playas/src/pages/home_page.dart';
@@ -27,7 +28,6 @@ const String appName =
 
 List<Menu> menus(isWeb) {
   return [
-
     Menu('Consultar trámites', BuscarPage.route, Colors.lightBlueAccent,
         Icons.search),
     Menu(
@@ -55,6 +55,8 @@ List<Menu> menusConfiguraciones = [
 List<Menu> menusCarpeta = [
   Menu('Mis trámites', MisTramitesPage.route, Colors.lightBlue,
       Icons.filter_list),
+  Menu('Mis facturas', MisFacturasPage.route, Colors.redAccent,
+      Icons.attach_money),
   Menu('Mis documentos', RepositorioPage.route, Colors.grey, Icons.filter_list),
 ];
 

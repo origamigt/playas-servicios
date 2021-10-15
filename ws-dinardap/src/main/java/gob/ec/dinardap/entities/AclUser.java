@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * @author Xndy
  */
 @Entity
-@Table(name = "usuarios_app")
+@Table(name = "usuarios_app", schema = "catastro")
 public class AclUser implements Serializable {
 
     private static final long serialVersionUID = 1L;

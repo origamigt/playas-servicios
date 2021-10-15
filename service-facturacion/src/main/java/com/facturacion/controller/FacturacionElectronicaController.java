@@ -93,6 +93,13 @@ public class FacturacionElectronicaController {
     private Boolean continuar = Boolean.TRUE;
     private Gson gson;
 
+    @RequestMapping(value = RestAPI.facturacionElectronicaGET, method = RequestMethod.GET)
+    public List<ComprobanteSRI> consultarComprobanteContribuyentes(@PathVariable String identificacion) {
+        return comprobanteSRIRepository
+                .findByContribuyente_IdemtificacionAndNumAutorizacionIsNotNullOrderByFechaAutorizacionDesc(
+                        identificacion);
+    }
+
     @Async
     @RequestMapping(value = RestAPI.enviarCorreoFacturacionElectronicaPOST, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> enviarCorreoFacturaElectronicaSRI(@Valid @RequestBody ComprobanteSRI sri) {

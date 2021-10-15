@@ -54,8 +54,11 @@ public class CodigoCorreoService {
     private OmegaUploader omegaUploader;
 
     public CodigoCorreo generarCodigo(CodigoCorreo codigoCorreo) {
-        //codigoCorreo.setCodigo(genCodigoVerif());
-        codigoCorreo.setCodigo("12345");
+        if (appProps.getActiveProfile().equals("dev")) {
+            codigoCorreo.setCodigo("12345");
+        } else {
+            codigoCorreo.setCodigo(genCodigoVerif());
+        }
         codigoCorreo.setFecha(new Date());
         codigoCorreo.setValidado(Boolean.FALSE);
         codigoCorreo = repository.save(codigoCorreo);
@@ -67,8 +70,11 @@ public class CodigoCorreoService {
     }
 
     public CodigoCorreo generarCodigoRegistro(CodigoCorreo codigoCorreo) {
-        //codigoCorreo.setCodigo(genCodigoVerif());
-        codigoCorreo.setCodigo("12345");
+        if (appProps.getActiveProfile().equals("dev")) {
+            codigoCorreo.setCodigo("12345");
+        } else {
+            codigoCorreo.setCodigo(genCodigoVerif());
+        }
         codigoCorreo.setFecha(new Date());
         codigoCorreo.setValidado(Boolean.FALSE);
         codigoCorreo = repository.save(codigoCorreo);

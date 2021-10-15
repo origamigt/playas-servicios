@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:playas/src/models/acto_requisito.dart';
 import 'package:playas/src/models/datos-proforma.dart';
+import 'package:playas/src/models/facturas.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/ws.dart';
@@ -12,12 +13,16 @@ import 'package:rxdart/rxdart.dart';
 class TramiteProvider {
   final tramiteStreamController = PublishSubject<DatosProforma>();
   final _misTramitesStreamController = PublishSubject<List<Solicitud>>();
+  final _misFacturasStreamController = PublishSubject<List<Facturas>>();
   final _requsitosStreamController = PublishSubject<List<ActoRequisito>>();
 
   Stream<DatosProforma> get proformaStream => tramiteStreamController.stream;
 
   Stream<List<Solicitud>> get misTramitesStream =>
       _misTramitesStreamController.stream;
+
+  Stream<List<Facturas>> get misFacturasStream =>
+      _misFacturasStreamController.stream;
 
   Stream<List<ActoRequisito>> get requsitosStreamController =>
       _requsitosStreamController.stream;
@@ -60,12 +65,14 @@ class TramiteProvider {
     }
   }
 
-  Future<List<Solicitud>>? findMisSolicitudes(int usuario) async {
+  findMisFacturas() async {
+    User? u = await userLogged();
     List<dynamic>? collection = await findAll(
-        '/rpm-ventanilla/api/solicitud/solicitudes/usuario/$usuario', true);
-    List<Solicitud>? solicitudes =
-        collection!.map((p) => Solicitud().fromJson(p)).toList();
-    return solicitudes;
+        '/rpm-ventanilla/api/facturacionElectronica/consultaFacturasContribuyente/${u!.usuario}',
+        true);
+    List<Facturas>? facturas =
+        collection!.map((p) => Facturas().fromJson(p)).toList();
+    _misFacturasStreamController.add(facturas);
   }
 
   findSolicitudes() async {

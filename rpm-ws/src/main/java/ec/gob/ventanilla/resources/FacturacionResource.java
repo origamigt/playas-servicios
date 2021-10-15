@@ -37,20 +37,15 @@ import java.util.logging.Logger;
  * @author gutya
  */
 @RestController
-@RequestMapping("/api/facturacionElectronica/")
+@RequestMapping("/rpm-ventanilla/api/facturacionElectronica/")
 public class FacturacionResource {
 
     @Autowired
-    private AppLogsRepository appLogsRepository;
-    @Autowired
     private AppProps appProps;
-    private AppLogs appLogs;
+
 
     @RequestMapping(value = "consultaFacturasContribuyente/{identificacion}", method = RequestMethod.GET)
     public ResponseEntity<List<ComprobanteSRI>> findAllFacturas(@PathVariable String identificacion) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        appLogs = new AppLogs(new Date(), "/api/facturacionElectronica/consultaFacturasContribuyente/" + identificacion, null, "findAllFacturas", request.getRemoteAddr());
-        appLogsRepository.save(appLogs);
         try {
             RestTemplate restTemplate = new RestTemplate();
             URI uri = new URI(appProps.getRpFacturas() + identificacion);

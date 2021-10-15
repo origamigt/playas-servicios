@@ -1,4 +1,5 @@
 package gob.ec.dinardap.controller;
+
 import gob.ec.dinardap.dinardap.ServicioDINARDAP;
 import gob.ec.dinardap.entities.PubPersona;
 import gob.ec.dinardap.repository.PubPersonaRepository;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/persona/")
+@RequestMapping("/api/dinardap/")
 public class PersonaController {
     @Value("${app.paqueteSri}")
     private String paqueteSri;
@@ -69,6 +70,55 @@ public class PersonaController {
                     parametro = parametroDemograficoSri;
                     break;
                 case "R":
+                case "J":
+                    codigo = paqueteSri;
+                    parametro = parametroDemograficoSri;
+                    break;
+                default:
+                    acept = Boolean.FALSE;
+                    break;
+
+            }
+            if (acept) {
+                PubPersona pubPersona = servicioDINARDAP.datosDINARDAP(identificacion, codigo, parametro);
+                pubPersona.setTipoDocumento(codigoPaquete);
+                return new ResponseEntity<>(pubPersona, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @RequestMapping(value = "aplicacion/{aplicacion}/persona/identificacion/{identificacion}", method = RequestMethod.GET)
+    public ResponseEntity<PubPersona> findEnte(@PathVariable(value = "aplicacion") String aplicacion,
+                                               @PathVariable(value = "identificacion") String identificacion) {
+
+        try {
+            String codigo = "", parametro = "";
+            Boolean acept;
+            switch (aplicacion) {
+                case "SIGERI":
+                case "VENTANILLA-WEB":
+                case "VENTANILLA-MOVIL":
+                case "ENTREGA-TRAMITE":
+                    acept = Boolean.TRUE;
+                    break;
+                default:
+                    acept = Boolean.FALSE;
+                    break;
+            }
+            String codigoPaquete = identificacion.length() == 10 ? "C" : "J";
+            switch (codigoPaquete) {
+                case "C":
+                    codigo = paqueteDemografico;
+                    parametro = parametroDemograficoSri;
+                    break;
                 case "J":
                     codigo = paqueteSri;
                     parametro = parametroDemograficoSri;

@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ComprobanteSRIRepository extends CrudRepository<ComprobanteSRI, Long> {
 
-    //List<ComprobanteSRI> findByContribuyente_IdemtificacionAndNumAutorizacionIsNotNullOrderByFechaAutorizacionDesc(String identificacion);
+    List<ComprobanteSRI> findByContribuyente_IdemtificacionAndNumAutorizacionIsNotNullOrderByFechaAutorizacionDesc(String identificacion);
 
 }

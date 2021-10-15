@@ -9,12 +9,10 @@ import 'package:playas/src/models/data.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:provider/provider.dart';
 
 enum StatusPago { Unknown, Procesing, Done, Error }
 
 class PagoProvider extends ChangeNotifier {
-
   StatusPago _status = StatusPago.Unknown;
 
   StatusPago get status => _status;
@@ -95,10 +93,13 @@ class PagoProvider extends ChangeNotifier {
       data.user!.id = user;
       data.cantidad = int.parse(cantidad);
       data.total = acto.valor! * num.parse(cantidad);
-      data.estado = 'A';
-      data.tipoPago = false;
-      data.procesando = false;
 
+      data.procesando = false;
+      //DESCOMENTAR PARA EL PAGO EN LINEA
+      //data.estado = 'A';
+      //data.tipoPago = false;
+      data.estado = 'V';
+      data.tipoPago = true;
       http.Response? response = await save(
           '/rpm-ventanilla/api/solicitud/registrarCertificado', data, true);
 

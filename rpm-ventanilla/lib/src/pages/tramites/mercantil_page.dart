@@ -481,7 +481,7 @@ class MercantilState extends State<MercantilPage> {
                 }
               },
               child: Text(
-                'Procesar pago',
+                'Procesar solicitud',
               )),
         ));
   }
@@ -513,7 +513,7 @@ class MercantilState extends State<MercantilPage> {
       if (response['status']) {
         Solicitud rest = response['data'];
 
-        if (rest.linkPago != null) {
+        if (!rest.tipoPago! && rest.linkPago != null) {
           if (!isWeb) {
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
@@ -536,6 +536,9 @@ class MercantilState extends State<MercantilPage> {
             );
             // js.context.callMethod('open', [rest.linkPago, '_self']);
           }
+        } else {
+          mensajeInfo(context,
+              'Trámite ingresado correctamente, revise su correo electrónico');
         }
       } else {
         mensajeError(context, response['message']);

@@ -52,13 +52,16 @@ public class SGRService {
             String image1 = solicitud.getImage1();
             String image2 = solicitud.getImage2();
             String image3 = solicitud.getImage3();
+            Date fecha = solicitud.getFechaSolicitud();
             AclUser aclUser = solicitud.getUser();
+            solicitud.setFechaSolicitud(null);
             solicitud.setUser(null);
             solicitud.setId(null);
             solicitud.setImage1(null);
             solicitud.setImage2(null);
             solicitud.setImage3(null);
             Gson gson = new Gson();
+            System.out.println(gson.toJson(solicitud));
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost httpPost = new HttpPost(appProps.getRpIniciarTramite());
             httpPost.setEntity(new StringEntity(gson.toJson(solicitud), "UTF-8"));
@@ -69,6 +72,7 @@ public class SGRService {
 
             HttpResponse httpResponse = futureResponse.get(60, TimeUnit.SECONDS);
             solicitud.setUser(aclUser);
+            solicitud.setFechaSolicitud(fecha);
             solicitud.setId(idSolicitud);
             solicitud.setImage1(image1);
             solicitud.setImage2(image2);
@@ -107,7 +111,9 @@ public class SGRService {
     public void iniciarTramiteSolicitudInscripcion(PubSolicitud solicitud) {
         try {
             Long idSolicitud = solicitud.getId();
+            Date fecha = solicitud.getFechaSolicitud();
             AclUser aclUser = solicitud.getUser();
+            solicitud.setFechaSolicitud(null);
             solicitud.setUser(null);
             solicitud.setId(null);
             Gson gson = new Gson();
@@ -141,6 +147,7 @@ public class SGRService {
                     }
                 }
             }
+            solicitud.setFechaSolicitud(fecha);
             solicitud.setUser(aclUser);
             solicitud.setId(idSolicitud);
             pubSolicitudRepository.save(solicitud);

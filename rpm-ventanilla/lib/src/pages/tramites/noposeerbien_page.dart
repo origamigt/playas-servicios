@@ -476,7 +476,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
                 }
               },
               child: Text(
-                'Procesar pago',
+                'Procesar solicitud',
               )),
         ));
   }
@@ -567,7 +567,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       if (response['status']) {
         Solicitud rest = response['data'];
 
-        if (rest.linkPago != null) {
+        if (!rest.tipoPago! && rest.linkPago != null) {
           if (!isWeb) {
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
@@ -590,6 +590,9 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             );
             //js.context.callMethod('open', [rest.linkPago, '_self']);
           }
+        } else {
+          mensajeInfo(context,
+              'Trámite ingresado correctamente, revise su correo electrónico');
         }
       } else {
         mensajeError(context, response['message']);

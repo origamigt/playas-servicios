@@ -50,15 +50,15 @@ app:
 
   logo: https://rpv.digital/rmppm.png
   urlPdfFirmado: https://rpv.digital/ws/rpm-ventanilla/api/documento/
-  urlDinardap: http://200.124.240.62:8785/api/dinardap/aplicacion/
-  usuarioDinardap: Em0T-D1n4rD4p
-  claveDinardap: IbBTF;e;Fomj0du4H@M5
+  urlDinardap: http://200.124.240.62:8790/api/dinardap/aplicacion/SIGERI/persona/identificacion/
+  usuarioDinardap: rpventanilla
+  claveDinardap: ventanilla@2021
 
-  urlPersona: 192.168.100.2:8785/api/dinardap/aplicacion/
+
   urlFichaRegistral: http://192.168.16.211/sigeri-playas/api/rpl/fichaRegistral/ventanilla?numFicha=
   apiSms: http://200.124.240.36/api/sms.php?token=4PruebaOficina&no=
 
-  rpFacturas: http://192.168.200.15:8780/api/facturacionElectronica/consultaFacturasContribuyente/
+  rpFacturas: http://192.168.16.211/sigeri-playas/rest/ventanilla/facturacionElectronica/
   rpConsultarTramite: http://192.168.16.211/sigeri-playas/rest/ventanilla/consultar/tramite/
   rpIniciarTramite: http://192.168.16.211/sigeri-playas/rest/ventanilla/iniciarTramiteOnline
   rpActualizarDocumentos: http://192.168.16.211/sigeri-playas/rest/ventanilla/updatePubSolicitud

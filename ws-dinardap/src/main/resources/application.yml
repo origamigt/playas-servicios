@@ -10,8 +10,8 @@ spring:
 
 app:
   urlInterOperatividad: https://interoperabilidad.dinardap.gob.ec/interoperador-v2?wsdl
-  interOperatividadUser: RpcLInter19
-  interOperatividadPass: i1-AYEYSblGg-T
-  paqueteDemografico: 2416
-  paqueteSri: 2419
+  interOperatividadUser: iNtErEPmrPSd.2020
+  interOperatividadPass: he=66a&F9&HqxJ
+  paqueteDemografico: 2809
+  paqueteSri: 2819
   parametroDemograficoSri: identificacion
