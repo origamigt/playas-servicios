@@ -30,7 +30,6 @@ class ValidarDocProvider extends ChangeNotifier {
     Archivo doc = Archivo();
     doc.nombre = nombre;
     doc.multipartFile = bytes;
-
     http.Response? response = await save(
         '/rpm-ventanilla/api/documento/verificarArchivo',
         Archivo().toJson(doc),

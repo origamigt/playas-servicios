@@ -181,9 +181,13 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
   }
 
   void validarCertificado() {
+    String str = codigoCtrl.text;
+    if (str.isNotEmpty) {
+      str = str.substring(1, str.length);
+    }
     final Future<Map<String, dynamic>> successfulMessage;
     successfulMessage =
-        certificadoProvider!.validarCertificado(codigoCtrl.text, tipo.data![0]);
+        certificadoProvider!.validarCertificado(str, tipo.data![0]);
     successfulMessage.then((response) {
       print(response.toString());
       if (response['status']) {

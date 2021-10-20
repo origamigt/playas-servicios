@@ -21,7 +21,8 @@ class VerificarDocPageState extends State<VerificarDocPage> {
   bool isWeb = UniversalPlatform.isWeb;
   ValidarDocProvider? validarDocProvider;
   String? extension = 'pdf';
-  List<PlatformFile>? archivos;
+  FilePickerResult? result;
+  PlatformFile? file;
   bool cargandoArchivo = false;
   String? directorioArchivo;
   String? nombreArchivo;
@@ -87,23 +88,14 @@ class VerificarDocPageState extends State<VerificarDocPage> {
                       title: const Text('Directory path'),
                       subtitle: Text(directorioArchivo!),
                     )
-                  : archivos != null
+                  : file != null
                       ? Container(
                           alignment: Alignment.center,
                           height: 80,
                           child: ListView.separated(
-                            itemCount: archivos != null && archivos!.isNotEmpty
-                                ? archivos!.length
-                                : 1,
+                            itemCount: 1,
                             itemBuilder: (BuildContext context, int index) {
-                              final bool isMultiPath =
-                                  archivos != null && archivos!.isNotEmpty;
-                              final String name = 'Archivo: ' +
-                                  (isMultiPath
-                                      ? archivos!
-                                          .map((e) => e.name)
-                                          .toList()[index]
-                                      : nombreArchivo ?? '...');
+                              final String name = 'Archivo: $nombreArchivo';
 
                               return Container(
                                 margin: EdgeInsets.only(top: 10),
@@ -123,7 +115,7 @@ class VerificarDocPageState extends State<VerificarDocPage> {
         ),
         validarDocProvider!.status == StatusValidarDoc.Searching
             ? loading("...")
-            : archivos != null
+            : file != null
                 ? TextButton(
                     child: Text(
                       'Validar archivo',
@@ -156,12 +148,16 @@ class VerificarDocPageState extends State<VerificarDocPage> {
             data!.error != null
                 ? subTituloWidget(context, data!.error!)
                 : Container(),
-            ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: data!.certificados!.length,
-              itemBuilder: (context, i) =>
-                  detalleCertificado(data!.certificados![i]),
+            Container(
+              margin: EdgeInsets.only(left: 5),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                itemCount: data!.certificados!.length,
+                itemBuilder: (context, i) =>
+                    detalleCertificado(data!.certificados![i]),
+              ),
             )
             /* data!.error!.isNotEmpty
               ? subTituloWidget(context, data!.error!)
@@ -203,14 +199,11 @@ class VerificarDocPageState extends State<VerificarDocPage> {
   void _openFileExplorer() async {
     setState(() => cargandoArchivo = true);
     try {
-      archivos = (await FilePicker.platform.pickFiles(
-        onFileLoading: (FilePickerStatus status) => print(status),
-        type: FileType.custom,
-        allowedExtensions: (extension?.isNotEmpty ?? false)
-            ? extension?.replaceAll(' ', '').split(',')
-            : null,
-      ))
-          ?.files;
+      result = (await FilePicker.platform.pickFiles(
+          onFileLoading: (FilePickerStatus status) => print(status),
+          type: FileType.custom,
+          withData: true,
+          allowedExtensions: ['pdf']));
     } on PlatformException catch (e) {
       mensajeError(context, 'Su dispositivo no soporta la carga de archivos');
       print("Unsupported operation" + e.toString());
@@ -220,15 +213,19 @@ class VerificarDocPageState extends State<VerificarDocPage> {
     if (!mounted) return;
     setState(() {
       cargandoArchivo = false;
-      nombreArchivo =
-          archivos != null ? archivos!.map((e) => e.name).toString() : '...';
+      if (result != null) {
+        file = result!.files.first;
+        nombreArchivo = file != null ? file!.name : '...';
+      } else {
+        // User canceled the picker
+      }
     });
   }
 
   validarDocumento() {
     final Future<Map<String, dynamic>> successfulMessage;
     successfulMessage =
-        validarDocProvider!.validarDocumento(archivos![0].bytes, nombreArchivo);
+        validarDocProvider!.validarDocumento(file!.bytes, nombreArchivo);
 
     successfulMessage.then((response) {
       print(response.toString());

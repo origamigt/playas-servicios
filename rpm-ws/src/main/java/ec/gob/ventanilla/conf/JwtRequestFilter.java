@@ -52,7 +52,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/actos/id/")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/consultar")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/requisitos/")
-                && !request.getRequestURI().contains("/rpm-ventanilla/api/documento/imagen/")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/documento/")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion")
         ) {
             final String requestTokenHeader = request.getHeader("Authorization");

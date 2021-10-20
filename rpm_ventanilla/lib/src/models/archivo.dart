@@ -14,4 +14,9 @@ class Archivo {
         'nombre': instance.nombre,
         'multipartFile': instance.multipartFile,
       };
+
+  @override
+  String toString() {
+    return 'Archivo{nombre: $nombre, multipartFile: $multipartFile}';
+  }
 }

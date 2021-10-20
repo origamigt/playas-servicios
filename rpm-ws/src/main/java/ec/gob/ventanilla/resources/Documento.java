@@ -83,20 +83,20 @@ public class Documento {
         String pathFile;
         RestTemplate restTemplate = new RestTemplate();
         if (!path.contains("informacion")) {
+            System.out.println(appProps.getRpConsultarOid() + codigoVerificacion + path + tipo);
             Long oidDocumento = restTemplate.getForObject(appProps.getRpConsultarOid() + codigoVerificacion + path + tipo, Long.class);
-            if (oidDocumento > 0L) {
+            if (oidDocumento != null && oidDocumento > 0L) {
+                System.out.println("oidDocumento "  + oidDocumento);
                 pathFile = appProps.getOutputDir() + codigoVerificacion + ".pdf";
-            } else {
-                pathFile = appProps.getOutputDir() + "documento_no_encontrado.pdf";
-            }
-            if (oidDocumento > 0L) {
                 File file = new File(pathFile);
                 try (FileOutputStream fos = new FileOutputStream(file)) {
                     omegaUploader.streamFile(oidDocumento, fos, appProps.getDocUrl());
                 } catch (IOException e) {
-                    System.out.println(e);
+                    e.printStackTrace();
                     return null;
                 }
+            } else {
+                pathFile = appProps.getOutputDir() + "documento_no_encontrado.pdf";
             }
         } else {
             pathFile = restTemplate.getForObject(appProps.getRpConsultarOid() + codigoVerificacion + path + tipo, String.class);

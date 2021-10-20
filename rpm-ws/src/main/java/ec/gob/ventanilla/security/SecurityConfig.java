@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rpm-ventanilla/api/pagos/verificarPago").permitAll()
                 .antMatchers("/rpm-ventanilla/api/correo/validarCodigoRegistro").permitAll()
                 .antMatchers("/rpm-ventanilla/api/documento/imagen/**").permitAll()
+                .antMatchers("/rpm-ventanilla/api/documento/codigo/**").permitAll()
                 .antMatchers("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion").permitAll()
 
 
@@ -90,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/ws/rpm-ventanilla/api/pagos/verificarPago").permitAll()
                 .antMatchers("/ws/rpm-ventanilla/api/correo/validarCodigoRegistro").permitAll()
                 .antMatchers("/ws/rpm-ventanilla/api/documento/imagen/**").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/documento/codigo/**").permitAll()
                 .antMatchers("/ws/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion").permitAll()
 
                 .anyRequest().authenticated().and()

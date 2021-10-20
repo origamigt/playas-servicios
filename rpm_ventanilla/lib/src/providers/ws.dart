@@ -73,6 +73,7 @@ findAll(String url, bool auth) async {
   try {
     Uri uri =
         isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
+    print(uri.path);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
     return json.decode(utf8.decode(response.bodyBytes));

@@ -269,6 +269,7 @@ public class SGRService {
 
             firmaElectronica.setArchivoFirmado(archivo);
 
+            System.out.println(appProps.getFirmaElectronica() + "verificarDocumento");
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost httpPost = new HttpPost(appProps.getFirmaElectronica() + "verificarDocumento");
             httpPost.setEntity(new StringEntity(gson.toJson(firmaElectronica), "UTF-8"));

@@ -9,12 +9,14 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class CertificadoMovPage extends StatefulWidget {
   static const String route = '/validarCertificadoQR';
+
   @override
   _CertificadoMovPageState createState() => _CertificadoMovPageState();
 }
 
 class _CertificadoMovPageState extends State<CertificadoMovPage> {
   String qrcodigo = "";
+  String detalle = "";
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
@@ -83,7 +85,8 @@ class _CertificadoMovPageState extends State<CertificadoMovPage> {
                         });
                       },
                       child: Text(
-                        'Toque aquí para una nueva consulta',
+                        '$detalle \nToque aquí para una nueva consulta',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.bold),
                       )))
@@ -158,14 +161,17 @@ class _CertificadoMovPageState extends State<CertificadoMovPage> {
         text = false;
         qrcodigo = result!.code;
         String tipo = qrcodigo[0];
-        String codigo = qrcodigo.substring(1, qrcodigo.length - 1);
-        String path = '/rpm-ventanilla/api/documento/codigo/$codigo/tipo/$tipo';
-        findAll(path, true).then((response) {
+        String codigo = qrcodigo.substring(1, qrcodigo.length);
+
+        String path = 'rpm-ventanilla/api/documento/codigo/$codigo/tipo/$tipo';
+        findAllResponse(path, false).then((response) {
           setState(() {
-            Iterable list = json.decode(response.body);
+            Iterable list = json.decode(utf8.decode(response.bodyBytes));
             imagesCertificados = list
                 .map((model) => ImagenesCertificados().fromJson(model))
                 .toList();
+            detalle = imagesCertificados[0].urlImage!;
+            imagesCertificados.removeAt(0);
             load = false;
             text = false;
           });
