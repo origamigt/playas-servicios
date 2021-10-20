@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:playas/src/models/images-certificados.dart';
 import 'package:playas/src/providers/ws.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -48,7 +47,6 @@ class _CertificadoMovPageState extends State<CertificadoMovPage> {
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(40.0),
           child: AppBar(
-            brightness: Brightness.light,
             elevation: 1.0,
             centerTitle: true,
             title: Text(

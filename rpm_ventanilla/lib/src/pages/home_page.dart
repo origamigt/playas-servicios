@@ -60,6 +60,7 @@ class HomePageState extends State<HomePage> {
         height: 0,
       ),
       body: PageComponent(
+        back: false,
         header: tituloPagina(
             context,
             'Registro Municipal de la\nPropiedad y Mercantil del Cantón Playas',

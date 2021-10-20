@@ -60,7 +60,7 @@ class ThemeNotifier with ChangeNotifier {
           surface: Colors.teal),
       brightness: Brightness.light,
       backgroundColor: Colors.white,
-      //accentIconTheme: IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.black),
       dividerColor: Colors.white54,
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(

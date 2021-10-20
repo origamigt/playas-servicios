@@ -76,7 +76,7 @@ findAll(String url, bool auth) async {
     print(uri.path);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
-    return json.decode(utf8.decode(response.bodyBytes));
+    return;
   } catch (e) {
     print(e);
     return null;
