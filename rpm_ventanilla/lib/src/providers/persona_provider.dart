@@ -32,7 +32,7 @@ class PersonaProvider extends ChangeNotifier {
     data.identificacion = identificacion;
     data.aplicacion = 'APP_MOVIL';
 
-    http.Response? response = await save('/rpm-ventanilla/api/consultarPersona',
+    http.Response? response = await save('rpm-ventanilla/api/consultarPersona',
         ConsultaPersona().toJson(data), true);
 
     if (response != null && response.statusCode == 200) {

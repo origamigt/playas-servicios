@@ -307,27 +307,35 @@ class AuthProvider with ChangeNotifier {
 
     _registeredInStatus = StatusRegistro.ClaveActualizando;
     notifyListeners();
+    print(json.encode(registrationData));
     String path = '/rpm-ventanilla/api/usuario/actualizarContrasenia';
     Uri uri =
         isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
     http.Response response = await http.post(uri,
         body: json.encode(registrationData), headers: headerNoAuth);
-
-    Map<String, dynamic> map =
-        json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-
-    if (response.statusCode == 200) {
-      _registeredInStatus = StatusRegistro.ClaveActualizada;
-      notifyListeners();
-      User data = User().fromJson(map);
-      result = {'status': true, 'message': 'Datos encontrados', 'data': data};
+    if (response != null) {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
+            as Map<String, dynamic>;
+        _registeredInStatus = StatusRegistro.ClaveActualizada;
+        notifyListeners();
+        User data = User().fromJson(map);
+        result = {'status': true, 'message': 'Datos encontrados', 'data': data};
+      } else {
+        Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
+            as Map<String, dynamic>;
+        _registeredInStatus = StatusRegistro.ClaveNoActualizada;
+        notifyListeners();
+        Data data = Data().fromJson(map);
+        result = {
+          'status': false,
+          'message': data.data,
+        };
+      }
     } else {
-      _registeredInStatus = StatusRegistro.ClaveNoActualizada;
-      notifyListeners();
-      Data data = Data().fromJson(map);
       result = {
         'status': false,
-        'message': data.data,
+        'message': 'Intente nuevamente',
       };
     }
     return result;

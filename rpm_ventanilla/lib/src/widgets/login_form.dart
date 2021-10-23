@@ -88,14 +88,14 @@ class LoginFormState extends State<LoginForm> {
                       style: GoogleFonts.sourceCodePro(
                         fontSize: widthSize! * widget.fontSizeTextField,
                       ))),
-              TextField(
+              TextFormField(
                 //  key: _k1,
                 controller: _username,
-                /* validator: (value) {
+                validator: (value) {
                   if (value!.isEmpty) {
                     return 'Ingrese su identificación!';
                   }
-                },*/
+                },
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: widget.fontSizeTextFormField),

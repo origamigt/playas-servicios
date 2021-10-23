@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/persona.dart';
 import 'package:playas/src/models/user.dart';
+import 'package:playas/src/pages/login/login_page.dart';
 import 'package:playas/src/providers/auth_provider.dart';
 import 'package:playas/src/providers/perfil_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
@@ -322,7 +324,7 @@ class ContraseniaPageState extends State<ContraseniaPage> {
                         onPressed: () async {
                           userProvider!.cerrarSesion();
                           authProvider!.setAuthState(Status.NotLoggedIn);
-//                          //context.vRouter.to(LoginPage.route);
+                          context.router.navigateNamed(LoginPage.route);
                         },
                       ),
                     )

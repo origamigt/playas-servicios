@@ -72,6 +72,8 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                 stream: tramiteProvider.misFacturasStream,
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Facturas>?> snapshot) {
+                  print(snapshot.hasData);
+
                   if (snapshot.hasData) {
                     facturas = snapshot.data!;
                     return _buildList();

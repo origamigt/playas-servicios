@@ -74,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rpm-ventanilla/api/correo/validarCodigoRegistro").permitAll()
                 .antMatchers("/rpm-ventanilla/api/documento/imagen/**").permitAll()
                 .antMatchers("/rpm-ventanilla/api/documento/codigo/**").permitAll()
+                .antMatchers("/rpm-ventanilla/api/documento/verificarArchivo/**").permitAll()
                 .antMatchers("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion").permitAll()
 
 

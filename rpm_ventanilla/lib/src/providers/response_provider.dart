@@ -23,7 +23,7 @@ class ResponseProvider {
     verificarPago.clientTxId = clientTransactionId;
 
     http.Response? response = await save(
-        '/rpm-ventanilla/api/pagos/verificarPago', verificarPago, true);
+        'rpm-ventanilla/api/pagos/verificarPago', verificarPago, true);
     if (response != null && response.statusCode == 200) {
       Map<String, dynamic> map =
           json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;

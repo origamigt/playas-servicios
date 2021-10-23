@@ -101,7 +101,7 @@ class PagoProvider extends ChangeNotifier {
       data.estado = 'V';
       data.tipoPago = true;
       http.Response? response = await save(
-          '/rpm-ventanilla/api/solicitud/registrarCertificado', data, true);
+          'rpm-ventanilla/api/solicitud/registrarCertificado', data, true);
 
       if (response != null && response.statusCode == 200) {
         Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
@@ -196,7 +196,7 @@ class PagoProvider extends ChangeNotifier {
       data.requisitos = requisitos;
 
       http.Response? response = await save(
-          '/rpm-ventanilla/api/solicitud/registrarInscripcion',
+          'rpm-ventanilla/api/solicitud/registrarInscripcion',
           Solicitud().json(data),
           true);
 
@@ -244,7 +244,7 @@ class PagoProvider extends ChangeNotifier {
       data.total = total;
 
       http.Response? response = await save(
-          '/rpm-ventanilla/api/solicitud/registrarPagoEnLina',
+          'rpm-ventanilla/api/solicitud/registrarPagoEnLina',
           Solicitud().json(data),
           true);
 

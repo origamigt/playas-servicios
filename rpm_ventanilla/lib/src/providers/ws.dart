@@ -76,7 +76,7 @@ findAll(String url, bool auth) async {
     print(uri.path);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
-    return;
+    return json.decode(utf8.decode(response.bodyBytes));
   } catch (e) {
     print(e);
     return null;
@@ -150,7 +150,7 @@ save(String url, Object data, bool auth) async {
         .post(uri, body: jsonEncode(data), headers: header)
         .timeout(const Duration(seconds: 30));
   } catch (e) {
-    print(e);
+    print(e.toString());
   }
   return response;
 }

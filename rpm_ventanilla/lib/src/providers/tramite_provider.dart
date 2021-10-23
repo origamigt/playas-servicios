@@ -47,7 +47,7 @@ class TramiteProvider {
     solicitud.numeroTramite = tramite;
 
     http.Response? response = await save(
-        '/rpm-ventanilla/api/solicitud/buscarTramite', solicitud, true);
+        'rpm-ventanilla/api/solicitud/buscarTramite', solicitud, true);
     if (response != null && response.statusCode == 200) {
       Map<String, dynamic> map =
           json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
@@ -68,17 +68,24 @@ class TramiteProvider {
   findMisFacturas() async {
     User? u = await userLogged();
     List<dynamic>? collection = await findAll(
-        '/rpm-ventanilla/api/facturacionElectronica/consultaFacturasContribuyente/${u!.usuario}',
+        'rpm-ventanilla/api/facturacionElectronica/consultaFacturasContribuyente/${u!.usuario}',
         true);
-    List<Facturas>? facturas =
-        collection!.map((p) => Facturas().fromJson(p)).toList();
-    _misFacturasStreamController.add(facturas);
+    print(collection.toString());
+    if (collection != null) {
+      try {
+        List<Facturas>? facturas =
+            collection.map((p) => Facturas().fromJson(p)).toList();
+        _misFacturasStreamController.add(facturas);
+      } catch (e) {
+        _misFacturasStreamController.add([]);
+      }
+    }
   }
 
   findSolicitudes() async {
     User? u = await userLogged();
     List<dynamic>? collection = await findAll(
-        '/rpm-ventanilla/api/solicitud/solicitudes/usuario/${u!.id}', true);
+        'rpm-ventanilla/api/solicitud/solicitudes/usuario/${u!.id}', true);
     List<Solicitud>? solicitudes =
         collection!.map((p) => Solicitud().fromJson(p)).toList();
     _misTramitesStreamController.add(solicitudes);
@@ -87,7 +94,7 @@ class TramiteProvider {
   findRequisitos() async {
     User? u = await userLogged();
     List<dynamic>? collection = await findAll(
-        '/rpm-ventanilla/api/solicitud/solicitudes/requisitos/usuario/${u!.id}',
+        'rpm-ventanilla/api/solicitud/solicitudes/requisitos/usuario/${u!.id}',
         true);
     List<ActoRequisito>? list =
         collection!.map((p) => ActoRequisito().fromJson(p)).toList();

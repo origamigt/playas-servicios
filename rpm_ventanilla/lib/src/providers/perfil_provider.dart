@@ -40,7 +40,7 @@ class PerfilProvider extends ChangeNotifier {
     persona.correo1 = correo;
 
     http.Response? response = await save(
-        '/rpm-ventanilla/api/persona/actualizar',
+        'rpm-ventanilla/api/persona/actualizar',
         PubPersona().json(persona),
         true);
 
@@ -84,39 +84,42 @@ class PerfilProvider extends ChangeNotifier {
     var result;
 
     final Map<String, dynamic> registrationData = {
-      'id': id,
       'usuario': identificacion,
       'clave': clave
     };
 
     _status = StatusPerfil.Searching;
     notifyListeners();
-
-    http.Response response = await save(
-        '/rpm-ventanilla/api/persona/actualizar',
-        json.encode(registrationData),
-        false);
-    ;
-
-    Map<String, dynamic> map =
-        json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-
-    if (response.statusCode == 200) {
-      _status = StatusPerfil.Found;
-      notifyListeners();
-      User data = User().fromJson(map);
-      result = {
-        'status': true,
-        'message': 'Su clave ha sido actualizada',
-        'data': data
-      };
+    print(json.encode(registrationData));
+    String path = '/rpm-ventanilla/api/usuario/actualizarContrasenia';
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+    http.Response response = await http.post(uri,
+        body: json.encode(registrationData), headers: headerNoAuth);
+    if (response != null) {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
+            as Map<String, dynamic>;
+        _status = StatusPerfil.Found;
+        notifyListeners();
+        User data = User().fromJson(map);
+        result = {'status': true, 'message': 'Datos encontrados', 'data': data};
+      } else {
+        Map<String, dynamic> map = json.decode(utf8.decode(response.bodyBytes))
+            as Map<String, dynamic>;
+        _status = StatusPerfil.NoFound;
+        notifyListeners();
+        Data data = Data().fromJson(map);
+        result = {
+          'status': false,
+          'message': data.data,
+        };
+      }
     } else {
       _status = StatusPerfil.NoFound;
-      notifyListeners();
-      Data data = Data().fromJson(map);
       result = {
         'status': false,
-        'message': data.data,
+        'message': 'Intente nuevamente',
       };
     }
     return result;
