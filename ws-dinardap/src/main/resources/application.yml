@@ -6,12 +6,12 @@ spring:
     active: prod
   application:
     name: RPL-DINARDAP-SERVICES
- 
 
+#keytool -import -keystore /usr/lib/jvm/jre-11-openjdk-11.0.12.0.7-0.el8_4.x86_64/lib/security/cacerts -file /opt/servicios/dinardap.gob.ec.crt -alias CA_DINARDAP -storepass changeit
 app:
   urlInterOperatividad: https://interoperabilidad.dinardap.gob.ec/interoperador-v2?wsdl
-  interOperatividadUser: iNtErEPmrPSd.2020
-  interOperatividadPass: he=66a&F9&HqxJ
+  interOperatividadUser: iNtoPRmPlay21
+  interOperatividadPass:
   paqueteDemografico: 2809
   paqueteSri: 2819
   parametroDemograficoSri: identificacion

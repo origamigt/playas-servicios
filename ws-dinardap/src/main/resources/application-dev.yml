@@ -37,6 +37,7 @@ management:
  
 
 logging:
-   file: C:\Users\EDWIN\OneDrive\Documentos\Proyectos\Proyecto Registro\logs\ventanillaLog.log
+  file:
+    name: C:\logs\dinardap.log
    
     

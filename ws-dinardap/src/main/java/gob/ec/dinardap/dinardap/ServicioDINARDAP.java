@@ -6,6 +6,8 @@
 package gob.ec.dinardap.dinardap;
 
 import gob.ec.dinardap.entities.PubPersona;
+import gob.ec.dinardap.entities.Valores;
+import gob.ec.dinardap.repository.ValoresRepository;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -19,11 +21,13 @@ import ec.gob.ws.DINARDAPService.Fila;
 import ec.gob.ws.DINARDAPService.Interoperador;
 import ec.gob.ws.DINARDAPService.Parametro;
 import ec.gob.ws.DINARDAPService.Parametros;
+
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,17 +37,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServicioDINARDAP {
 
-    @Value("${app.paqueteSri}")
-    private String paqueteSri;
-    @Value("${app.paqueteDemografico}")
-    private String paqueteDemografico;
-    @Value("${app.urlInterOperatividad}")
-    private String urlInterOperatividad;
-    @Value("${app.interOperatividadUser}")
-    private String userInterOperatividad;
-    @Value("${app.interOperatividadPass}")
-    private String passInterOperatividad;
-    
+    @Autowired
+    private ValoresRepository valoresRepository;
+
+
     /**
      * @param identificacion
      * @param codigoPaquete
@@ -51,9 +48,15 @@ public class ServicioDINARDAP {
      * @return
      */
     public PubPersona datosDINARDAP(String identificacion,
-            String codigoPaquete, String parametro) {
+                                    String codigoPaquete, String parametro) {
         PubPersona persona = null;
         try {
+            String paqueteSri = valoresRepository.findByCode("DINARDAP_SRI").getValorString();
+            String paqueteDemografico = valoresRepository.findByCode("DINARDAP_DEMOGRAFICO").getValorString();
+            String urlInterOperatividad = valoresRepository.findByCode("DINARDAP_URL").getValorString();
+            String userInterOperatividad = valoresRepository.findByCode("DINARDAP_USUARIO").getValorString();
+            String passInterOperatividad = valoresRepository.findByCode("DINARDAP_CLAVE").getValorString();
+
 
             JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
             factory.setServiceClass(Interoperador.class);
@@ -185,30 +188,30 @@ public class ServicioDINARDAP {
         String[] datos = valor.split(" ");
         if(datos.length >2){
             for (int i = 0; i < datos.length; i++) {
-            switch (i) {
-                case 0:
-                case 1:
-                    apellidos = apellidos + datos[i] + " ";
-                    break;
-                default:
-                    nombres = nombres + datos[i] + " ";
+                switch (i) {
+                    case 0:
+                    case 1:
+                        apellidos = apellidos + datos[i] + " ";
+                        break;
+                    default:
+                        nombres = nombres + datos[i] + " ";
+                }
             }
-        }
         }else{
             for (int i = 0; i < datos.length; i++) {
-            switch (i) {
-                case 0:
-                    apellidos = apellidos + datos[i] + " ";
-                     break;
-                case 1:
-                    nombres = nombres + datos[i] + " ";
-                    break;
-                default:
-                    nombres = " ";
+                switch (i) {
+                    case 0:
+                        apellidos = apellidos + datos[i] + " ";
+                        break;
+                    case 1:
+                        nombres = nombres + datos[i] + " ";
+                        break;
+                    default:
+                        nombres = " ";
+                }
             }
         }
-        }
-        
+
         map.put("nombre", nombres.trim());
         map.put("apellido", apellidos.trim());
         return map;
