@@ -2,7 +2,8 @@ spring:
   application:
     name: WS-ZERVICES
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/rpm_playas_ventanilla
+    url: jdbc:postgresql://127.0.0.1:5677/rpm_playas_ventanilla
+    #url: jdbc:postgresql://127.0.0.1:5432/rpm_playas_ventanilla
     username: sisapp
     password: sisapp98
     platform: postgres
@@ -44,7 +45,8 @@ app:
   passSgr: regproloja
 
   dominio: http://localhost:9090/#
-  docUrl: jdbc:postgresql://192.168.100.12:5432/rpm_playas_archivos
+  #docUrl: jdbc:postgresql://192.168.100.12:5432/rpm_playas_archivos
+  docUrl: jdbc:postgresql://127.0.0.1:5677/rpm_playas_archivos
   dbDocUser: sisapp
   dbDocPass: sisapp98
 
@@ -75,8 +77,8 @@ app:
   payphoneReverseClient: https://pay.payphonetodoesposible.com/api/Reverse/Client
 
   payphoneBtnPago: https://pay.payphonetodoesposible.com/api/button/Prepare
-  payphoneBtnApiCoding: ee95f4cf71854320845a48c88b62841c
-  payphoneBtnBearerApiToken: O5hqiFdOgklx3az8GHjzNiBEr0cZh8CKs5vRR75d--JCdzumsFRZrhiLAskoLsuwnEkHFD2n25YOndg1fH7dIlX3XSTHqdMy50qSiV4RpykLGnPxKgF3s7UIB1w1PH68EoCkYpTXhlhcFW96OQOMFy7nhjyvFw57wXCKLGfa1AfdmemzIv9pUVDskdBa3llP_RLMyrYfvYKmwXEu-8YSpEKpiH_HIFoh0NjMvK9ibrMLRs8TI0eutEwwB_6JaCaZDoxDu5Du3topPoVsHs0J0ZJh_TNAk_jCtZ4-SEboYllY8pqlLBedtQrT7c9yBccma1xBiX15MvpjGI0fGoGb09Of20w
+  payphoneBtnApiCoding: 14fad1ec537e4c5689c483fa9096476e
+  payphoneBtnBearerApiToken: TV6nh1ouGCF5ldkcQENrqbNp9MEbS3CqnXvQekxs5Sas9a12P4ev_vCTjxoAsiD6IgHMudPLyrOdxhFouxzYtcAtc3o4cvvP8cihvYd1xg4z9N0Vj7vAy1x4BHw7mk6ICkI-OYlAh1pIZRFP4wWBYS3wGcDHklnQrbk8Oq33n5sYjg93oFlCHLZPVcgMadRUEBPGlrxNgdlbMJxSURLWf1SLYgy0CDFhD43W4PAZRLW7DKUrvedijeMgLZgKqL3CPDu96szbGw2JfoK9x_3ESF_MlfCdKjk3v20wvENb_74AebYMyt5RqVThPjBX1IFBdKyi3Q
 
   payphoneConfirmPago: https://pay.payphonetodoesposible.com/api/button/V2/Confirm
 

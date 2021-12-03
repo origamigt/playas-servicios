@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:playas/src/pages/ajustes/ajustes_page.dart';
 import 'package:playas/src/pages/ajustes/contrasenia_page.dart';
 import 'package:playas/src/pages/ajustes/perfil_page.dart';
@@ -25,7 +26,9 @@ import 'package:playas/src/pages/tramites/tramites_page.dart';
 import 'package:playas/src/pages/verificar/certificadomov_page.dart';
 import 'package:playas/src/pages/verificar/certificadoweb_page.dart';
 import 'package:playas/src/pages/verificar/verificar_doc_page.dart';
-import 'package:playas/src/routes/guard_router.dart';
+import 'package:playas/src/routes/app_guard.dart';
+
+part 'app_router.gr.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page|Screen,Route',
@@ -89,4 +92,16 @@ import 'package:playas/src/routes/guard_router.dart';
         guards: [AuthGuard]),
   ],
 )
-class $AppRouter {}
+//class $AppRouter {}
+
+//class AppRouter extends _$AppRouter {}
+// when using a part build you should not
+// use the '$' prefix on the actual class
+// instead extend the generated class
+// prefixing it with '_$'
+class AppRouter extends _$AppRouter {
+  AppRouter()
+      : super(
+          authGuard: AuthGuard(),
+        );
+}

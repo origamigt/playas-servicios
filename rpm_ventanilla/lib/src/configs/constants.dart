@@ -94,8 +94,6 @@ List<Data> tiposBusqueda = [
   Data().initData(2, 'Inscripciones'),
 ];
 
-String dominio = 'http://localhost:9090';
-
 String language = 'es-ES';
 
 String qrCertificate = '';

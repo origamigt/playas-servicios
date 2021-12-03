@@ -1,4 +1,4 @@
-//import 'dart:js' as js;
+import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +17,6 @@ import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PropiedadPage extends StatefulWidget {
   static const String route = '/propiedad';
@@ -503,6 +502,10 @@ class PropiedadPageState extends State<PropiedadPage> {
                 )),
               ),
               onPressed: () async {
+                if (_tipoPropiedad == null || _tipoPropiedad!.isEmpty) {
+                  mensajeError(context, 'Escoja el tipo de la propiedad');
+                  return;
+                }
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   doProcesarPago();
@@ -569,7 +572,7 @@ class PropiedadPageState extends State<PropiedadPage> {
             Icons.person,
           ),
           suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
+                  StatusPersonProv.Searching
               ? loading("...")
               : btnBuscarPersona('PROPIETARIO'),
         ),
@@ -677,7 +680,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             datosPersonaPropCtrl.text,
             acto!,
             usuario!.id!,
-            cantidadCtrl.text);
+            cantidadCtrl.text,
+            numeroInscripcionCtrl.text,
+            anioInscripcionCtrl.text,
+            numeroFichaCtrl.text,
+            _tipoPropiedad!);
 
     successfulMessage.then((response) async {
       if (response['status']) {
@@ -694,17 +701,17 @@ class PropiedadPageState extends State<PropiedadPage> {
             if (verificado != null) {
               mensajeError(
                 context,
-                'Debe proceder al pago para continuar con su solcitud',
+                'Debe proceder al pago para continuar con su solicitud',
               );
             }
           } else {
-            await launch(
+            /*await launch(
               rest.linkPago!,
               forceSafariVC: true,
               forceWebView: true,
               enableJavaScript: true,
-            );
-            //js.context.callMethod('open', [rest.linkPago, '_self']);
+            );*/
+            js.context.callMethod('open', [rest.linkPago, '_self']);
           }
         } else {
           mensajeInfo(context,

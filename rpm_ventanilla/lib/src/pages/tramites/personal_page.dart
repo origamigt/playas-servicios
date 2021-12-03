@@ -501,7 +501,11 @@ class PersonalState extends State<PersonalPage> {
             '',
             acto,
             usuario!.id!,
-            cantidadCtrl.text);
+            cantidadCtrl.text,
+            '',
+            '',
+            '',
+            '');
 
     successfulMessage.then((response) async {
       print(response.toString());

@@ -130,6 +130,7 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
         child: Scrollbar(
             isAlwaysShown: true,
             child: ListView.builder(
+              cacheExtent: 9999,
               itemCount: imagesCertificados.length,
               itemBuilder: (context, index) {
                 return Padding(
@@ -182,14 +183,14 @@ class _CertificadoWebPageState extends State<CertificadoWebPage> {
 
   void validarCertificado() {
     String str = codigoCtrl.text;
-    if (str.isNotEmpty) {
+    /*if (str.isNotEmpty) {
       str = str.substring(1, str.length);
-    }
+    }*/
     final Future<Map<String, dynamic>> successfulMessage;
     successfulMessage =
         certificadoProvider!.validarCertificado(str, tipo.data![0]);
     successfulMessage.then((response) {
-      print(response.toString());
+      //print(response.toString());
       if (response['status']) {
         imagesCertificados = response['data'];
         detalle = imagesCertificados[0].urlImage!;

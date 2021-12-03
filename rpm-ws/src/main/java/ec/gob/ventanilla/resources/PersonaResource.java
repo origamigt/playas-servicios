@@ -67,7 +67,7 @@ public class PersonaResource {
             return new ResponseEntity<>(personFind, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>( HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
     }
 
@@ -103,8 +103,8 @@ public class PersonaResource {
             if (!estaRegistrado) {
                 RestTemplate restTemplate = new RestTemplate(Util.getClientHttpRequestFactory(appProps.getUsuarioDinardap(),
                         appProps.getClaveDinardap()));
-                URI uri = new URI(appProps.getUrlDinardap() + consulta.getAplicacion() + "/persona/identificacion/" + consulta.getIdentificacion());
-                System.out.println(appProps.getUrlDinardap() + consulta.getAplicacion() + "/persona/identificacion/" + consulta.getIdentificacion());
+                URI uri = new URI(appProps.getUrlDinardap() + consulta.getIdentificacion());
+                System.out.println(appProps.getUrlDinardap() + consulta.getIdentificacion());
                 ResponseEntity<PubPersona> contribuyente = restTemplate.getForEntity(uri, PubPersona.class);
                 if (contribuyente.getBody() != null) {
                     if (idPersona != null) {
@@ -121,6 +121,7 @@ public class PersonaResource {
                         personaRepository.save(persona);
                     }
                 }
+                System.out.println(contribuyente.getBody());
                 return new ResponseEntity<>(contribuyente.getBody(), HttpStatus.OK);
             } else {
                 persona.setFechaExpedicionLong(persona.getFechaExpedicion().getTime());

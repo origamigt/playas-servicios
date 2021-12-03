@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,8 +12,7 @@ import 'package:playas/src/providers/requisitos_provider.dart';
 import 'package:playas/src/providers/theme-manager.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/providers/validardoc_provider.dart';
-import 'package:playas/src/routes/guard_router.dart';
-import 'package:playas/src/routes/router.gr.dart';
+import 'package:playas/src/routes/app_router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -26,7 +24,7 @@ void main() {
 class App extends StatelessWidget {
   // make sure you don't initiate your router
   // inside of the build function.
-  final _appRouter = AppRouter(authGuard: AuthGuard());
+  final _appRouter = AppRouter();
 
   Widget build(BuildContext context) {
     /*return MaterialApp.router(
@@ -60,7 +58,8 @@ class App extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate
           ],
           title: appName,
-          routerDelegate: AutoRouterDelegate(_appRouter),
+          routeInformationProvider: _appRouter.routeInfoProvider(),
+          routerDelegate: _appRouter.delegate(),
           routeInformationParser: _appRouter.defaultRouteParser(),
         );
       },

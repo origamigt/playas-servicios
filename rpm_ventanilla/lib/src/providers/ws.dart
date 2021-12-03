@@ -4,15 +4,15 @@ import 'package:http/http.dart' as http;
 import 'package:playas/src/configs/rpm_preferences.dart';
 import 'package:playas/src/models/user.dart';
 
-//const SERVER_IP = '192.168.0.104:8085';
-//const SERVER_IP = '127.0.0.1:8085';
-//const isDev = true;
-const SERVER_IP = 'rpv.digital';
-const isDev = false;
+const String dominio = 'http://localhost:9090/';
+const SERVER_IP = '127.0.0.1:8085';
+const isDev = true;
+//const SERVER_IP = 'rpv.digital';
+//const isDev = false;
 //const SERVER_IP = '192.168.1.24:8718';
 //const SERVER_IP = '190.57.139.138';
 //const SERVER_IP = '192.168.100.211:8718';
-
+//const String dominio = 'https://tramitesenlinea.rmpplayas.gob.ec/';
 String kUser = "_KUser";
 String kThereUser = '_KThere_User';
 String kThereUserOK = 'KThere_User_OK';

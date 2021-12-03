@@ -82,7 +82,6 @@ public class SolicitudServices {
                 pubSolicitud.setPaymentId(response.getPaymentId());
             } else {
                 pubSolicitud.setLinkPago("");
-                pubSolicitud.setLinkPago("");
             }
             pubSolicitudRepository.save(pubSolicitud);
         }

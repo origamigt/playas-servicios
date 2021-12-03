@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:playas/src/providers/ws.dart';
-import 'package:playas/src/routes/router.gr.dart';
 
 class AuthGuard extends AutoRouteGuard {
   @override
@@ -9,7 +8,7 @@ class AuthGuard extends AutoRouteGuard {
     if (authenitcated!) {
       resolver.next(true);
     } else {
-      router.push(LoginRoute());
+      //router.push(LoginRoute());
     }
   }
 

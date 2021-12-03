@@ -1,4 +1,4 @@
-//import 'dart:js' as js;
+import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +17,6 @@ import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NoposeerBienPage extends StatefulWidget {
   static const String route = '/noposeerbien';
@@ -560,7 +559,11 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             '',
             acto!,
             usuario!.id!,
-            cantidadCtrl.text);
+            cantidadCtrl.text,
+            '',
+            '',
+            '',
+            '');
 
     successfulMessage.then((response) async {
       print(response.toString());
@@ -582,13 +585,13 @@ class NoposeerBienState extends State<NoposeerBienPage> {
               );
             }
           } else {
-            await launch(
+            /*await launch(
               rest.linkPago!,
               forceSafariVC: true,
               forceWebView: true,
               enableJavaScript: true,
-            );
-            //js.context.callMethod('open', [rest.linkPago, '_self']);
+            );*/
+            js.context.callMethod('open', [rest.linkPago, '_self']);
           }
         } else {
           mensajeInfo(context,
