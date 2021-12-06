@@ -135,38 +135,40 @@ class VerificarDocPageState extends State<VerificarDocPage> {
 
   Widget datosDocumento() {
     return Container(
-      alignment: Alignment.centerLeft,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            tituloWidget2(context, 'Firma valida'),
-            subTituloWidget2(context, data!.firmaValida! ? 'SI' : 'NO'),
-            tituloWidget2(context, 'Documento valido'),
-            subTituloWidget2(context, data!.documentoValido! ? 'SI' : 'NO'),
-            data!.error != null
-                ? subTituloWidget(context, data!.error!)
-                : Container(),
-            Container(
-              margin: EdgeInsets.only(left: 5),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: data!.certificados!.length,
-                itemBuilder: (context, i) =>
-                    detalleCertificado(data!.certificados![i]),
-              ),
-            )
-            /* data!.error!.isNotEmpty
+        alignment: Alignment.centerLeft,
+        child: Scrollbar(
+          isAlwaysShown: true,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                tituloWidget2(context, 'Firma válida'),
+                subTituloWidget2(context, data!.firmaValida! ? 'SI' : 'NO'),
+                tituloWidget2(context, 'Documento valido'),
+                subTituloWidget2(context, data!.documentoValido! ? 'SI' : 'NO'),
+                data!.error != null
+                    ? subTituloWidget(context, data!.error!)
+                    : Container(),
+                Container(
+                  margin: EdgeInsets.only(left: 5),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: data!.certificados!.length,
+                    itemBuilder: (context, i) =>
+                        detalleCertificado(data!.certificados![i]),
+                  ),
+                )
+                /* data!.error!.isNotEmpty
               ? subTituloWidget(context, data!.error!)
               : Container(),
            */
-          ],
-        ),
-      ),
-    );
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget detalleCertificado(Certificado certificado) {

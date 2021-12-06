@@ -2,7 +2,8 @@ spring:
   application:
     name: WS-ZERVICES
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5677/rpm_playas_ventanilla
+    url: jdbc:postgresql://192.168.100.12:5432/rpm_playas_ventanilla
+    #url: jdbc:postgresql://127.0.0.1:5677/rpm_playas_ventanilla
     #url: jdbc:postgresql://127.0.0.1:5432/rpm_playas_ventanilla
     username: sisapp
     password: sisapp98
@@ -45,8 +46,8 @@ app:
   passSgr: regproloja
 
   dominio: http://localhost:9090/#
-  #docUrl: jdbc:postgresql://192.168.100.12:5432/rpm_playas_archivos
-  docUrl: jdbc:postgresql://127.0.0.1:5677/rpm_playas_archivos
+  docUrl: jdbc:postgresql://192.168.100.12:5432/rpm_playas_archivos
+  #docUrl: jdbc:postgresql://127.0.0.1:5677/rpm_playas_archivos
   dbDocUser: sisapp
   dbDocPass: sisapp98
 

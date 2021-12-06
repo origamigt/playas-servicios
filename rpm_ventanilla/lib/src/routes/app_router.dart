@@ -68,9 +68,9 @@ part 'app_router.gr.dart';
     AutoRoute(
         page: MercantilPage, path: MercantilPage.route, guards: [AuthGuard]),
     AutoRoute(
-        page: PagoInscripcionPage,
-        path: PagoInscripcionPage.route,
-        guards: [AuthGuard]),
+      page: PagoInscripcionPage,
+      path: PagoInscripcionPage.route,
+    ),
     AutoRoute(
         page: CarpetaCiudadanaPage,
         path: CarpetaCiudadanaPage.route,

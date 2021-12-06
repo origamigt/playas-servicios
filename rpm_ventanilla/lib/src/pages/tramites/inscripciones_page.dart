@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:basic_utils/basic_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -441,30 +442,34 @@ class InscripcionesState extends State<InscripcionesPage> {
       future: inscripciones,
       builder: (BuildContext context, AsyncSnapshot<List<Acto?>> snapshot) {
         if (snapshot.hasData) {
-          return SizedBox(
-              height: 70 + 70,
+          return Container(
+              height: 110,
+              alignment: Alignment.center,
               child: GridView.builder(
                   scrollDirection: Axis.horizontal,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.20,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 3.0,
-                    crossAxisCount: 3,
+                    childAspectRatio: 0.40,
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 5,
+                    crossAxisCount: 2,
                   ),
                   shrinkWrap: true,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, i) {
                     Acto? item = snapshot.data![i];
                     return Container(
-                      alignment: Alignment.centerLeft,
-                      width: size!.width,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.center,
+                      width: size!.width + 10,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: FilterChip(
-                        selectedColor: colorSecond.withOpacity(0.8),
+                        selectedColor: colorSecond.withOpacity(0.5),
                         label: Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            item!.acto!,
+                            item!.acto != null
+                                ? StringUtils.capitalize(item.acto!)
+                                : '',
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headline6,

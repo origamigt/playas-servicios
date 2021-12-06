@@ -17,6 +17,7 @@ public class ComprobanteSRI {
     private String numFacturaFormato;
     private String fechaAutorizacion;
     private String valorTotal;
+    private Long numTramite;
 
     public ComprobanteSRI() {
     }
@@ -59,5 +60,13 @@ public class ComprobanteSRI {
 
     public void setValorTotal(String valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public Long getNumTramite() {
+        return numTramite;
+    }
+
+    public void setNumTramite(Long numTramite) {
+        this.numTramite = numTramite;
     }
 }

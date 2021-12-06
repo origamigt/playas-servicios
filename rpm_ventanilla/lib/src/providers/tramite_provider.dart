@@ -47,11 +47,12 @@ class TramiteProvider {
     solicitud.numeroTramite = tramite;
 
     http.Response? response = await save(
-        'rpm-ventanilla/api/solicitud/buscarTramite', solicitud, true);
+        '/rpm-ventanilla/api/solicitud/buscarTramite', solicitud, true);
     if (response != null && response.statusCode == 200) {
       Map<String, dynamic> map =
           json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
       Solicitud rest = Solicitud().fromJson(map);
+      print(rest.numeroTramiteInscripcion!);
       DatosProforma? proforma =
           await consultarTramite(rest.numeroTramiteInscripcion!);
       if (proforma != null) {
@@ -99,5 +100,17 @@ class TramiteProvider {
     List<ActoRequisito>? list =
         collection!.map((p) => ActoRequisito().fromJson(p)).toList();
     _requsitosStreamController.add(list);
+  }
+
+  Future<Facturas?> reenviarFacturas(int tramite) async {
+    try {
+      Map<String, dynamic> map = await find(
+          '/rpm-ventanilla/api/facturacionElectronica/reenviarFacturaContribuyente/$tramite',
+          true);
+      Facturas? datos = Facturas().fromJson(map);
+      return datos;
+    } catch (e) {
+      print(e);
+    }
   }
 }

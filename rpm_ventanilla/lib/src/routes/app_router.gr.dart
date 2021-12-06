@@ -102,8 +102,15 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData, child: MercantilPage());
     },
     PagoInscripcionRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<PagoInscripcionRouteArgs>(
+          orElse: () => PagoInscripcionRouteArgs(
+              code1: queryParams.optString('code1'),
+              code2: queryParams.optString('code2'),
+              code3: queryParams.optString('code3')));
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: PagoInscripcionPage());
+          routeData: routeData,
+          child: PagoInscripcionPage(args.code1, args.code2, args.code3));
     },
     CarpetaCiudadanaRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -159,7 +166,7 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(MercantilRoute.name,
             path: '/mercantil', guards: [authGuard]),
         RouteConfig(PagoInscripcionRoute.name,
-            path: '/inscripciones/pagoInscripcion', guards: [authGuard]),
+            path: '/inscripciones/pagoInscripcion'),
         RouteConfig(CarpetaCiudadanaRoute.name,
             path: '/carpetaCiudadana', guards: [authGuard]),
         RouteConfig(MisTramitesRoute.name,
@@ -341,11 +348,27 @@ class MercantilRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for [PagoInscripcionPage]
-class PagoInscripcionRoute extends PageRouteInfo<void> {
-  const PagoInscripcionRoute()
-      : super(name, path: '/inscripciones/pagoInscripcion');
+class PagoInscripcionRoute extends PageRouteInfo<PagoInscripcionRouteArgs> {
+  PagoInscripcionRoute(
+      {required String? code1, required String? code2, required String? code3})
+      : super(name,
+            path: '/inscripciones/pagoInscripcion',
+            args: PagoInscripcionRouteArgs(
+                code1: code1, code2: code2, code3: code3),
+            rawQueryParams: {'code1': code1, 'code2': code2, 'code3': code3});
 
   static const String name = 'PagoInscripcionRoute';
+}
+
+class PagoInscripcionRouteArgs {
+  const PagoInscripcionRouteArgs(
+      {required this.code1, required this.code2, required this.code3});
+
+  final String? code1;
+
+  final String? code2;
+
+  final String? code3;
 }
 
 /// generated route for [CarpetaCiudadanaPage]

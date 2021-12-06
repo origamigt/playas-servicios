@@ -61,8 +61,8 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
   load() {
     String url =
         dominio + '#' + ConfirmarPagoPage.route + widget.clientTransactionId!;
-    print('generateMd5(url): ' + generateMd5(url));
-    print(' widget.code!: ' + widget.code!);
+    //print('generateMd5(url): ' + generateMd5(url));
+    //print(' widget.code!: ' + widget.code!);
     if (generateMd5(url) == widget.code!) {
       doValidarPago();
     } else {
@@ -183,14 +183,15 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
               )),
           Visibility(
               visible: responseCreate != null
-                  ? responseCreate!.statusCode == '3'
+                  ? responseCreate!.statusCode != '3'
                       ? true
                       : false
                   : false,
-              child: Text(
-                  responseCreate != null && responseCreate!.message != null
-                      ? 'Detalle ${responseCreate!.message}'
-                      : '')),
+              child: Text(responseCreate != null &&
+                      responseCreate!.message != null &&
+                      !responseCreate!.message!.isEmpty
+                  ? 'Detalle ${responseCreate!.message}'
+                  : '')),
           inicio()
         ],
       ),

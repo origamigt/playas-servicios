@@ -44,6 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (!request.getRequestURI().contains("/rpm-ventanilla/api/autentificacion")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/actosInscricipciones")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/pagos/verificarPago")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/terminosCondicion")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/actosPopulares")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/actualizarContrasenia")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/activarUsuarioEntidad")
@@ -53,7 +54,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/consultar")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/requisitos/")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/documento/")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/solicitud/buscarTramite")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/solicitud/actualizarTramiteInscripcion")
+                && !request.getRequestURI().contains("/rpm-ventanilla/api/solicitud/actualizarSolicitudObservacion")
         ) {
             final String requestTokenHeader = request.getHeader("Authorization");
             String username = null;

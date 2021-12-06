@@ -33,7 +33,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author gutya
  */
 @RestController
@@ -47,6 +46,7 @@ public class FacturacionResource {
     @RequestMapping(value = "consultaFacturasContribuyente/{identificacion}", method = RequestMethod.GET)
     public ResponseEntity<List<ComprobanteSRI>> findAllFacturas(@PathVariable String identificacion) {
         try {
+            System.out.println(appProps.getRpFacturas() + identificacion);
             RestTemplate restTemplate = new RestTemplate();
             URI uri = new URI(appProps.getRpFacturas() + identificacion);
             ResponseEntity<ComprobanteSRI[]> facturas
@@ -55,6 +55,30 @@ public class FacturacionResource {
                 if (facturas.getBody() != null) {
                     List<ComprobanteSRI> comprobanteSRI = Arrays.asList(facturas.getBody());
                     return new ResponseEntity<>(comprobanteSRI, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(null, HttpStatus.OK);
+                }
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.OK);
+            }
+        } catch (URISyntaxException | RestClientException ex) {
+            Logger.getLogger(FacturacionResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+
+    @RequestMapping(value = "reenviarFacturaContribuyente/{tramite}", method = RequestMethod.GET)
+    public ResponseEntity<ComprobanteSRI> reenviarFacturas(@PathVariable String tramite) {
+        try {
+            System.out.println(appProps.getRpFacturas() + "reenviar/" + tramite);
+            RestTemplate restTemplate = new RestTemplate();
+            URI uri = new URI(appProps.getRpFacturas() + "reenviar/" + tramite);
+            ResponseEntity<ComprobanteSRI> factura
+                    = restTemplate.getForEntity(uri, ComprobanteSRI.class);
+            if (factura != null) {
+                if (factura.getBody() != null) {
+                    return new ResponseEntity<>(factura.getBody(), HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(null, HttpStatus.OK);
                 }

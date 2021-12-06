@@ -155,6 +155,9 @@ public class SolicitudServices {
             sr.setTipo(SisVars.TIPO_REQUISITO_NOTIFICAR);
             requisitoRepository.save(sr);
         }
+        solicitudBD.setFechaSolicitud(null); //se nulean xk n el sigeri da error
+        solicitudBD.setFechaEntrega(null);
+        solicitudBD.setFechaIngreso(null);
         return solicitudBD;
     }
 

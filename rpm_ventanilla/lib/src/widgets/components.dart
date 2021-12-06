@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:playas/src/models/menu.dart';
 import 'package:playas/src/pages/ajustes/cerrar_sesion_page.dart';
 import 'package:playas/src/pages/login/login_page.dart';
@@ -251,4 +252,29 @@ Widget cargando() {
       alignment: Alignment.center,
       height: 60,
       child: CircularProgressIndicator());
+}
+
+Widget terminosCondicionesHTML(BuildContext context, String? termsConditions) {
+  return AlertDialog(
+    shape: borderDialog,
+    content: Container(
+      height: MediaQuery.of(context).size.height / 2,
+      width: MediaQuery.of(context).size.width / 1.5,
+      child: Scrollbar(
+          isAlwaysShown: true,
+          child: SingleChildScrollView(
+            child: Html(
+              data: termsConditions,
+            ),
+          )),
+    ),
+    actions: <Widget>[
+      TextButton(
+        child: Text("Aceptar"),
+        onPressed: () async {
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+        },
+      ),
+    ],
+  );
 }

@@ -31,9 +31,9 @@ class ValidarDocProvider extends ChangeNotifier {
     doc.nombre = nombre;
     doc.multipartFile = bytes;
 
-    String path = 'rpm-ventanilla/api/documento/verificarArchivo';
+    String path = '/rpm-ventanilla/api/documento/verificarArchivo';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws$path');
 
     //print(json.encode(Archivo().toJson(doc)));
     Map<String, String>? header = await mapHeaderAuth();

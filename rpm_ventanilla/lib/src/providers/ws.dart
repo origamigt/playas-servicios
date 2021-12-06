@@ -73,7 +73,7 @@ findAll(String url, bool auth) async {
   try {
     Uri uri =
         isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
-    print(uri.path);
+    //print(uri.path);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
     return json.decode(utf8.decode(response.bodyBytes));
@@ -100,11 +100,11 @@ find(String url, bool auth) async {
   try {
     Uri uri =
         isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
+    print(uri.toString());
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
 
     var jsTask = response.bodyBytes;
-
     if (jsTask.length > 0) {
       Map<String, dynamic> map =
           json.decode(utf8.decode(jsTask)) as Map<String, dynamic>;
@@ -113,6 +113,7 @@ find(String url, bool auth) async {
       return null;
     }
   } catch (e) {
+    print('e: $e');
     return null;
   }
 }
@@ -145,10 +146,11 @@ save(String url, Object data, bool auth) async {
   try {
     Uri uri =
         isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
+    print(uri.toString());
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     response = await http
         .post(uri, body: jsonEncode(data), headers: header)
-        .timeout(const Duration(seconds: 30));
+        .timeout(const Duration(seconds: 60));
   } catch (e) {
     print(e.toString());
   }

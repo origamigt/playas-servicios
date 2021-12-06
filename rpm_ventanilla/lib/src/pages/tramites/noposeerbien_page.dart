@@ -12,6 +12,7 @@ import 'package:playas/src/pages/pagos/pago_page.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
+import 'package:playas/src/providers/terminos_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
@@ -57,6 +58,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
 
   Data motivo = motivosSolicitud[0];
   final _actosProvider = ActosProvider();
+  bool aceptaTerminosCondiciones = false;
+  final _terminosProvider = TerminosProvider();
 
   @override
   void initState() {
@@ -66,11 +69,11 @@ class NoposeerBienState extends State<NoposeerBienPage> {
 
   cargarActo() async {
     acto = await _actosProvider.findActoId(1358);
+    cantidadCtrl.text = '1';
   }
 
   @override
   Widget build(BuildContext context) {
-    cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     pagoProvider = Provider.of<PagoProvider>(context);
@@ -151,6 +154,10 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             direccionFactWidget(),
             telefonoFactWidget(),
             correoFactWidget(),*/
+            SizedBox(
+              height: 15,
+            ),
+            terminosCondicionesWidget(),
             SizedBox(
               height: 15,
             ),
@@ -471,6 +478,11 @@ class NoposeerBienState extends State<NoposeerBienPage> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  if (!aceptaTerminosCondiciones) {
+                    mensajeError(
+                        context, 'Debe aceptar los términos y condiciones');
+                    return;
+                  }
                   doProcesarPago();
                 }
               },
@@ -478,6 +490,66 @@ class NoposeerBienState extends State<NoposeerBienPage> {
                 'Procesar solicitud',
               )),
         ));
+  }
+
+  Widget terminosCondicionesWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'He leído y acepto los ',
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+                onTap: () => {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return FutureBuilder(
+                                future:
+                                    _terminosProvider.findTerminosCondiciones(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String?> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return terminosCondicionesHTML(
+                                        context, snapshot.data!);
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                });
+                          })
+                    },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Text(
+                    "Términos y condiciones",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
+            Checkbox(
+              value: aceptaTerminosCondiciones,
+              onChanged: (bool? value) {
+                setState(() {
+                  aceptaTerminosCondiciones = value!;
+                });
+              },
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   List<Widget> motivosWidget() {

@@ -105,7 +105,8 @@ class PagoProvider extends ChangeNotifier {
       data.user!.id = user;
       data.cantidad = int.parse(cantidad);
       data.total = acto.valor! * num.parse(cantidad);
-
+      print('data.cantidad: ${data.cantidad}');
+      print('data.total: ${data.total}');
       data.procesando = false;
       //DESCOMENTAR PARA EL PAGO EN LINEA
       data.estado = 'A';

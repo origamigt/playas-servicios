@@ -72,7 +72,7 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                 stream: tramiteProvider.misFacturasStream,
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Facturas>?> snapshot) {
-                  print(snapshot.hasData);
+                  //print(snapshot.hasData);
 
                   if (snapshot.hasData) {
                     facturas = snapshot.data!;
@@ -107,7 +107,7 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                           direction: Axis.vertical,
                           children: [
                             Text(
-                              '# Autorización: ${factura.numAutorizacion!}',
+                              '# Trámite: ${factura.numTramite!}',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             )
                           ],
@@ -126,6 +126,19 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                                     color: Colors.black),
                                 Text(
                                   'Clave de acceso:\n${factura.claveAcceso!}',
+                                  textAlign: TextAlign.justify,
+                                )
+                              ],
+                            )),
+                        Container(
+                            padding: EdgeInsets.only(left: 8),
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                Icon(Icons.auto_fix_high, color: Colors.black),
+                                Text(
+                                  '# Autorización:\n${factura.numAutorizacion!}',
                                   textAlign: TextAlign.justify,
                                 )
                               ],
@@ -157,7 +170,19 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                                       textAlign: TextAlign.center,
                                     ))
                               ],
-                            ))
+                            )),
+                        TextButton(
+                          child: Text(
+                            'Reenviar factura',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          onPressed: () async {
+                            await tramiteProvider
+                                .reenviarFacturas(factura.numTramite!);
+                            mensajeInfo(
+                                context, 'Factura reenviada a su correo');
+                          },
+                        ),
                       ],
                     )),
               ],

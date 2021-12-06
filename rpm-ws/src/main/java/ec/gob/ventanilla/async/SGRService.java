@@ -161,8 +161,10 @@ public class SGRService {
         try {
             Long idSolicitud = solicitud.getId();
             AclUser aclUser = solicitud.getUser();
+            Date fecha = solicitud.getFechaSolicitud();
             solicitud.setUser(null);
             solicitud.setId(null);
+            solicitud.setFechaSolicitud(null);
             Gson gson = new Gson();
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost httpPost = new HttpPost(appProps.getRpIniciarTramiteInscripcion());
@@ -199,6 +201,7 @@ public class SGRService {
                     }
                 }
             }
+            solicitud.setFechaSolicitud(fecha);
             solicitud.setUser(aclUser);
             solicitud.setId(idSolicitud);
             pubSolicitudRepository.save(solicitud);

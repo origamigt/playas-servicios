@@ -1,4 +1,4 @@
-import 'dart:js' as js;
+//import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,11 +12,13 @@ import 'package:playas/src/pages/pagos/pago_page.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
+import 'package:playas/src/providers/terminos_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PropiedadPage extends StatefulWidget {
   static const String route = '/propiedad';
@@ -68,6 +70,8 @@ class PropiedadPageState extends State<PropiedadPage> {
 
   final _actosProvider = ActosProvider();
   double? total;
+  bool aceptaTerminosCondiciones = false;
+  final _terminosProvider = TerminosProvider();
 
   @override
   void initState() {
@@ -78,6 +82,7 @@ class PropiedadPageState extends State<PropiedadPage> {
   cargarActo() async {
     acto = await _actosProvider.findActoId(1357);
     total = acto!.valor;
+    cantidadCtrl.text = '1';
     /*cantidadCtrl.addListener(() {
       try {
         print(cantidadCtrl.text);
@@ -94,7 +99,6 @@ class PropiedadPageState extends State<PropiedadPage> {
 
   @override
   Widget build(BuildContext context) {
-    cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     pagoProvider = Provider.of<PagoProvider>(context);
@@ -182,6 +186,10 @@ class PropiedadPageState extends State<PropiedadPage> {
             direccionFactWidget(),
             telefonoFactWidget(),
             correoFactWidget(),*/
+            SizedBox(
+              height: 15,
+            ),
+            terminosCondicionesWidget(),
             SizedBox(
               height: 15,
             ),
@@ -508,6 +516,11 @@ class PropiedadPageState extends State<PropiedadPage> {
                 }
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  if (!aceptaTerminosCondiciones) {
+                    mensajeError(
+                        context, 'Debe aceptar los términos y condiciones');
+                    return;
+                  }
                   doProcesarPago();
                 }
               },
@@ -615,6 +628,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             ),
           ),
           textAlign: TextAlign.start,
+          validator: (value) {
+            /*if (value!.isEmpty) {
+              return 'Ingrese el número de ficha registral';
+            }*/
+          },
         ));
   }
 
@@ -633,6 +651,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             ),
           ),
           textAlign: TextAlign.start,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Ingrese el número de inscripción';
+            }
+          },
         ));
   }
 
@@ -644,7 +667,10 @@ class PropiedadPageState extends State<PropiedadPage> {
           controller: anioInscripcionCtrl,
           maxLength: 4,
           validator: (value) {
-            if (value!.isNotEmpty && value.length != 4) {
+            if (value!.isEmpty) {
+              return 'Ingrese el año de inscripción';
+            }
+            if (value.isNotEmpty && value.length != 4) {
               return 'Debe ingresar un año valido';
             }
           },
@@ -657,6 +683,66 @@ class PropiedadPageState extends State<PropiedadPage> {
           ),
           textAlign: TextAlign.start,
         ));
+  }
+
+  Widget terminosCondicionesWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'He leído y acepto los ',
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+                onTap: () => {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return FutureBuilder(
+                                future:
+                                    _terminosProvider.findTerminosCondiciones(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String?> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return terminosCondicionesHTML(
+                                        context, snapshot.data!);
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                });
+                          })
+                    },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Text(
+                    "Términos y condiciones",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
+            Checkbox(
+              value: aceptaTerminosCondiciones,
+              onChanged: (bool? value) {
+                setState(() {
+                  aceptaTerminosCondiciones = value!;
+                });
+              },
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   doProcesarPago() {
@@ -705,13 +791,11 @@ class PropiedadPageState extends State<PropiedadPage> {
               );
             }
           } else {
-            /*await launch(
-              rest.linkPago!,
-              forceSafariVC: true,
-              forceWebView: true,
-              enableJavaScript: true,
-            );*/
-            js.context.callMethod('open', [rest.linkPago, '_self']);
+            await launch(rest.linkPago!,
+                forceSafariVC: false,
+                forceWebView: false,
+                enableJavaScript: true,
+                webOnlyWindowName: '_self');
           }
         } else {
           mensajeInfo(context,
