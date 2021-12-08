@@ -105,9 +105,12 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
 
   Widget bodyDetail() {
     return Container(
-        margin: EdgeInsets.only(top: 30),
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(top: 50),
         child: Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               pagoProvider!.status == StatusPago.Unknown ||
                       pagoProvider!.status == StatusPago.Procesing

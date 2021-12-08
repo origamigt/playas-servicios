@@ -16,6 +16,7 @@ import 'package:playas/src/pages/login/registrarse_page.dart';
 import 'package:playas/src/pages/nosotros/nosotros_page.dart';
 import 'package:playas/src/pages/pagos/confirmar_pago_page.dart';
 import 'package:playas/src/pages/pagos/pago_page.dart';
+import 'package:playas/src/pages/pagos/paymentsredirect_page.dart';
 import 'package:playas/src/pages/tramites/inscripciones_page.dart';
 import 'package:playas/src/pages/tramites/mercantil_page.dart';
 import 'package:playas/src/pages/tramites/noposeerbien_page.dart';
@@ -42,7 +43,11 @@ part 'app_router.gr.dart';
     AutoRoute(page: VerificarDocPage, path: VerificarDocPage.route),
     AutoRoute(page: CertificadoMovPage, path: CertificadoMovPage.route),
     AutoRoute(page: CertificadoWebPage, path: CertificadoWebPage.route),
-
+    AutoRoute(page: PaymentsRediectPage, path: PaymentsRediectPage.route),
+    AutoRoute(
+      page: PagoInscripcionPage,
+      path: PagoInscripcionPage.route,
+    ),
     //GUARDS
     AutoRoute(
         page: TramitesPage, path: TramitesPage.route, guards: [AuthGuard]),
@@ -67,10 +72,7 @@ part 'app_router.gr.dart';
         page: PersonalPage, path: PersonalPage.route, guards: [AuthGuard]),
     AutoRoute(
         page: MercantilPage, path: MercantilPage.route, guards: [AuthGuard]),
-    AutoRoute(
-      page: PagoInscripcionPage,
-      path: PagoInscripcionPage.route,
-    ),
+
     AutoRoute(
         page: CarpetaCiudadanaPage,
         path: CarpetaCiudadanaPage.route,

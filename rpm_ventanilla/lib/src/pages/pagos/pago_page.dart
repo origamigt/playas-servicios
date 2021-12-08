@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:playas/src/pages/pagos/confirmar_pago_page.dart';
+import 'package:playas/src/providers/ws.dart';
+import 'package:playas/src/routes/app_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PagoPage extends StatefulWidget {
@@ -34,6 +38,8 @@ class _PagoPageState extends State<PagoPage> {
   }
 
   Future<String> get urlIframe async {
+    print('widget.urlIframe!');
+    print(widget.urlIframe!);
     await Future.delayed(Duration(seconds: 1));
     return widget.urlIframe!;
   }
@@ -103,15 +109,36 @@ class _PagoPageState extends State<PagoPage> {
                                     gestureNavigationEnabled: true,
                                     debuggingEnabled: true,
                                     onPageFinished: (String url) {
-                                      /*if (url.startsWith(
-                                          urlVentanilla + confirmarPago)) {
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ConfirmarPagoPage(url)),
-                                            (route) => false);
-                                      }*/
+                                      print('onPageFinished $url');
+                                      if (url.startsWith(dominio +
+                                          '#' +
+                                          ConfirmarPagoPage.route)) {
+                                        String param = url.replaceAll(
+                                            dominio +
+                                                '#' +
+                                                ConfirmarPagoPage.route +
+                                                '?',
+                                            '');
+                                        print('params $param');
+                                        List<String> params = param.split('&');
+                                        print(params[0]);
+                                        print(params[1]);
+                                        print(params[2]);
+                                        String code = params[0].split('=')[1];
+                                        String id = params[1].split('=')[1];
+                                        String clientTransactionId =
+                                            params[2].split('=')[1];
+                                        print('code $code');
+                                        print('id $id');
+                                        print(
+                                            'clientTransactionId $clientTransactionId');
+                                        context.router.replace(
+                                            ConfirmarPagoRoute(
+                                                code: code,
+                                                id: id,
+                                                clientTransactionId:
+                                                    clientTransactionId));
+                                      }
                                     },
                                   )
                                 : Container(

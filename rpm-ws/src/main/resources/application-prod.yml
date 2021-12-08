@@ -43,7 +43,7 @@ app:
   userSgr: ventanilla
   passSgr: regproloja
 
-  dominio: https://rpv.digital/#
+  dominio: https://tramitesenlinea.rmpplayas.gob.ec/#
   docUrl: jdbc:postgresql://192.168.16.212:5432/rpm_playas_archivos
   dbDocUser: sisapp
   dbDocPass: sisapp98

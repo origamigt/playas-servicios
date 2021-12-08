@@ -45,7 +45,7 @@ app:
   userSgr: ventanilla
   passSgr: regproloja
 
-  dominio: http://localhost:9090/#
+  dominio: http://192.168.16.181:9090/#
   docUrl: jdbc:postgresql://192.168.100.12:5432/rpm_playas_archivos
   #docUrl: jdbc:postgresql://127.0.0.1:5677/rpm_playas_archivos
   dbDocUser: sisapp

@@ -385,7 +385,7 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
                 pageBuilder: (BuildContext context, _, __) => PagoPage(
-                      urlIframe: rest.linkPago,
+                      urlIframe: rest.payWithApp,
                     )));
 
             if (verificado != null) {

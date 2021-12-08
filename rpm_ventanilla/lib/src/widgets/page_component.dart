@@ -52,17 +52,19 @@ class PageComponent extends StatelessWidget {
                   back!
                       ? Stack(
                           children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                  onPressed: () {
-                                    context.router
-                                        .navigateNamed(HomePage.route);
-                                  },
-                                  icon: Icon(
-                                    Icons.arrow_back_ios,
-                                  )),
-                            ),
+                            isWeb
+                                ? Container(
+                                    alignment: Alignment.topLeft,
+                                    child: IconButton(
+                                        onPressed: () {
+                                          context.router
+                                              .navigateNamed(HomePage.route);
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_back_ios,
+                                        )),
+                                  )
+                                : Container(),
                             Container(
                               alignment: Alignment.center,
                               child: header!,
@@ -88,7 +90,7 @@ class PageComponent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Opacity(
-                opacity: 0.6,
+                opacity: 0.5,
                 child: Image.asset(
                   'assets/images/logo.png',
                   height: 100,
@@ -96,7 +98,7 @@ class PageComponent extends StatelessWidget {
                 ),
               ),
               Opacity(
-                opacity: 0.6,
+                opacity: 0.5,
                 child: Image.asset(
                   'assets/images/vur.png',
                   height: 100,

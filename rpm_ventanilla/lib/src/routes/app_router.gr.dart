@@ -61,6 +61,27 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: CertificadoWebPage());
     },
+    PaymentsRediectRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<PaymentsRediectRouteArgs>(
+          orElse: () => PaymentsRediectRouteArgs(
+              code: queryParams.optString('code'),
+              payment: queryParams.optString('payment')));
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: PaymentsRediectPage(args.code, args.payment));
+    },
+    PagoInscripcionRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<PagoInscripcionRouteArgs>(
+          orElse: () => PagoInscripcionRouteArgs(
+              code1: queryParams.optString('code1'),
+              code2: queryParams.optString('code2'),
+              code3: queryParams.optString('code3')));
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: PagoInscripcionPage(args.code1, args.code2, args.code3));
+    },
     TramitesRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: TramitesPage());
@@ -101,17 +122,6 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: MercantilPage());
     },
-    PagoInscripcionRoute.name: (routeData) {
-      final queryParams = routeData.queryParams;
-      final args = routeData.argsAs<PagoInscripcionRouteArgs>(
-          orElse: () => PagoInscripcionRouteArgs(
-              code1: queryParams.optString('code1'),
-              code2: queryParams.optString('code2'),
-              code3: queryParams.optString('code3')));
-      return MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: PagoInscripcionPage(args.code1, args.code2, args.code3));
-    },
     CarpetaCiudadanaRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: CarpetaCiudadanaPage());
@@ -148,6 +158,9 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(VerificarDocRoute.name, path: '/verificarDocumento'),
         RouteConfig(CertificadoMovRoute.name, path: '/validarCertificadoQR'),
         RouteConfig(CertificadoWebRoute.name, path: '/validarCertificado'),
+        RouteConfig(PaymentsRediectRoute.name, path: '/pagos/paymentsredirect'),
+        RouteConfig(PagoInscripcionRoute.name,
+            path: '/inscripciones/pagoInscripcion'),
         RouteConfig(TramitesRoute.name, path: '/tramites', guards: [authGuard]),
         RouteConfig(NoposeerBienRoute.name,
             path: '/noposeerbien', guards: [authGuard]),
@@ -165,8 +178,6 @@ class _$AppRouter extends RootStackRouter {
             path: '/fichaPersonal', guards: [authGuard]),
         RouteConfig(MercantilRoute.name,
             path: '/mercantil', guards: [authGuard]),
-        RouteConfig(PagoInscripcionRoute.name,
-            path: '/inscripciones/pagoInscripcion'),
         RouteConfig(CarpetaCiudadanaRoute.name,
             path: '/carpetaCiudadana', guards: [authGuard]),
         RouteConfig(MisTramitesRoute.name,
@@ -269,6 +280,49 @@ class CertificadoWebRoute extends PageRouteInfo<void> {
   static const String name = 'CertificadoWebRoute';
 }
 
+/// generated route for [PaymentsRediectPage]
+class PaymentsRediectRoute extends PageRouteInfo<PaymentsRediectRouteArgs> {
+  PaymentsRediectRoute({required String? code, required String? payment})
+      : super(name,
+            path: '/pagos/paymentsredirect',
+            args: PaymentsRediectRouteArgs(code: code, payment: payment),
+            rawQueryParams: {'code': code, 'payment': payment});
+
+  static const String name = 'PaymentsRediectRoute';
+}
+
+class PaymentsRediectRouteArgs {
+  const PaymentsRediectRouteArgs({required this.code, required this.payment});
+
+  final String? code;
+
+  final String? payment;
+}
+
+/// generated route for [PagoInscripcionPage]
+class PagoInscripcionRoute extends PageRouteInfo<PagoInscripcionRouteArgs> {
+  PagoInscripcionRoute(
+      {required String? code1, required String? code2, required String? code3})
+      : super(name,
+            path: '/inscripciones/pagoInscripcion',
+            args: PagoInscripcionRouteArgs(
+                code1: code1, code2: code2, code3: code3),
+            rawQueryParams: {'code1': code1, 'code2': code2, 'code3': code3});
+
+  static const String name = 'PagoInscripcionRoute';
+}
+
+class PagoInscripcionRouteArgs {
+  const PagoInscripcionRouteArgs(
+      {required this.code1, required this.code2, required this.code3});
+
+  final String? code1;
+
+  final String? code2;
+
+  final String? code3;
+}
+
 /// generated route for [TramitesPage]
 class TramitesRoute extends PageRouteInfo<void> {
   const TramitesRoute() : super(name, path: '/tramites');
@@ -345,30 +399,6 @@ class MercantilRoute extends PageRouteInfo<void> {
   const MercantilRoute() : super(name, path: '/mercantil');
 
   static const String name = 'MercantilRoute';
-}
-
-/// generated route for [PagoInscripcionPage]
-class PagoInscripcionRoute extends PageRouteInfo<PagoInscripcionRouteArgs> {
-  PagoInscripcionRoute(
-      {required String? code1, required String? code2, required String? code3})
-      : super(name,
-            path: '/inscripciones/pagoInscripcion',
-            args: PagoInscripcionRouteArgs(
-                code1: code1, code2: code2, code3: code3),
-            rawQueryParams: {'code1': code1, 'code2': code2, 'code3': code3});
-
-  static const String name = 'PagoInscripcionRoute';
-}
-
-class PagoInscripcionRouteArgs {
-  const PagoInscripcionRouteArgs(
-      {required this.code1, required this.code2, required this.code3});
-
-  final String? code1;
-
-  final String? code2;
-
-  final String? code3;
 }
 
 /// generated route for [CarpetaCiudadanaPage]

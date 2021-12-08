@@ -81,6 +81,9 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                     return cargando();
                   }
                 },
+              ),
+              SizedBox(
+                height: 20,
               )
             ],
           ),
@@ -90,6 +93,7 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
   Widget _buildList() {
     return ListView.builder(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: facturas.length,
       itemBuilder: (BuildContext context, int index) {
         Facturas factura = facturas[index];
@@ -101,10 +105,11 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
               children: <Widget>[
                 ListTile(
                     leading: Icon(Icons.bookmark),
+                    minLeadingWidth: 0,
                     title: Padding(
                         padding: EdgeInsets.all(10.0),
                         child: Wrap(
-                          direction: Axis.vertical,
+                          direction: Axis.horizontal,
                           children: [
                             Text(
                               '# Trámite: ${factura.numTramite!}',
@@ -120,7 +125,7 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                             padding: EdgeInsets.only(left: 8),
                             width: MediaQuery.of(context).size.width - 100,
                             child: Wrap(
-                              direction: Axis.vertical,
+                              direction: Axis.horizontal,
                               children: [
                                 Icon(Icons.developer_board,
                                     color: Colors.black),
@@ -134,7 +139,7 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                             padding: EdgeInsets.only(left: 8),
                             width: MediaQuery.of(context).size.width - 100,
                             child: Wrap(
-                              direction: Axis.vertical,
+                              direction: Axis.horizontal,
                               children: [
                                 Icon(Icons.auto_fix_high, color: Colors.black),
                                 Text(
@@ -152,7 +157,7 @@ class _MisFacturasPageState extends State<MisFacturasPage> {
                                 Padding(
                                     padding: EdgeInsets.only(left: 8),
                                     child: Text(
-                                      '# Factura: ${factura.numFacturaFormato!}',
+                                      '# Factura:\n${factura.numFacturaFormato!}',
                                       textAlign: TextAlign.center,
                                     ))
                               ],

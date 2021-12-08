@@ -76,12 +76,11 @@ public class SolicitudServices {
                 pubSolicitud.setLinkPago(response.getPayWithCard());
                 pubSolicitud.setPayWithPayPhone(response.getPayWithPayPhone());
                 pubSolicitud.setPaymentId(response.getPaymentId());
-
-                pubSolicitud.setLinkPago(response.getPayWithCard());
-                pubSolicitud.setPayWithPayPhone(response.getPayWithPayPhone());
-                pubSolicitud.setPaymentId(response.getPaymentId());
+                pubSolicitud.setPayWithApp(response.getPayWithApp());
+                System.out.println(response.getPayWithApp());
             } else {
                 pubSolicitud.setLinkPago("");
+                pubSolicitud.setPayWithApp("");
             }
             pubSolicitudRepository.save(pubSolicitud);
         }

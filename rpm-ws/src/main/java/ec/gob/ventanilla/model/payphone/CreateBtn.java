@@ -6,7 +6,6 @@
 package ec.gob.ventanilla.model.payphone;
 
 /**
- *
  * @author ORIGAMI
  */
 public class CreateBtn {
@@ -14,6 +13,7 @@ public class CreateBtn {
     private String paymentId;
     private String payWithPayPhone;
     private String payWithCard;
+    private String payWithApp;
 
     public CreateBtn() {
     }
@@ -46,7 +46,12 @@ public class CreateBtn {
     public String toString() {
         return "CreateBtn{" + "paymentId=" + paymentId + ", payWithPayPhone=" + payWithPayPhone + ", payWithCard=" + payWithCard + '}';
     }
-    
-    
 
+    public String getPayWithApp() {
+        return payWithApp;
+    }
+
+    public void setPayWithApp(String payWithApp) {
+        this.payWithApp = payWithApp;
+    }
 }

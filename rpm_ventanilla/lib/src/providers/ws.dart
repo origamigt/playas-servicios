@@ -4,8 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:playas/src/configs/rpm_preferences.dart';
 import 'package:playas/src/models/user.dart';
 
-const String dominio = 'http://localhost:9090/';
-const SERVER_IP = '127.0.0.1:8085';
+const String dominio = 'http://192.168.16.181:9090/';
+//const String dominio = 'http://localhost:9090/';
+//const SERVER_IP = '127.0.0.1:8085';
+const SERVER_IP = '192.168.16.181:8085';
 const isDev = true;
 //const SERVER_IP = 'rpv.digital';
 //const isDev = false;

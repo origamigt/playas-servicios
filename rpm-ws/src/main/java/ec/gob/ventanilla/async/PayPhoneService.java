@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -193,8 +195,10 @@ public class PayPhoneService {
 
     public CreateBtn linkPagoPayPhone(PubSolicitud pubSolicitud) {
         try {
+            String urlApp = appProps.getDominio() + "/pagos/paymentsredirect";
             String url = appProps.getDominio() + "/pagos/transaccionExitosa";
-            //System.out.println(url);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String hoy = dateFormat.format(new Date());
             Gson gson = new Gson();
             Double result = pubSolicitud.getTotal() * 100.0;
             Integer total = result.intValue();
@@ -220,9 +224,9 @@ public class PayPhoneService {
             httpPost.setEntity(new StringEntity(gson.toJson(transactionCreate), "UTF-8"));
             httpPost.setHeader("Content-type", "application/json; charset=utf-8");
             httpPost.setHeader("Authorization", "Bearer " + appProps.getPayphoneBtnBearerApiToken());
-            System.out.println(appProps.getPayphoneBtnBearerApiToken());
-            System.out.println(httpPost.toString());
-            System.out.println(gson.toJson(transactionCreate));
+            //System.out.println(appProps.getPayphoneBtnBearerApiToken());
+            //System.out.println(httpPost.toString());
+            //System.out.println(gson.toJson(transactionCreate));
             HttpResponse httpResponse = httpClient.execute(httpPost);
             System.out.println(httpResponse.toString());
             if (httpResponse != null) {
@@ -236,6 +240,7 @@ public class PayPhoneService {
                 System.out.println(sb.toString());
                 CreateBtn response = gson.fromJson(sb.toString(), CreateBtn.class);
                 if (response != null) {
+                    response.setPayWithApp(urlApp + "?code=" + new MD5PasswordEncoder().encode(hoy + new MD5PasswordEncoder().encode(urlApp) + response.getPayWithCard()) + "&payment=" + response.getPayWithCard());
                     return response;
                 } else {
                     return new CreateBtn();
