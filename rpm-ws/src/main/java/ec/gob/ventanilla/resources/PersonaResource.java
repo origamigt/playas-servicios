@@ -104,7 +104,7 @@ public class PersonaResource {
                 RestTemplate restTemplate = new RestTemplate(Util.getClientHttpRequestFactory(appProps.getUsuarioDinardap(),
                         appProps.getClaveDinardap()));
                 URI uri = new URI(appProps.getUrlDinardap() + consulta.getIdentificacion());
-                System.out.println(appProps.getUrlDinardap() + consulta.getIdentificacion());
+                //System.out.println(appProps.getUrlDinardap() + consulta.getIdentificacion());
                 ResponseEntity<PubPersona> contribuyente = restTemplate.getForEntity(uri, PubPersona.class);
                 if (contribuyente.getBody() != null) {
                     if (idPersona != null) {
@@ -118,10 +118,11 @@ public class PersonaResource {
                                 persona.setFechaNacimiento(new Date(contribuyente.getBody().getFechaNacimientoLong()));
                             }
                         }
+                        persona.setFechaCreacion(new Date());
                         personaRepository.save(persona);
                     }
                 }
-                System.out.println(contribuyente.getBody());
+                //System.out.println(contribuyente.getBody());
                 return new ResponseEntity<>(contribuyente.getBody(), HttpStatus.OK);
             } else {
                 persona.setFechaExpedicionLong(persona.getFechaExpedicion().getTime());
