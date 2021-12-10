@@ -37,5 +37,5 @@ management:
         include: '*'
 
 logging:
-  #file: C:\servers_files\temp\ventanillaLog.log 
-  file: /opt/ws-api/catastroLog.log 
+  file:
+    name: /opt/servicios/logs/dinardap.log

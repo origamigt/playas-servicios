@@ -161,6 +161,8 @@ public class PubSolicitud implements Serializable {
     private Long fechaSolicitudLong;
     @Transient
     private Long fechaInscripcionLong;
+    @Transient
+    private String payWithApp;
 
     public PubSolicitud(String propApellidos, String propNombres, String propCedula,
                         Integer tipoSolicitud, Integer motivoSolicitud, String otroMotivo, Long numeroTramite,
@@ -877,4 +879,11 @@ public class PubSolicitud implements Serializable {
         this.numeroTramiteInscripcion = numeroTramiteInscripcion;
     }
 
+    public String getPayWithApp() {
+        return payWithApp;
+    }
+
+    public void setPayWithApp(String payWithApp) {
+        this.payWithApp = payWithApp;
+    }
 }

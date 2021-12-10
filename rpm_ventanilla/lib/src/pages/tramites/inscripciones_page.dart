@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:basic_utils/basic_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -43,12 +44,6 @@ class InscripcionesState extends State<InscripcionesPage> {
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
 
-  /* TextEditingController identificacionFactCtrl = TextEditingController();
-  TextEditingController datosPersonaFactCtrl = TextEditingController();
-  TextEditingController direccionFactCtrl = TextEditingController();
-  TextEditingController telefonoFactCtrl = TextEditingController();
-  TextEditingController correoFactCtrl = TextEditingController();*/
-
   TextEditingController obsCtrl = TextEditingController();
 
   String estadoCivilSol = '';
@@ -80,12 +75,6 @@ class InscripcionesState extends State<InscripcionesPage> {
       direccionCtrl.text = persona.direccion!;
       telefonoCtrl.text = persona.telefono1!;
       correoCtrl.text = persona.correo1!;
-
-      /*identificacionFactCtrl.text = persona.cedRuc!;
-      datosPersonaFactCtrl.text = nombres;
-      direccionFactCtrl.text = persona.direccion!;
-      telefonoFactCtrl.text = persona.telefono1!;
-      correoFactCtrl.text = persona.correo1!;*/
     });
     return Form(
         key: _formKey,
@@ -113,11 +102,9 @@ class InscripcionesState extends State<InscripcionesPage> {
   }
 
   Widget bodyDetail() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: size!.width,
-      height: size!.height / 1.3,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -133,12 +120,6 @@ class InscripcionesState extends State<InscripcionesPage> {
             direccionWidget(),
             telefonoWidget(),
             correoWidget(),
-            /*tituloWidget(context, 'Datos de la factura'),
-            identificacionFactWidget(),
-            nombresFactWidget(),
-            direccionFactWidget(),
-            telefonoFactWidget(),
-            correoFactWidget(),*/
             SizedBox(
               height: 15,
             ),
@@ -183,6 +164,7 @@ class InscripcionesState extends State<InscripcionesPage> {
       'Identificación',
       TextFormField(
         controller: identificacionCtrl,
+        readOnly: true,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
@@ -230,6 +212,7 @@ class InscripcionesState extends State<InscripcionesPage> {
         context,
         'Dirección',
         TextFormField(
+          readOnly: true,
           controller: direccionCtrl,
           validator: (value) {
             if (value!.isEmpty) {
@@ -250,6 +233,7 @@ class InscripcionesState extends State<InscripcionesPage> {
         context,
         'Correo electrónico',
         TextFormField(
+          readOnly: true,
           controller: correoCtrl,
           decoration: InputDecoration(
             prefixIcon: Icon(
@@ -271,112 +255,8 @@ class InscripcionesState extends State<InscripcionesPage> {
         context,
         'Teléfono',
         TextFormField(
+          readOnly: true,
           controller: telefonoCtrl,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.phone_android_outlined,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget identificacionFactWidget() {
-    return datosWidget(
-      context,
-      'Identificación',
-      TextFormField(
-        //controller: identificacionFactCtrl,
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Ingrese la identificación para la factura';
-          }
-        },
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.person,
-          ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
-              ? loading("...")
-              : btnBuscarPersona('FACTURA'),
-        ),
-        textAlign: TextAlign.start,
-      ),
-    );
-  }
-
-  Widget nombresFactWidget() {
-    return datosWidget(
-        context,
-        'Datos personales',
-        TextFormField(
-          //controller: datosPersonaFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese los nombres para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.accessibility,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget direccionFactWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          //controller: direccionFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget correoFactWidget() {
-    return datosWidget(
-        context,
-        'Correo electrónico',
-        TextFormField(
-          // controller: correoFactCtrl,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.email,
-            ),
-          ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese un correo electrónico para la factura';
-            }
-          },
-          keyboardType: TextInputType.emailAddress,
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget telefonoFactWidget() {
-    return datosWidget(
-        context,
-        'Teléfono',
-        TextFormField(
-          //  controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -441,30 +321,34 @@ class InscripcionesState extends State<InscripcionesPage> {
       future: inscripciones,
       builder: (BuildContext context, AsyncSnapshot<List<Acto?>> snapshot) {
         if (snapshot.hasData) {
-          return SizedBox(
-              height: 70 + 70,
+          return Container(
+              height: 110,
+              alignment: Alignment.center,
               child: GridView.builder(
                   scrollDirection: Axis.horizontal,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.20,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 3.0,
-                    crossAxisCount: 3,
+                    childAspectRatio: 0.40,
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 5,
+                    crossAxisCount: 2,
                   ),
                   shrinkWrap: true,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, i) {
                     Acto? item = snapshot.data![i];
                     return Container(
-                      alignment: Alignment.centerLeft,
-                      width: size!.width,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.center,
+                      width: size!.width + 10,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: FilterChip(
-                        selectedColor: colorSecond.withOpacity(0.8),
+                        selectedColor: colorSecond.withOpacity(0.5),
                         label: Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            item!.acto!,
+                            item!.acto != null
+                                ? StringUtils.capitalize(item.acto!)
+                                : '',
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headline6,
@@ -537,6 +421,7 @@ class InscripcionesState extends State<InscripcionesPage> {
         ),
         ListView.builder(
             shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
             itemCount: requisitos.length,
             itemBuilder: (context, i) {
               ActoRequisito item = requisitos[i];
@@ -547,7 +432,7 @@ class InscripcionesState extends State<InscripcionesPage> {
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.symmetric(vertical: 10),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                  height: 120,
+                  height: 140,
                   width: size!.width - 20,
                   decoration: BoxDecoration(
                       color: Theme.of(context).backgroundColor,
@@ -641,11 +526,20 @@ class InscripcionesState extends State<InscripcionesPage> {
   }
 
   doProcesarSolicitud() {
-    for (ActoRequisito r in requisitos) {
-      if (r.requerido! && r.archivo == null) {
-        mensajeError(context, 'Debe subir los requisitos obligatorios');
-        return;
+    if (inscripcion == null) {
+      mensajeError(context, 'Debe escoger el acto a inscribir');
+      return;
+    }
+    if (requisitos.isNotEmpty) {
+      for (ActoRequisito r in requisitos) {
+        if (r.requerido! && r.archivo == null) {
+          mensajeError(context, 'Debe subir los requisitos obligatorios');
+          return;
+        }
       }
+    } else {
+      mensajeError(context, 'Debe cargar los requisitos');
+      return;
     }
     print(requisitos.length);
     final Future<Map<String, dynamic>> successfulMessage = pagoProvider!

@@ -12,6 +12,7 @@ import 'package:playas/src/pages/pagos/pago_page.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
+import 'package:playas/src/providers/terminos_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
@@ -28,7 +29,7 @@ class PropiedadPage extends StatefulWidget {
 
 class PropiedadPageState extends State<PropiedadPage> {
   bool isWeb = UniversalPlatform.isWeb;
-
+  DateTime today = DateTime.now();
   Acto? acto;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
@@ -44,12 +45,6 @@ class PropiedadPageState extends State<PropiedadPage> {
   //TextEditingController direccionCtrl = TextEditingController();
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
-
-  /*TextEditingController identificacionFactCtrl = TextEditingController();
-  TextEditingController datosPersonaFactCtrl = TextEditingController();
-  TextEditingController direccionFactCtrl = TextEditingController();
-  TextEditingController telefonoFactCtrl = TextEditingController();
-  TextEditingController correoFactCtrl = TextEditingController();*/
 
   TextEditingController obsCtrl = TextEditingController();
   TextEditingController otroMotivoCtrl = TextEditingController();
@@ -69,6 +64,8 @@ class PropiedadPageState extends State<PropiedadPage> {
 
   final _actosProvider = ActosProvider();
   double? total;
+  bool aceptaTerminosCondiciones = false;
+  final _terminosProvider = TerminosProvider();
 
   @override
   void initState() {
@@ -79,23 +76,11 @@ class PropiedadPageState extends State<PropiedadPage> {
   cargarActo() async {
     acto = await _actosProvider.findActoId(1357);
     total = acto!.valor;
-    /*cantidadCtrl.addListener(() {
-      try {
-        print(cantidadCtrl.text);
-        if (cantidadCtrl.text.isNotEmpty) {
-          double? v = double.parse(cantidadCtrl.text);
-          total = acto!.valor! * v;
-        }
-        ;
-      } catch (e) {
-        print(e);
-      }
-    });*/
+    cantidadCtrl.text = '1';
   }
 
   @override
   Widget build(BuildContext context) {
-    cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     pagoProvider = Provider.of<PagoProvider>(context);
@@ -107,15 +92,8 @@ class PropiedadPageState extends State<PropiedadPage> {
         identificacionCtrl.text = persona!.cedRuc!;
         var nombres = persona!.nombres! + ' ' + persona!.apellidos!;
         datosPersonaCtrl.text = nombres;
-        //direccionCtrl.text = persona.direccion!;
         telefonoCtrl.text = persona!.telefono1!;
         correoCtrl.text = persona!.correo1!;
-
-        /*identificacionFactCtrl.text = persona!.cedRuc!;
-        datosPersonaFactCtrl.text = nombres;
-        direccionFactCtrl.text = persona!.direccion!;
-        telefonoFactCtrl.text = persona!.telefono1!;
-        correoFactCtrl.text = persona!.correo1!;*/
       });
     }
     return Form(
@@ -144,11 +122,9 @@ class PropiedadPageState extends State<PropiedadPage> {
   }
 
   Widget bodyDetail() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 1.3,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -177,12 +153,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             numeroFichaWidget(),
             numeroInscripcionWidget(),
             anioInscripcionWidget(),
-            /*tituloWidget(context, 'Datos de la factura'),
-            identificacionFactWidget(),
-            nombresFactWidget(),
-            direccionFactWidget(),
-            telefonoFactWidget(),
-            correoFactWidget(),*/
+
+            SizedBox(
+              height: 15,
+            ),
+            terminosCondicionesWidget(),
             SizedBox(
               height: 15,
             ),
@@ -191,9 +166,6 @@ class PropiedadPageState extends State<PropiedadPage> {
                 : Center(
                     child: btnProcesarPago(),
                   ),
-            SizedBox(
-              height: 15,
-            ),
           ],
         ),
       ),
@@ -250,11 +222,6 @@ class PropiedadPageState extends State<PropiedadPage> {
         TextFormField(
           controller: obsCtrl,
           keyboardType: TextInputType.text,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese alguna observación a su solicitud';
-            }
-          },
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.comment_bank_outlined,
@@ -269,6 +236,7 @@ class PropiedadPageState extends State<PropiedadPage> {
       context,
       'Identificación',
       TextFormField(
+        readOnly: true,
         controller: identificacionCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -308,31 +276,12 @@ class PropiedadPageState extends State<PropiedadPage> {
         ));
   }
 
-  /* Widget direccionWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          controller: direccionCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección del solicitante';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-*/
   Widget correoWidget() {
     return datosWidget(
         context,
         'Correo electrónico',
         TextFormField(
+          readOnly: true,
           controller: correoCtrl,
           decoration: InputDecoration(
             prefixIcon: Icon(
@@ -354,107 +303,8 @@ class PropiedadPageState extends State<PropiedadPage> {
         context,
         'Teléfono',
         TextFormField(
+          readOnly: true,
           controller: telefonoCtrl,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.phone_android_outlined,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget identificacionFactWidget() {
-    return datosWidget(
-      context,
-      'Identificación',
-      TextFormField(
-        //controller: identificacionFactCtrl,
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.person,
-          ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
-              ? loading("...")
-              : btnBuscarPersona('FACTURA'),
-        ),
-        textAlign: TextAlign.start,
-      ),
-    );
-  }
-
-  Widget nombresFactWidget() {
-    return datosWidget(
-        context,
-        'Datos personales',
-        TextFormField(
-          //controller: datosPersonaFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese los nombres para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.accessibility,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget direccionFactWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          //controller: direccionFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget correoFactWidget() {
-    return datosWidget(
-        context,
-        'Correo electrónico',
-        TextFormField(
-          //controller: correoFactCtrl,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.email,
-            ),
-          ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese un correo electrónico para la factura';
-            }
-          },
-          keyboardType: TextInputType.emailAddress,
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget telefonoFactWidget() {
-    return datosWidget(
-        context,
-        'Teléfono',
-        TextFormField(
-          //controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -503,8 +353,17 @@ class PropiedadPageState extends State<PropiedadPage> {
                 )),
               ),
               onPressed: () async {
+                if (_tipoPropiedad == null || _tipoPropiedad!.isEmpty) {
+                  mensajeError(context, 'Escoja el tipo de la propiedad');
+                  return;
+                }
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  if (!aceptaTerminosCondiciones) {
+                    mensajeError(
+                        context, 'Debe aceptar los términos y condiciones');
+                    return;
+                  }
                   doProcesarPago();
                 }
               },
@@ -569,7 +428,7 @@ class PropiedadPageState extends State<PropiedadPage> {
             Icons.person,
           ),
           suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
+                  StatusPersonProv.Searching
               ? loading("...")
               : btnBuscarPersona('PROPIETARIO'),
         ),
@@ -589,6 +448,9 @@ class PropiedadPageState extends State<PropiedadPage> {
               return 'Ingrese los nombres del propietario';
             }
           },
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+          ],
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.accessibility,
@@ -612,6 +474,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             ),
           ),
           textAlign: TextAlign.start,
+          validator: (value) {
+            /*if (value!.isEmpty) {
+              return 'Ingrese el número de ficha registral';
+            }*/
+          },
         ));
   }
 
@@ -630,6 +497,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             ),
           ),
           textAlign: TextAlign.start,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Ingrese el número de inscripción';
+            }
+          },
         ));
   }
 
@@ -641,8 +513,16 @@ class PropiedadPageState extends State<PropiedadPage> {
           controller: anioInscripcionCtrl,
           maxLength: 4,
           validator: (value) {
-            if (value!.isNotEmpty && value.length != 4) {
+            if (value!.isEmpty) {
+              return 'Ingrese el año de inscripción';
+            }
+            if (value.isNotEmpty && value.length != 4) {
               return 'Debe ingresar un año valido';
+            }
+            if (isNumeric(value)) {
+              int anio = int.parse(value);
+              if (anio > today.year)
+                return 'El año de inscripción debe ser menor al actual';
             }
           },
           keyboardType: TextInputType.number,
@@ -654,6 +534,66 @@ class PropiedadPageState extends State<PropiedadPage> {
           ),
           textAlign: TextAlign.start,
         ));
+  }
+
+  Widget terminosCondicionesWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'He leído y acepto los ',
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+                onTap: () => {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return FutureBuilder(
+                                future:
+                                    _terminosProvider.findTerminosCondiciones(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String?> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return terminosCondicionesHTML(
+                                        context, snapshot.data!);
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                });
+                          })
+                    },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Text(
+                    "Términos y condiciones",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
+            Checkbox(
+              value: aceptaTerminosCondiciones,
+              onChanged: (bool? value) {
+                setState(() {
+                  aceptaTerminosCondiciones = value!;
+                });
+              },
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   doProcesarPago() {
@@ -677,7 +617,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             datosPersonaPropCtrl.text,
             acto!,
             usuario!.id!,
-            cantidadCtrl.text);
+            cantidadCtrl.text,
+            numeroInscripcionCtrl.text,
+            anioInscripcionCtrl.text,
+            numeroFichaCtrl.text,
+            _tipoPropiedad!);
 
     successfulMessage.then((response) async {
       if (response['status']) {
@@ -688,23 +632,21 @@ class PropiedadPageState extends State<PropiedadPage> {
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
                 pageBuilder: (BuildContext context, _, __) => PagoPage(
-                      urlIframe: rest.linkPago,
+                      urlIframe: rest.payWithApp,
                     )));
 
             if (verificado != null) {
               mensajeError(
                 context,
-                'Debe proceder al pago para continuar con su solcitud',
+                'Debe proceder al pago para continuar con su solicitud',
               );
             }
           } else {
-            await launch(
-              rest.linkPago!,
-              forceSafariVC: true,
-              forceWebView: true,
-              enableJavaScript: true,
-            );
-            //js.context.callMethod('open', [rest.linkPago, '_self']);
+            await launch(rest.linkPago!,
+                forceSafariVC: false,
+                forceWebView: false,
+                enableJavaScript: true,
+                webOnlyWindowName: '_self');
           }
         } else {
           mensajeInfo(context,

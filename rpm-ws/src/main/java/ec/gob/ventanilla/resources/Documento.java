@@ -63,7 +63,7 @@ public class Documento {
             try (final PDDocument document = PDDocument.load(new File(pathFile))) {
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
                 for (int page = 0; page < document.getNumberOfPages(); ++page) {
-                    bim = pdfRenderer.renderImageWithDPI(page, 500, ImageType.RGB);
+                    bim = pdfRenderer.renderImageWithDPI(page, 250, ImageType.RGB);
                     tempName = codigoVerificacion + "-" + page + ".png";
                     fileName = appProps.getOutputDir() + "imagenes_tramites/" + tempName;
                     files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "imagen/" + tempName));

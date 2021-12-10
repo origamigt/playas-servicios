@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,8 @@ class BuscarPage extends StatefulWidget {
   State<StatefulWidget> createState() => _BuscarPageState();
 }
 
-class _BuscarPageState extends State<BuscarPage> {
+class _BuscarPageState extends State<BuscarPage>
+    with AfterLayoutMixin<BuscarPage> {
   bool isWeb = UniversalPlatform.isWeb;
   ConsultaProvider? tramiteProvider;
   final _formKey = GlobalKey<FormState>();
@@ -36,6 +38,12 @@ class _BuscarPageState extends State<BuscarPage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    searching = false;
+    foundResult = false;
   }
 
   @override
@@ -70,8 +78,12 @@ class _BuscarPageState extends State<BuscarPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        SizedBox(
+          height: 20,
+        ),
         Container(
             height: 80,
+            margin: EdgeInsets.symmetric(horizontal: 10),
             alignment: Alignment.center,
             child: TextFormField(
               controller: codigoCtrl,

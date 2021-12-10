@@ -17,68 +17,74 @@ class PageComponent extends StatelessWidget {
     if (back == null) {
       back = true;
     }
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
+
     return Scaffold(
-      bottomNavigationBar: Container(
-        height: 0,
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+        //resizeToAvoidBottomInset: false,
+        bottomNavigationBar: Container(
+          height: 0,
+        ),
+        body: Container(
+          child: SafeArea(
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          !keyboardIsOpen ? logoFooter() : Container(),
+                          ClipPath(
+                            clipper: WaveClipperTwo(reverse: true),
+                            child: Container(
+                              height: 60,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+                Container(
+                  decoration: isWeb ? boxDecorationPlayasBG : null,
+                  child: SingleChildScrollView(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      logoFooter(),
-                      ClipPath(
-                        clipper: WaveClipperTwo(reverse: true),
-                        child: Container(
-                          height: 60,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
+                      back!
+                          ? Stack(
+                              children: [
+                                isWeb
+                                    ? Container(
+                                        alignment: Alignment.topLeft,
+                                        child: IconButton(
+                                            onPressed: () {
+                                              context.router.navigateNamed(
+                                                  HomePage.route);
+                                            },
+                                            icon: Icon(
+                                              Icons.arrow_back_ios,
+                                            )),
+                                      )
+                                    : Container(),
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: header!,
+                                ),
+                              ],
+                            )
+                          : header!,
+                      body!,
+                      footer!
                     ],
                   )),
+                ),
+              ],
             ),
-            Container(
-              decoration: isWeb ? boxDecorationPlayasBG : null,
-              child: SingleChildScrollView(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  back!
-                      ? Stack(
-                          children: [
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                  onPressed: () {
-                                    context.router
-                                        .navigateNamed(HomePage.route);
-                                  },
-                                  icon: Icon(
-                                    Icons.arrow_back_ios,
-                                  )),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              child: header!,
-                            ),
-                          ],
-                        )
-                      : header!,
-                  body!,
-                  footer!
-                ],
-              )),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   Widget logoFooter() {
@@ -88,7 +94,7 @@ class PageComponent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Opacity(
-                opacity: 0.6,
+                opacity: 0.5,
                 child: Image.asset(
                   'assets/images/logo.png',
                   height: 100,
@@ -96,7 +102,7 @@ class PageComponent extends StatelessWidget {
                 ),
               ),
               Opacity(
-                opacity: 0.6,
+                opacity: 0.5,
                 child: Image.asset(
                   'assets/images/vur.png',
                   height: 100,

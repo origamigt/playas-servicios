@@ -72,20 +72,28 @@ List<Menu> menusLogin = [
 ];
 
 List<Data> motivosSolicitud = [
-  Data().initData(25, 'TRÁMITE MUNICIPAL'),
-  Data().initData(26, 'MEDIDOR DE AGUA POTABLE'),
-  Data().initData(27, 'COMPRAVENTA'),
-  Data().initData(31, 'TRAMITE JUDICIAL'),
-  Data().initData(32, 'MEDIDOR DE LUZ'),
-  Data().initData(33, 'SOLICITUD CERTIFICADO LINDEROS '),
-  Data().initData(41, 'INSTUCIONES BANCARIAS'),
-  Data().initData(42, 'TRAMITE EN NOTARIA'),
-  Data().initData(43, 'DONACION'),
-  Data().initData(44, 'LEGALIZACION DE BIEN '),
-  Data().initData(45, 'PARA MATRICULAR'),
-  Data().initData(46, 'CASAS COMERCIALES'),
-  Data().initData(47, 'INSTITUCIONES PUBLICAS'),
-  Data().initData(48, 'SOLICITUD PARA CERTIFICADO DE AVALUO'),
+  Data().initData(25, 'Trámite Municipal'),
+  Data().initData(26, 'Medidor de agua potable'),
+  Data().initData(27, 'Compraventa'),
+  Data().initData(31, 'Trámite Judicial'),
+  Data().initData(32, 'Medidor de luz'),
+  Data().initData(33, 'Solicitud certificado linderos'),
+  Data().initData(41, 'Instuciones bancarias'),
+  Data().initData(42, 'Trámite en notaria'),
+  Data().initData(43, 'Donación'),
+  Data().initData(44, 'Legalización de bien'),
+  Data().initData(45, 'Para matricular'),
+  Data().initData(46, 'Casas comerciales'),
+  Data().initData(47, 'Instituciones Públicas'),
+  Data().initData(48, 'Solicitud para certificado de avalúo'),
+  Data().initData(-1, 'Otros'),
+];
+
+List<Data> motivosSolicitudNoBienes = [
+  Data().initData(25, 'Trámite Municipal'),
+  Data().initData(41, 'Instuciones bancarias'),
+  Data().initData(47, 'Instituciones Públicas'),
+  Data().initData(31, 'Trámite Judicial'),
   Data().initData(-1, 'Otros'),
 ];
 
@@ -93,8 +101,6 @@ List<Data> tiposBusqueda = [
   Data().initData(1, 'Certificados'),
   Data().initData(2, 'Inscripciones'),
 ];
-
-String dominio = 'http://localhost:9090';
 
 String language = 'es-ES';
 
@@ -106,4 +112,8 @@ const kDesktopBreakPoint = 1366;
 
 String generateMd5(String input) {
   return md5.convert(utf8.encode(input)).toString();
+}
+
+bool isNumeric(String s) {
+  return double.tryParse(s) != null;
 }

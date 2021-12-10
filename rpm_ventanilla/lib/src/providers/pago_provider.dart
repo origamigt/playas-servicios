@@ -6,11 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/models/acto_requisito.dart';
 import 'package:playas/src/models/data.dart';
+import 'package:playas/src/models/response-create.dart';
 import 'package:playas/src/models/solicitud.dart';
 import 'package:playas/src/models/user.dart';
+import 'package:playas/src/models/verificar_pago.dart';
 import 'package:playas/src/providers/ws.dart';
 
-enum StatusPago { Unknown, Procesing, Done, Error }
+enum StatusPago { Unknown, Procesing, Done, Error, NotFound }
 
 class PagoProvider extends ChangeNotifier {
   StatusPago _status = StatusPago.Unknown;
@@ -42,7 +44,11 @@ class PagoProvider extends ChangeNotifier {
       String datosProp,
       Acto acto,
       int user,
-      String cantidad) async {
+      String cantidad,
+      String numInscripcion,
+      String anioInscripcion,
+      String numeroFicha,
+      String tipoInmueble) async {
     var result;
 
     try {
@@ -71,6 +77,12 @@ class PagoProvider extends ChangeNotifier {
       data.motivoSolicitud = motivo.id;
       data.otroMotivo = motivo.data;
       data.observacion = observacion;
+      data.numInscripcion =
+          numInscripcion.isNotEmpty ? int.parse(numInscripcion) : null;
+      data.anioInscripcion =
+          anioInscripcion.isNotEmpty ? int.parse(anioInscripcion) : null;
+      data.numeroFicha = numeroFicha.isNotEmpty ? int.parse(numeroFicha) : null;
+      data.tipoInmueble = tipoInmueble;
 
       data.benTipoDoc = idBen == 10
           ? 'C'
@@ -93,13 +105,16 @@ class PagoProvider extends ChangeNotifier {
       data.user!.id = user;
       data.cantidad = int.parse(cantidad);
       data.total = acto.valor! * num.parse(cantidad);
-
+      //  print('data.cantidad: ${data.cantidad}');
+      //  print('data.total: ${data.total}');
       data.procesando = false;
       //DESCOMENTAR PARA EL PAGO EN LINEA
-      //data.estado = 'A';
-      //data.tipoPago = false;
-      data.estado = 'V';
-      data.tipoPago = true;
+      data.estado = 'A';
+      data.tipoPago = false;
+
+      //data.estado = 'V';
+      //data.tipoPago = true;
+
       http.Response? response = await save(
           'rpm-ventanilla/api/solicitud/registrarCertificado', data, true);
 
@@ -274,6 +289,33 @@ class PagoProvider extends ChangeNotifier {
       _status = StatusPago.Error;
       notifyListeners();
       result = {'status': false, 'message': 'Intente nuevamente'};
+    }
+    return result;
+  }
+
+  Future<Map<String, dynamic>> confirmarPago(
+      String id, String clientTransactionId) async {
+    var result;
+    _status = StatusPago.Procesing;
+    notifyListeners();
+    VerificarPago verificarPago = VerificarPago();
+    verificarPago.id = id;
+    verificarPago.clientTxId = clientTransactionId;
+
+    http.Response? response = await save(
+        'rpm-ventanilla/api/pagos/verificarPago', verificarPago, true);
+    if (response != null && response.statusCode == 200) {
+      Map<String, dynamic> map =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      ResponseCreate rest = ResponseCreate.fromJson(map);
+      _status = StatusPago.Done;
+      notifyListeners();
+
+      result = {'status': true, 'message': 'Pago exitoso', 'data': rest};
+    } else {
+      _status = StatusPago.Error;
+      notifyListeners();
+      result = {'status': false, 'message': 'No se pudo procesar el pago'};
     }
     return result;
   }

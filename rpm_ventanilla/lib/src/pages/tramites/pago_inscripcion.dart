@@ -1,13 +1,19 @@
 //import 'dart:js' as js;
 
+import 'package:after_layout/after_layout.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:playas/src/configs/constants.dart';
 import 'package:playas/src/models/datos-detalle-proforma.dart';
 import 'package:playas/src/models/datos-proforma.dart';
 import 'package:playas/src/models/solicitud.dart';
+import 'package:playas/src/models/user.dart';
+import 'package:playas/src/pages/home_page.dart';
 import 'package:playas/src/pages/pagos/pago_page.dart';
 import 'package:playas/src/providers/pago_provider.dart';
+import 'package:playas/src/providers/terminos_provider.dart';
 import 'package:playas/src/providers/tramite_provider.dart';
+import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
 import 'package:provider/provider.dart';
@@ -17,52 +23,61 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PagoInscripcionPage extends StatefulWidget {
   static const String route = '/inscripciones/pagoInscripcion';
+  final String? code1;
+  final String? code2;
+  final String? code3;
+
+  PagoInscripcionPage(@QueryParam() this.code1, @QueryParam() this.code2,
+      @QueryParam() this.code3);
 
   @override
   PagoInscripcionState createState() => PagoInscripcionState();
 }
 
 class PagoInscripcionState extends State<PagoInscripcionPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AfterLayoutMixin<PagoInscripcionPage> {
   PagoProvider? pagoProvider;
   final tramiteProvider = TramiteProvider();
   bool isWeb = UniversalPlatform.isWeb;
   Size? size;
-
+  UsuarioProvider? userProvider;
   final _formKey = GlobalKey<FormState>();
   bool validos = false;
-
+  User? usuario;
   Future<DatosProforma?>? proformaFuture = null;
-
-  List<String> params = [];
-
-  List<String> param1 = [];
-  List<String> param2 = [];
-  List<String> param3 = [];
-
+  bool aceptaTerminosCondiciones = false;
+  final _terminosProvider = TerminosProvider();
   @override
   void initState() {
     super.initState();
   }
 
-  void load(String urlPago) async {
-    params = urlPago.split('&');
+  @override
+  void afterFirstLayout(BuildContext context) {
+    load();
+  }
 
-    param1 = params[0].split('='); //Numero tramite
-    param2 = params[1].split('='); //usuario
-    param3 = params[2].split('='); //md5 tramite_usuario_INSCRIPCION
-
-    String md5Compare = '${param1[1]}_${param2[1]}_INSCRIPCION';
-    if (generateMd5(md5Compare) == param3[1]) {
-      validos = true;
-      proformaFuture =
-          tramiteProvider.consultarInscripcionXtramite(int.parse(param1[1]));
-    }
+  void load() async {
+    print('load');
+    userProvider!.initialize().then((value) {
+      setState(() {
+        usuario = value;
+        if (usuario != null) {
+          String md5Compare = '${widget.code1}_${widget.code2}_INSCRIPCION';
+          if (generateMd5(md5Compare) == widget.code3) {
+            validos = true;
+            proformaFuture = tramiteProvider
+                .consultarInscripcionXtramite(int.parse(widget.code1!));
+          }
+        }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    //load(//context.vRouter.url.replaceAll('${PagoInscripcionPage.route}?', ''));
+    userProvider = Provider.of<UsuarioProvider>(context);
+
     pagoProvider = Provider.of<PagoProvider>(context);
     return Form(
         key: _formKey,
@@ -100,23 +115,37 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
             SizedBox(
               height: 20.0,
             ),
-            FutureBuilder(
-                future: proformaFuture,
-                builder: (context, AsyncSnapshot<DatosProforma?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      DatosProforma rc = snapshot.data!;
-                      return datosProformaWidget(rc);
-                    } else {
-                      if (snapshot.data == null) {
-                        return Text('Intente nuevamente');
+            usuario != null
+                ? FutureBuilder(
+                    future: proformaFuture,
+                    builder: (context, AsyncSnapshot<DatosProforma?> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          DatosProforma rc = snapshot.data!;
+                          return datosProformaWidget(rc);
+                        } else {
+                          if (snapshot.data == null) {
+                            return Text('Intente nuevamente');
+                          }
+                          return CircularProgressIndicator();
+                        }
+                      } else {
+                        return CircularProgressIndicator();
                       }
-                      return CircularProgressIndicator();
-                    }
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                }),
+                    })
+                : Column(
+                    children: [
+                      Text(
+                        'Debes iniciar sesión para proceder con el pago',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _animatedButtonUI
+                    ],
+                  ),
           ],
         ),
       ),
@@ -151,6 +180,10 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
           detalleProformaWidget(rc.detalle!),
           SizedBox(
             height: 10,
+          ),
+          terminosCondicionesWidget(),
+          SizedBox(
+            height: 15,
           ),
           pagoProvider!.status == StatusPago.Procesing
               ? loading("Procesando solicitud...")
@@ -216,7 +249,14 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
         ),
         child: ElevatedButton(
           onPressed: () async {
-            doProcesarPago(idSolicitud, total);
+            if (usuario != null) {
+              if (!aceptaTerminosCondiciones) {
+                mensajeError(
+                    context, 'Debe aceptar los términos y condiciones');
+                return;
+              }
+              doProcesarPago(idSolicitud, total);
+            } else {}
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -227,7 +267,7 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "Proceder pago",
+                  usuario != null ? "Proceder pago" : 'Ir a iniciar sesión',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
@@ -237,6 +277,97 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
           ),
         ),
       ),
+    );
+  }
+
+  Widget get _animatedButtonUI => Container(
+        height: 60,
+        width: 270,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.0),
+          color: colorPrimary,
+        ),
+        child: ElevatedButton(
+          onPressed: () async {
+            context.router.navigateNamed(HomePage.route);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20.0,
+              horizontal: 20.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Ir a inicio",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  Widget terminosCondicionesWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'He leído y acepto los ',
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+                onTap: () => {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return FutureBuilder(
+                                future:
+                                    _terminosProvider.findTerminosCondiciones(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String?> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return terminosCondicionesHTML(
+                                        context, snapshot.data!);
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                });
+                          })
+                    },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Text(
+                    "Términos y condiciones",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
+            Checkbox(
+              value: aceptaTerminosCondiciones,
+              onChanged: (bool? value) {
+                setState(() {
+                  aceptaTerminosCondiciones = value!;
+                });
+              },
+            ),
+          ],
+        )
+      ],
     );
   }
 
@@ -254,7 +385,7 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
                 pageBuilder: (BuildContext context, _, __) => PagoPage(
-                      urlIframe: rest.linkPago,
+                      urlIframe: rest.payWithApp,
                     )));
 
             if (verificado != null) {
@@ -264,12 +395,12 @@ class PagoInscripcionState extends State<PagoInscripcionPage>
               );
             }
           } else {
-            await launch(
-              rest.linkPago!,
-              forceSafariVC: true,
-              forceWebView: true,
-              enableJavaScript: true,
-            );
+            await launch(rest.linkPago!,
+                forceSafariVC: false,
+                forceWebView: false,
+                enableJavaScript: true,
+                webOnlyWindowName: '_self');
+            //html.window.open();
             //js.context.callMethod('open', [rest.linkPago, '_self']);
           }
         }

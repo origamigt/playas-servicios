@@ -1,5 +1,4 @@
-//import 'dart:js' as js;
-
+///import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:playas/src/configs/constants.dart';
@@ -12,6 +11,7 @@ import 'package:playas/src/pages/pagos/pago_page.dart';
 import 'package:playas/src/providers/actos_provider.dart';
 import 'package:playas/src/providers/pago_provider.dart';
 import 'package:playas/src/providers/persona_provider.dart';
+import 'package:playas/src/providers/terminos_provider.dart';
 import 'package:playas/src/providers/usuario_provider.dart';
 import 'package:playas/src/widgets/components.dart';
 import 'package:playas/src/widgets/page_component.dart';
@@ -29,7 +29,6 @@ class NoposeerBienPage extends StatefulWidget {
 
 class NoposeerBienState extends State<NoposeerBienPage> {
   bool isWeb = UniversalPlatform.isWeb;
-
   Acto? acto;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
@@ -56,8 +55,10 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   User? usuario;
   final _formKey = GlobalKey<FormState>();
 
-  Data motivo = motivosSolicitud[0];
+  Data motivo = motivosSolicitudNoBienes[0];
   final _actosProvider = ActosProvider();
+  bool aceptaTerminosCondiciones = false;
+  final _terminosProvider = TerminosProvider();
 
   @override
   void initState() {
@@ -67,11 +68,11 @@ class NoposeerBienState extends State<NoposeerBienPage> {
 
   cargarActo() async {
     acto = await _actosProvider.findActoId(1358);
+    cantidadCtrl.text = '1';
   }
 
   @override
   Widget build(BuildContext context) {
-    cantidadCtrl.text = '1';
     userProvider = Provider.of<UsuarioProvider>(context);
     personaProvider = Provider.of<PersonaProvider>(context);
     pagoProvider = Provider.of<PagoProvider>(context);
@@ -120,11 +121,9 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   }
 
   Widget bodyDetail() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 1.3,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -143,7 +142,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             tituloWidget(context, 'Datos del solicitante y factura'),
             identificacionWidget(),
             nombresWidget(),
-            direccionWidget(),
+            //direccionWidget(),
             telefonoWidget(),
             correoWidget(),
             /*tituloWidget(context, 'Datos de la factura'),
@@ -152,6 +151,10 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             direccionFactWidget(),
             telefonoFactWidget(),
             correoFactWidget(),*/
+            SizedBox(
+              height: 15,
+            ),
+            terminosCondicionesWidget(),
             SizedBox(
               height: 15,
             ),
@@ -219,11 +222,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         TextFormField(
           controller: obsCtrl,
           keyboardType: TextInputType.text,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese alguna observación a su solicitud';
-            }
-          },
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.comment_bank_outlined,
@@ -238,6 +236,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       context,
       'Identificación',
       TextFormField(
+        readOnly: true,
         controller: identificacionCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -277,26 +276,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         ));
   }
 
-  Widget direccionWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          controller: direccionCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección del solicitante';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
   Widget correoWidget() {
     return datosWidget(
         context,
@@ -323,112 +302,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         context,
         'Teléfono',
         TextFormField(
+          readOnly: true,
           controller: telefonoCtrl,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.phone_android_outlined,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget identificacionFactWidget() {
-    return datosWidget(
-      context,
-      'Identificación',
-      TextFormField(
-        //controller: identificacionFactCtrl,
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Ingrese la identificación para la factura';
-          }
-        },
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.person,
-          ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
-              ? loading("...")
-              : btnBuscarPersona('FACTURA'),
-        ),
-        textAlign: TextAlign.start,
-      ),
-    );
-  }
-
-  Widget nombresFactWidget() {
-    return datosWidget(
-        context,
-        'Datos personales',
-        TextFormField(
-          // controller: datosPersonaFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese los nombres para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.accessibility,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget direccionFactWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          //controller: direccionFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget correoFactWidget() {
-    return datosWidget(
-        context,
-        'Correo electrónico',
-        TextFormField(
-          //controller: correoFactCtrl,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.email,
-            ),
-          ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese un correo electrónico para la factura';
-            }
-          },
-          keyboardType: TextInputType.emailAddress,
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget telefonoFactWidget() {
-    return datosWidget(
-        context,
-        'Teléfono',
-        TextFormField(
-          //controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -472,6 +347,11 @@ class NoposeerBienState extends State<NoposeerBienPage> {
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  if (!aceptaTerminosCondiciones) {
+                    mensajeError(
+                        context, 'Debe aceptar los términos y condiciones');
+                    return;
+                  }
                   doProcesarPago();
                 }
               },
@@ -481,9 +361,69 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         ));
   }
 
+  Widget terminosCondicionesWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'He leído y acepto los ',
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+                onTap: () => {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return FutureBuilder(
+                                future:
+                                    _terminosProvider.findTerminosCondiciones(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<String?> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return terminosCondicionesHTML(
+                                        context, snapshot.data!);
+                                  } else {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                });
+                          })
+                    },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Text(
+                    "Términos y condiciones",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
+            Checkbox(
+              value: aceptaTerminosCondiciones,
+              onChanged: (bool? value) {
+                setState(() {
+                  aceptaTerminosCondiciones = value!;
+                });
+              },
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   List<Widget> motivosWidget() {
     List<Widget> choices = [];
-    motivosSolicitud.forEach((item) {
+    motivosSolicitudNoBienes.forEach((item) {
       choices.add(Container(
         padding: const EdgeInsets.all(2.0),
         child: ChoiceChip(
@@ -560,7 +500,11 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             '',
             acto!,
             usuario!.id!,
-            cantidadCtrl.text);
+            cantidadCtrl.text,
+            '',
+            '',
+            '',
+            '');
 
     successfulMessage.then((response) async {
       print(response.toString());
@@ -572,22 +516,21 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             var verificado = await Navigator.of(context).push(PageRouteBuilder(
                 opaque: false,
                 pageBuilder: (BuildContext context, _, __) => PagoPage(
-                      urlIframe: rest.linkPago,
+                      urlIframe: rest.payWithApp,
                     )));
 
             if (verificado != null) {
               mensajeError(
                 context,
-                'Debe proceder al pago para continuar con su solcitud',
+                'Debe proceder al pago para continuar con su solicitud',
               );
             }
           } else {
-            await launch(
-              rest.linkPago!,
-              forceSafariVC: true,
-              forceWebView: true,
-              enableJavaScript: true,
-            );
+            await launch(rest.linkPago!,
+                forceSafariVC: false,
+                forceWebView: false,
+                enableJavaScript: true,
+                webOnlyWindowName: '_self');
             //js.context.callMethod('open', [rest.linkPago, '_self']);
           }
         } else {

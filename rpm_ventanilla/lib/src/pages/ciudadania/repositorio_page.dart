@@ -119,7 +119,7 @@ class _RepositorioPageState extends State<RepositorioPage> {
                     ),
                     TextButton(
                       child: Text(
-                        'Descargar archivo',
+                        isWeb ? 'Descargar archivo' : '',
                         style: TextStyle(fontSize: 10),
                       ),
                       onPressed: () async {
@@ -133,7 +133,7 @@ class _RepositorioPageState extends State<RepositorioPage> {
   }
 
   void downloadFile(String url) async {
-    //print(url);
+    // print(url);
     if (isWeb) {
       await launch(
         url,

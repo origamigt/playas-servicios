@@ -149,7 +149,7 @@ public class SolicitudResource {
         }
     }
 
-    @RequestMapping(value = "actualizarTramiteInscripcion", method = RequestMethod.POST)
+    @RequestMapping(value = "actualizarTramiteInscripcion", method = RequestMethod.POST,consumes="application/json")
     public ResponseEntity<PubSolicitud> linkPagoPayPhone(@RequestBody PubSolicitud pubSolicitud) {
         if (pubSolicitud.getNumeroTramite() != null && pubSolicitud.getNumeroTramiteInscripcion() != null) {
             PubSolicitud solicitudBD = pubSolicitudRepository.findByNumeroTramite(pubSolicitud.getNumeroTramite());

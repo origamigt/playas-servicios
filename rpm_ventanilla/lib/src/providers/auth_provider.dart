@@ -83,8 +83,8 @@ class AuthProvider with ChangeNotifier {
       path = '/rpm-ventanilla/api/usuario/loginUser';
       uri =
           isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
-      response = await http.post(uri,
-          body: json.encode(usr), headers: await mapHeaderAuth());
+      response =
+          await http.post(uri, body: json.encode(usr), headers: headerNoAuth);
 
       try {
         map = json.decode(utf8.decode(response.bodyBytes))

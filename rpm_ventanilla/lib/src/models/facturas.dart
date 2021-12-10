@@ -6,6 +6,7 @@ class Facturas {
   String? numFacturaFormato;
   String? fechaAutorizacion;
   String? valorTotal;
+  int? numTramite;
 
   //String urlRp;
 
@@ -17,6 +18,7 @@ class Facturas {
       ..claveAcceso = json['claveAcceso'] as String? ?? null
       ..numFacturaFormato = json['numFacturaFormato'] as String? ?? null
       ..fechaAutorizacion = json['fechaAutorizacion'] as String? ?? null
+      ..numTramite = json['numTramite'] as int? ?? null
       ..valorTotal = json['valorTotal'] as String? ?? null;
   }
 }

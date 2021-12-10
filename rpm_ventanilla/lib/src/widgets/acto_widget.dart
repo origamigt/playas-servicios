@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:intl/intl.dart';
 import 'package:playas/src/models/acto.dart';
 import 'package:playas/src/pages/tramites/inscripciones_page.dart';
 import 'package:playas/src/pages/tramites/mercantil_page.dart';
@@ -15,6 +16,7 @@ class ActoCard extends StatelessWidget {
   bool? isWeb;
 
   ActoCard({@required this.actos, this.auth, this.isWeb});
+  final oCcy = NumberFormat("#,##0.00", "en_US");
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +105,16 @@ class ActoCard extends StatelessWidget {
                       margin: EdgeInsets.only(top: 5, bottom: 5),
                       child: Text(
                         acto.acto!,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: Text(
+                        acto.abrv! != 'INS'
+                            ? 'Valor: \$${oCcy.format(acto.valor!)}'
+                            : '',
                         textAlign: TextAlign.center,
                       ),
                     ),

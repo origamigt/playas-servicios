@@ -86,6 +86,9 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
                     return cargando();
                   }
                 },
+              ),
+              SizedBox(
+                height: 70,
               )
             ],
           ),
@@ -95,6 +98,7 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
   Widget _buildList() {
     return ListView.builder(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: _pubSolicitudes.length,
       itemBuilder: (BuildContext context, int index) {
         avance = _pubSolicitudes[index].avance;
@@ -120,6 +124,7 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
+                    minLeadingWidth: 1,
                     leading: Icon(Icons.bookmark),
                     title: Padding(
                         padding: EdgeInsets.all(10.0),
@@ -132,17 +137,14 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                            padding: EdgeInsets.only(top: 3, left: 3),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.developer_board,
-                                    color: Colors.black),
-                                Padding(
-                                    padding: EdgeInsets.only(left: 8),
-                                    child: Text(
-                                      '${_pubSolicitudes[index].acto}',
-                                      textAlign: TextAlign.center,
-                                    ))
+                            padding: EdgeInsets.only(left: 8),
+                            child: Wrap(
+                              direction: Axis.horizontal,
+                              children: [
+                                Text(
+                                  '${_pubSolicitudes[index].acto}',
+                                  textAlign: TextAlign.justify,
+                                )
                               ],
                             )),
                         Padding(
@@ -153,9 +155,14 @@ class _MisTramitesPageState extends State<MisTramitesPage> {
                                     color: Colors.black),
                                 Padding(
                                     padding: EdgeInsets.only(left: 8),
-                                    child: Text(
-                                      'Fecha de Ingreso: ' + dateInit,
-                                      textAlign: TextAlign.center,
+                                    child: Wrap(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Text(
+                                          'Fecha de Ingreso:\n' + dateInit,
+                                          textAlign: TextAlign.justify,
+                                        )
+                                      ],
                                     ))
                               ],
                             ))
