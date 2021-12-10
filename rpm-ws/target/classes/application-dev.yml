@@ -51,7 +51,7 @@ app:
   dbDocUser: sisapp
   dbDocPass: sisapp98
 
-  logo: https://rpv.digital/rmppm.png
+  logo: https://tramitesenlinea.rmpplayas.gob.ec/rmppm.png
   urlPdfFirmado: http://127.0.0.1:8085/rpm-ventanilla/api/documento/
   urlDinardap: http://200.124.240.62:8790/api/dinardap/aplicacion/SIGERI/persona/identificacion/
   usuarioDinardap: rpventanilla

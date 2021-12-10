@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +41,8 @@ class RecuperarForm extends StatefulWidget {
   RecuperarState createState() => RecuperarState();
 }
 
-class RecuperarState extends State<RecuperarForm> {
+class RecuperarState extends State<RecuperarForm>
+    with AfterLayoutMixin<RecuperarForm> {
   final _formKey = GlobalKey<FormState>();
 
   bool obscureText = true;
@@ -57,6 +59,11 @@ class RecuperarState extends State<RecuperarForm> {
   double? widthSize;
   UsuarioRegistro? usuario;
   double? heightSize;
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    auth!.setRegisterState(StatusRegistro.Unknown);
+  }
 
   @override
   Widget build(BuildContext context) {
