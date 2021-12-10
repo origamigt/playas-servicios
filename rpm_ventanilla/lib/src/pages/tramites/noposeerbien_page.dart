@@ -29,7 +29,6 @@ class NoposeerBienPage extends StatefulWidget {
 
 class NoposeerBienState extends State<NoposeerBienPage> {
   bool isWeb = UniversalPlatform.isWeb;
-
   Acto? acto;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
@@ -56,7 +55,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   User? usuario;
   final _formKey = GlobalKey<FormState>();
 
-  Data motivo = motivosSolicitud[0];
+  Data motivo = motivosSolicitudNoBienes[0];
   final _actosProvider = ActosProvider();
   bool aceptaTerminosCondiciones = false;
   final _terminosProvider = TerminosProvider();
@@ -122,11 +121,9 @@ class NoposeerBienState extends State<NoposeerBienPage> {
   }
 
   Widget bodyDetail() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 1.3,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -145,7 +142,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
             tituloWidget(context, 'Datos del solicitante y factura'),
             identificacionWidget(),
             nombresWidget(),
-            direccionWidget(),
+            //direccionWidget(),
             telefonoWidget(),
             correoWidget(),
             /*tituloWidget(context, 'Datos de la factura'),
@@ -225,11 +222,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         TextFormField(
           controller: obsCtrl,
           keyboardType: TextInputType.text,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese alguna observación a su solicitud';
-            }
-          },
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.comment_bank_outlined,
@@ -244,6 +236,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
       context,
       'Identificación',
       TextFormField(
+        readOnly: true,
         controller: identificacionCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -283,26 +276,6 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         ));
   }
 
-  Widget direccionWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          controller: direccionCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección del solicitante';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
   Widget correoWidget() {
     return datosWidget(
         context,
@@ -329,112 +302,8 @@ class NoposeerBienState extends State<NoposeerBienPage> {
         context,
         'Teléfono',
         TextFormField(
+          readOnly: true,
           controller: telefonoCtrl,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.phone_android_outlined,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget identificacionFactWidget() {
-    return datosWidget(
-      context,
-      'Identificación',
-      TextFormField(
-        //controller: identificacionFactCtrl,
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Ingrese la identificación para la factura';
-          }
-        },
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.person,
-          ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
-              ? loading("...")
-              : btnBuscarPersona('FACTURA'),
-        ),
-        textAlign: TextAlign.start,
-      ),
-    );
-  }
-
-  Widget nombresFactWidget() {
-    return datosWidget(
-        context,
-        'Datos personales',
-        TextFormField(
-          // controller: datosPersonaFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese los nombres para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.accessibility,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget direccionFactWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          //controller: direccionFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget correoFactWidget() {
-    return datosWidget(
-        context,
-        'Correo electrónico',
-        TextFormField(
-          //controller: correoFactCtrl,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.email,
-            ),
-          ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese un correo electrónico para la factura';
-            }
-          },
-          keyboardType: TextInputType.emailAddress,
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget telefonoFactWidget() {
-    return datosWidget(
-        context,
-        'Teléfono',
-        TextFormField(
-          //controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -554,7 +423,7 @@ class NoposeerBienState extends State<NoposeerBienPage> {
 
   List<Widget> motivosWidget() {
     List<Widget> choices = [];
-    motivosSolicitud.forEach((item) {
+    motivosSolicitudNoBienes.forEach((item) {
       choices.add(Container(
         padding: const EdgeInsets.all(2.0),
         child: ChoiceChip(

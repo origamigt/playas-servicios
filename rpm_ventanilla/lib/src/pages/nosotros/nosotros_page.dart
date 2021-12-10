@@ -54,7 +54,7 @@ class _NosotrosPageState extends State<NosotrosPage> {
     return Column(children: <Widget>[
       tituloWidget(context, 'Misión'),
       subTituloWidget(context,
-          'Registrar documental y electrónicamente los títulos de propiedades de los predios del Cantón Jipijapa, garantizando la Seguridad Jurídica Inmobiliaria;  mediante los sistemas institucionales que se encargan de realizar y generar la información de acuerdo a los parámetros establecidos, para emitir los certificados y/o inscripciones  que requiera la ciudadanía usuaria de nuestros servicios, en concordancia con las disposiciones de Ley correspondientes.'),
+          'Registrar documental y electrónicamente los títulos de propiedades de los predios del Cantón Playas, garantizando la Seguridad Jurídica Inmobiliaria;  mediante los sistemas institucionales que se encargan de realizar y generar la información de acuerdo a los parámetros establecidos, para emitir los certificados y/o inscripciones  que requiera la ciudadanía usuaria de nuestros servicios, en concordancia con las disposiciones de Ley correspondientes.'),
       SizedBox(
         height: 10,
       ),

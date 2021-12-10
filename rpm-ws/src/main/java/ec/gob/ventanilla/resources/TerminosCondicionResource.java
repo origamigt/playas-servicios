@@ -45,7 +45,7 @@ public class TerminosCondicionResource {
                 + "                    2.\tRESPONSABILIDAD\n"
                 + "                </h3>\n"
                 + "                <h4 style=\"padding-left: 30px\">\n"
-                + "                    En caso de usar un número de indentificación de otra persona y reporte inconvenientes será cancelada. <br></br>"
+                + "                    El trámite es absolutamente personal, en caso de usar un número de indentificación de otra persona y reporte inconvenientes será cancelada. <br></br>"
                 + "                      \n La información proporcionada en las solicitudes realizadas por el usuario es de absoluta responsabilidad \n"
                 + "                    de quien las ingresa. \n"
                 + "                    Por lo que el Registro Municipal de la Propiedad y Mercantil Cantón Playas no se responsabiliza por "

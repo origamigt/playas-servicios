@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/rpm-ventanilla/api/terminosCondicion").permitAll()
                 .antMatchers("/rpm-ventanilla/api/autentificacion").permitAll()
+                .antMatchers("/rpm-ventanilla/api/usuario/loginUser").permitAll()
                 .antMatchers("/rpm-ventanilla/api/usuario/consultar").permitAll()
                 .antMatchers("/rpm-ventanilla/api/usuario/actualizarContrasenia").permitAll()
                 .antMatchers("/rpm-ventanilla/api/usuario/activarUsuarioEntidad").permitAll()
@@ -84,6 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/ws/rpm-ventanilla/api/autentificacion").permitAll()
                 .antMatchers("/ws/rpm-ventanilla/api/terminosCondicion").permitAll()
+                .antMatchers("/ws/rpm-ventanilla/api/usuario/loginUser").permitAll()
                 .antMatchers("/ws/rpm-ventanilla/api/usuario/consultar").permitAll()
                 .antMatchers("/ws/rpm-ventanilla/api/usuario/actualizarContrasenia").permitAll()
                 .antMatchers("/ws/rpm-ventanilla/api/usuario/activarUsuarioEntidad").permitAll()

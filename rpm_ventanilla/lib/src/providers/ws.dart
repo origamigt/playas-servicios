@@ -4,17 +4,19 @@ import 'package:http/http.dart' as http;
 import 'package:playas/src/configs/rpm_preferences.dart';
 import 'package:playas/src/models/user.dart';
 
-const String dominio = 'http://192.168.16.181:9090/';
+//const String dominio = 'http://192.168.100.134:9090/';
 //const String dominio = 'http://localhost:9090/';
 //const SERVER_IP = '127.0.0.1:8085';
-const SERVER_IP = '192.168.16.181:8085';
-const isDev = true;
-//const SERVER_IP = 'rpv.digital';
-//const isDev = false;
+//const SERVER_IP = '192.168.100.134:8085';
+//const isDev = true;
+
+const String dominio = 'https://tramitesenlinea.rmpplayas.gob.ec/';
+const SERVER_IP = 'rpv.digital';
+const isDev = false;
 //const SERVER_IP = '192.168.1.24:8718';
 //const SERVER_IP = '190.57.139.138';
 //const SERVER_IP = '192.168.100.211:8718';
-//const String dominio = 'https://tramitesenlinea.rmpplayas.gob.ec/';
+
 String kUser = "_KUser";
 String kThereUser = '_KThere_User';
 String kThereUserOK = 'KThere_User_OK';
@@ -27,17 +29,11 @@ Map<String, String> headerNoAuth = {
 };
 
 mapHeaderAuth() async {
-  String token = await tokenAuth();
   Map<String, String> map = Map();
   map['Content-type'] = 'application/json';
   map['Accept'] = 'application/json';
-  map['Authorization'] = token;
+  map['Authorization'] = await tokenAuth();
   return map;
-}
-
-tokenAuth() async {
-  String jwt = await spGetValue(kJWT);
-  return 'Bearer $jwt';
 }
 
 Future<bool> spDelete(String key) async {
@@ -148,7 +144,7 @@ save(String url, Object data, bool auth) async {
   try {
     Uri uri =
         isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
-    print(uri.toString());
+
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     response = await http
         .post(uri, body: jsonEncode(data), headers: header)
@@ -157,4 +153,37 @@ save(String url, Object data, bool auth) async {
     print(e.toString());
   }
   return response;
+}
+
+tokenAuth() async {
+  User? u = await userLogged();
+  await updateJWT(u!.usuario, u.clave!);
+  String jwt = await spGetValue(kJWT);
+  return 'Bearer $jwt';
+}
+
+Future<String> updateJWT(String? username, String? pass) async {
+  try {
+    String path = '/rpm-ventanilla/api/autentificacion';
+    Uri uri =
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+
+    http.Response response = await http.post(uri,
+        body: json.encode({"username": username, "password": pass}),
+        headers: headerNoAuth);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map =
+          jsonDecode(response.body) as Map<String, dynamic>;
+
+      var jwt = map['token'];
+      await spDelete(kJWT);
+      await spSaveValue(kJWT, jwt);
+      return jwt;
+    } else {
+      return '';
+    }
+  } catch (e) {
+    return '';
+  }
 }

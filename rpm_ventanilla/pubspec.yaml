@@ -3,7 +3,7 @@ description: Ventanilla Pública de Playas
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 2.0.0+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -25,7 +25,7 @@ dependencies:
   flutter_custom_clippers: ^2.0.0
   responsive_property: ^0.0.6
   top_snackbar_flutter: ^1.0.1
-  file_picker: ^4.1.5
+  file_picker: ^4.2.7
   webview_flutter: ^2.0.12
   crypto: ^3.0.1
   universal_platform: ^1.0.0+1

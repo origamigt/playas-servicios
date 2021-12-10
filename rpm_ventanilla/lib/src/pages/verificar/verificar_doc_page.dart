@@ -28,7 +28,7 @@ class VerificarDocPageState extends State<VerificarDocPage> {
   String? nombreArchivo;
   Documento? data;
   final _formKey = GlobalKey<FormState>();
-  DateFormat dt = DateFormat('dd-MM-yyyy – hh:mm');
+  DateFormat dt = DateFormat('dd-MM-yyyy HH:mm');
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +230,6 @@ class VerificarDocPageState extends State<VerificarDocPage> {
         validarDocProvider!.validarDocumento(file!.bytes, nombreArchivo);
 
     successfulMessage.then((response) {
-      print(response.toString());
       if (response['status']) {
         setState(() {
           data = response['data'];

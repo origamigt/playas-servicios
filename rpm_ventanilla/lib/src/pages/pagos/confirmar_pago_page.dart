@@ -161,11 +161,17 @@ class ConfirmarPagoPageState extends State<ConfirmarPagoPage>
           SizedBox(
             height: 10,
           ),
-          Text(
-            responseCreate != null
-                ? 'Código autorización: ${responseCreate!.authorizationCode!}'
-                : '',
-          ),
+          Visibility(
+              visible: responseCreate != null
+                  ? responseCreate!.statusCode == '3'
+                      ? true
+                      : false
+                  : false,
+              child: Text(
+                responseCreate != null
+                    ? 'Código autorización: ${responseCreate!.authorizationCode!}'
+                    : '',
+              )),
           SizedBox(
             height: 10,
           ),

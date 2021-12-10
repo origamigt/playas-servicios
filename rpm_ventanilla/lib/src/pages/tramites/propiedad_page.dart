@@ -29,7 +29,7 @@ class PropiedadPage extends StatefulWidget {
 
 class PropiedadPageState extends State<PropiedadPage> {
   bool isWeb = UniversalPlatform.isWeb;
-
+  DateTime today = DateTime.now();
   Acto? acto;
   UsuarioProvider? userProvider;
   PersonaProvider? personaProvider;
@@ -45,12 +45,6 @@ class PropiedadPageState extends State<PropiedadPage> {
   //TextEditingController direccionCtrl = TextEditingController();
   TextEditingController telefonoCtrl = TextEditingController();
   TextEditingController correoCtrl = TextEditingController();
-
-  /*TextEditingController identificacionFactCtrl = TextEditingController();
-  TextEditingController datosPersonaFactCtrl = TextEditingController();
-  TextEditingController direccionFactCtrl = TextEditingController();
-  TextEditingController telefonoFactCtrl = TextEditingController();
-  TextEditingController correoFactCtrl = TextEditingController();*/
 
   TextEditingController obsCtrl = TextEditingController();
   TextEditingController otroMotivoCtrl = TextEditingController();
@@ -83,18 +77,6 @@ class PropiedadPageState extends State<PropiedadPage> {
     acto = await _actosProvider.findActoId(1357);
     total = acto!.valor;
     cantidadCtrl.text = '1';
-    /*cantidadCtrl.addListener(() {
-      try {
-        print(cantidadCtrl.text);
-        if (cantidadCtrl.text.isNotEmpty) {
-          double? v = double.parse(cantidadCtrl.text);
-          total = acto!.valor! * v;
-        }
-        ;
-      } catch (e) {
-        print(e);
-      }
-    });*/
   }
 
   @override
@@ -110,15 +92,8 @@ class PropiedadPageState extends State<PropiedadPage> {
         identificacionCtrl.text = persona!.cedRuc!;
         var nombres = persona!.nombres! + ' ' + persona!.apellidos!;
         datosPersonaCtrl.text = nombres;
-        //direccionCtrl.text = persona.direccion!;
         telefonoCtrl.text = persona!.telefono1!;
         correoCtrl.text = persona!.correo1!;
-
-        /*identificacionFactCtrl.text = persona!.cedRuc!;
-        datosPersonaFactCtrl.text = nombres;
-        direccionFactCtrl.text = persona!.direccion!;
-        telefonoFactCtrl.text = persona!.telefono1!;
-        correoFactCtrl.text = persona!.correo1!;*/
       });
     }
     return Form(
@@ -147,11 +122,9 @@ class PropiedadPageState extends State<PropiedadPage> {
   }
 
   Widget bodyDetail() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 1.3,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -180,12 +153,7 @@ class PropiedadPageState extends State<PropiedadPage> {
             numeroFichaWidget(),
             numeroInscripcionWidget(),
             anioInscripcionWidget(),
-            /*tituloWidget(context, 'Datos de la factura'),
-            identificacionFactWidget(),
-            nombresFactWidget(),
-            direccionFactWidget(),
-            telefonoFactWidget(),
-            correoFactWidget(),*/
+
             SizedBox(
               height: 15,
             ),
@@ -198,9 +166,6 @@ class PropiedadPageState extends State<PropiedadPage> {
                 : Center(
                     child: btnProcesarPago(),
                   ),
-            SizedBox(
-              height: 15,
-            ),
           ],
         ),
       ),
@@ -257,11 +222,6 @@ class PropiedadPageState extends State<PropiedadPage> {
         TextFormField(
           controller: obsCtrl,
           keyboardType: TextInputType.text,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese alguna observación a su solicitud';
-            }
-          },
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.comment_bank_outlined,
@@ -276,6 +236,7 @@ class PropiedadPageState extends State<PropiedadPage> {
       context,
       'Identificación',
       TextFormField(
+        readOnly: true,
         controller: identificacionCtrl,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -315,31 +276,12 @@ class PropiedadPageState extends State<PropiedadPage> {
         ));
   }
 
-  /* Widget direccionWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          controller: direccionCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección del solicitante';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-*/
   Widget correoWidget() {
     return datosWidget(
         context,
         'Correo electrónico',
         TextFormField(
+          readOnly: true,
           controller: correoCtrl,
           decoration: InputDecoration(
             prefixIcon: Icon(
@@ -361,107 +303,8 @@ class PropiedadPageState extends State<PropiedadPage> {
         context,
         'Teléfono',
         TextFormField(
+          readOnly: true,
           controller: telefonoCtrl,
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.phone_android_outlined,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget identificacionFactWidget() {
-    return datosWidget(
-      context,
-      'Identificación',
-      TextFormField(
-        //controller: identificacionFactCtrl,
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.person,
-          ),
-          suffixIcon: personaProvider!.personaStatusPersonProv ==
-                  StatusPersonProv.SearchingFact
-              ? loading("...")
-              : btnBuscarPersona('FACTURA'),
-        ),
-        textAlign: TextAlign.start,
-      ),
-    );
-  }
-
-  Widget nombresFactWidget() {
-    return datosWidget(
-        context,
-        'Datos personales',
-        TextFormField(
-          //controller: datosPersonaFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese los nombres para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.accessibility,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget direccionFactWidget() {
-    return datosWidget(
-        context,
-        'Dirección',
-        TextFormField(
-          //controller: direccionFactCtrl,
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese la dirección para la factura';
-            }
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.gps_fixed,
-            ),
-          ),
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget correoFactWidget() {
-    return datosWidget(
-        context,
-        'Correo electrónico',
-        TextFormField(
-          //controller: correoFactCtrl,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.email,
-            ),
-          ),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Ingrese un correo electrónico para la factura';
-            }
-          },
-          keyboardType: TextInputType.emailAddress,
-          textAlign: TextAlign.start,
-        ));
-  }
-
-  Widget telefonoFactWidget() {
-    return datosWidget(
-        context,
-        'Teléfono',
-        TextFormField(
-          //controller: telefonoFactCtrl,
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
@@ -605,6 +448,9 @@ class PropiedadPageState extends State<PropiedadPage> {
               return 'Ingrese los nombres del propietario';
             }
           },
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+          ],
           decoration: InputDecoration(
             prefixIcon: Icon(
               Icons.accessibility,
@@ -672,6 +518,11 @@ class PropiedadPageState extends State<PropiedadPage> {
             }
             if (value.isNotEmpty && value.length != 4) {
               return 'Debe ingresar un año valido';
+            }
+            if (isNumeric(value)) {
+              int anio = int.parse(value);
+              if (anio > today.year)
+                return 'El año de inscripción debe ser menor al actual';
             }
           },
           keyboardType: TextInputType.number,
