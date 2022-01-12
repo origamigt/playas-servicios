@@ -176,7 +176,7 @@ public class CodigoCorreoService {
 
                 String telf = codigoCorreo.getCelular();
                 if (codigoCorreo.getCelular().startsWith("0")) {
-                    telf = telf.substring(1, 9);
+                    telf = telf.substring(1, 10);
                     telf = "593" + telf;
                 }
                 String url = appProps.getApiSms() + telf + "&text=" + text;

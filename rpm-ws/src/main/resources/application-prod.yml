@@ -56,7 +56,7 @@ app:
 
 
   urlFichaRegistral: http://192.168.16.211/sigeri-playas/api/rpl/fichaRegistral/ventanilla?numFicha=
-  apiSms: http://200.124.240.36/api/sms.php?token=4PruebaOficina&no=
+  apiSms: http://200.124.240.36/api/sms.php?token=8origamiec2021&no=
 
   rpFacturas: http://192.168.16.211/sigeri-playas/rest/ventanilla/facturacionElectronica/
   rpConsultarTramite: http://192.168.16.211/sigeri-playas/rest/ventanilla/consultar/tramite/
