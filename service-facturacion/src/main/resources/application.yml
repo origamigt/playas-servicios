@@ -6,7 +6,8 @@ spring:
     name: FACTURACION-ELECTRONICA
   
   datasource:
-    url: jdbc:postgresql://192.168.16.212:5432/rpm_playas
+    url: jdbc:postgresql://192.168.100.12:5432/rpm_playas
+    #url: jdbc:postgresql://192.168.16.212:5432/rpm_playas
     username: sisapp
     password: sisapp98
     platform: postgres
