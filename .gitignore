@@ -3,3 +3,4 @@ rpm-ws/target/ec-gob-ventanilla-0.0.1-SNAPSHOT.jar
 rpm-ws/target/ec-gob-ventanilla-0.0.1-SNAPSHOT.jar.original
 rpm-ws/target/maven-archiver/pom.properties
 rpm_ventanilla/release/app-release.aab
+/rpm-ws/target
