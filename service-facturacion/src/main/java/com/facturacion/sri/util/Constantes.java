@@ -3,8 +3,8 @@ package com.facturacion.sri.util;
 public class Constantes {
 
     public final static String DRIVERCLASS = "org.postgresql.Driver";
-    public final static String URLDB = "jdbc:postgresql://192.168.100.12:5432/rpm_playas";
-    //public final static String URLDB = "jdbc:postgresql://192.168.16.212:5432/rpm_playas";
+    //public final static String URLDB = "jdbc:postgresql://192.168.100.12:5432/rpm_playas";
+    public final static String URLDB = "jdbc:postgresql://192.168.16.212:5432/rpm_playas";
     public final static String USERDB = "sisapp";
     public final static String PASSDB = "sisapp98";
 
@@ -25,10 +25,10 @@ public class Constantes {
     public final static String INFO_REFORMA = "Res. Nro. NAC-DNCRSAC20-00000001";
 
     // DATOS DE CORREO
-    public final static String CORREO_ENTIDAD = "origami.supergold@gmail.com";
-    public final static String PASS_CORREO_ENTIDAD = "solutions";
-    //public final static String CORREO_ENTIDAD = "facturacion.registro.playas@gmail.com";
-    //public final static String PASS_CORREO_ENTIDAD = "p14y45@c0rre0";
+    //public final static String CORREO_ENTIDAD = "origami.supergold@gmail.com";
+    //public final static String PASS_CORREO_ENTIDAD = "solutions";
+    public final static String CORREO_ENTIDAD = "facturacion.registro.playas@gmail.com";
+    public final static String PASS_CORREO_ENTIDAD = "dpliobvawokjuxli";
     public final static String SMTP_HOST = "smtp.gmail.com";
     public final static String SMTP_PORT = "587";
     public final static String ENTIDAD = "REGISTRO MUNICIPAL CANTON PLAYAS";
