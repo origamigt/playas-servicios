@@ -33,7 +33,7 @@ eureka:
 
 app:
   correo: tramites.registro.playas@gmail.com
-  claveCorreo: p14y45@c0rre0
+  claveCorreo: rbxokwobaznykgzz
   hostCorreo: smtp.gmail.com
   portCorreo: 587
   entidad: REGISTRO MUNICIPAL CANTON PLAYAS
