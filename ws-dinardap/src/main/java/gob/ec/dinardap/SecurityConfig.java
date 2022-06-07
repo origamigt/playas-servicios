@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable()
                 .authorizeRequests()
                 //.antMatchers("/api/rpl/pagos/**").hasIpAddress("192.168.200.13")
-                .anyRequest().authenticated().and().httpBasic().realmName("REGISTRO DE LA PROPIEDAD DEL CANTÓN LOJA").and()
+                .anyRequest().authenticated().and().httpBasic().realmName("REGISTRO DE LA PROPIEDAD").and()
                 .requestCache().requestCache(new NullRequestCache());
     }
 

@@ -30,7 +30,8 @@ public class PersonaService {
             if (contribuyente.getBody() != null) {
                 //System.out.println(contribuyente.getBody().toString());
                 contribuyente.getBody().setFechaExpedicion(new Date(contribuyente.getBody().getFechaExpedicionLong()));
-                contribuyente.getBody().setFechaNacimiento(new Date(contribuyente.getBody().getFechaNacimientoLong()));
+                if (contribuyente.getBody().getFechaNacimientoLong() != null)
+                    contribuyente.getBody().setFechaNacimiento(new Date(contribuyente.getBody().getFechaNacimientoLong()));
                 return contribuyente.getBody();
             }
         } catch (URISyntaxException | RestClientException e) {

@@ -50,7 +50,7 @@ app:
 
   logo: https://tramitesenlinea.rmpplayas.gob.ec/rmppm.png
   urlPdfFirmado: https://rpv.digital/ws/rpm-ventanilla/api/documento/
-  urlDinardap: http://200.124.240.62:8790/api/dinardap/aplicacion/SIGERI/persona/identificacion/
+  urlDinardap: http://127.0.0.1:8790/api/dinardap/aplicacion/SIGERI/identificacion/
   usuarioDinardap: rpventanilla
   claveDinardap: ventanilla@2021
 

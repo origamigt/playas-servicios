@@ -6,7 +6,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="RMP Playas"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">

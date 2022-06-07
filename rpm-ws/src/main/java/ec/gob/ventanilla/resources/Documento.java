@@ -28,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -63,11 +64,14 @@ public class Documento {
             try (final PDDocument document = PDDocument.load(new File(pathFile))) {
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
                 for (int page = 0; page < document.getNumberOfPages(); ++page) {
-                    bim = pdfRenderer.renderImageWithDPI(page, 250, ImageType.RGB);
+
+                    bim = pdfRenderer.renderImageWithDPI(page, 200, ImageType.RGB);
                     tempName = codigoVerificacion + "-" + page + ".png";
+                    System.out.println(": " + tempName);
                     fileName = appProps.getOutputDir() + "imagenes_tramites/" + tempName;
                     files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "imagen/" + tempName));
-                    ImageIOUtil.writeImage(bim, fileName, 500);
+                    ///ImageIOUtil.writeImage(bim, fileName, 500);
+                    ImageIO.write(bim, "PNG", new File(fileName));
                 }
             } catch (IOException e) {
                 files.add(new ImagesCertificados(appProps.getUrlPdfFirmado() + "imagen/" + "sin_resultados.png"));

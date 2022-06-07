@@ -7,6 +7,8 @@
 // **************************************************************************
 // AutoRouteGenerator
 // **************************************************************************
+//
+// ignore_for_file: type=lint
 
 part of 'app_router.dart';
 
@@ -192,48 +194,54 @@ class _$AppRouter extends RootStackRouter {
       ];
 }
 
-/// generated route for [LoginPage]
+/// generated route for
+/// [LoginPage]
 class LoginRoute extends PageRouteInfo<void> {
-  const LoginRoute() : super(name, path: '/iniciarSesion');
+  const LoginRoute() : super(LoginRoute.name, path: '/iniciarSesion');
 
   static const String name = 'LoginRoute';
 }
 
-/// generated route for [RegistrarsePage]
+/// generated route for
+/// [RegistrarsePage]
 class RegistrarseRoute extends PageRouteInfo<void> {
-  const RegistrarseRoute() : super(name, path: '/registrarse');
+  const RegistrarseRoute() : super(RegistrarseRoute.name, path: '/registrarse');
 
   static const String name = 'RegistrarseRoute';
 }
 
-/// generated route for [RecuperarPage]
+/// generated route for
+/// [RecuperarPage]
 class RecuperarRoute extends PageRouteInfo<void> {
-  const RecuperarRoute() : super(name, path: '/recuperar');
+  const RecuperarRoute() : super(RecuperarRoute.name, path: '/recuperar');
 
   static const String name = 'RecuperarRoute';
 }
 
-/// generated route for [EntidadPage]
+/// generated route for
+/// [EntidadPage]
 class EntidadRoute extends PageRouteInfo<void> {
-  const EntidadRoute() : super(name, path: '/registrarEntidad');
+  const EntidadRoute() : super(EntidadRoute.name, path: '/registrarEntidad');
 
   static const String name = 'EntidadRoute';
 }
 
-/// generated route for [HomePage]
+/// generated route for
+/// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute() : super(name, path: '/');
+  const HomeRoute() : super(HomeRoute.name, path: '/');
 
   static const String name = 'HomeRoute';
 }
 
-/// generated route for [ConfirmarPagoPage]
+/// generated route for
+/// [ConfirmarPagoPage]
 class ConfirmarPagoRoute extends PageRouteInfo<ConfirmarPagoRouteArgs> {
   ConfirmarPagoRoute(
       {required String? code,
       required String? id,
       required String? clientTransactionId})
-      : super(name,
+      : super(ConfirmarPagoRoute.name,
             path: '/pagos/transaccionExitosa',
             args: ConfirmarPagoRouteArgs(
                 code: code, id: id, clientTransactionId: clientTransactionId),
@@ -257,33 +265,45 @@ class ConfirmarPagoRouteArgs {
   final String? id;
 
   final String? clientTransactionId;
+
+  @override
+  String toString() {
+    return 'ConfirmarPagoRouteArgs{code: $code, id: $id, clientTransactionId: $clientTransactionId}';
+  }
 }
 
-/// generated route for [VerificarDocPage]
+/// generated route for
+/// [VerificarDocPage]
 class VerificarDocRoute extends PageRouteInfo<void> {
-  const VerificarDocRoute() : super(name, path: '/verificarDocumento');
+  const VerificarDocRoute()
+      : super(VerificarDocRoute.name, path: '/verificarDocumento');
 
   static const String name = 'VerificarDocRoute';
 }
 
-/// generated route for [CertificadoMovPage]
+/// generated route for
+/// [CertificadoMovPage]
 class CertificadoMovRoute extends PageRouteInfo<void> {
-  const CertificadoMovRoute() : super(name, path: '/validarCertificadoQR');
+  const CertificadoMovRoute()
+      : super(CertificadoMovRoute.name, path: '/validarCertificadoQR');
 
   static const String name = 'CertificadoMovRoute';
 }
 
-/// generated route for [CertificadoWebPage]
+/// generated route for
+/// [CertificadoWebPage]
 class CertificadoWebRoute extends PageRouteInfo<void> {
-  const CertificadoWebRoute() : super(name, path: '/validarCertificado');
+  const CertificadoWebRoute()
+      : super(CertificadoWebRoute.name, path: '/validarCertificado');
 
   static const String name = 'CertificadoWebRoute';
 }
 
-/// generated route for [PaymentsRediectPage]
+/// generated route for
+/// [PaymentsRediectPage]
 class PaymentsRediectRoute extends PageRouteInfo<PaymentsRediectRouteArgs> {
   PaymentsRediectRoute({required String? code, required String? payment})
-      : super(name,
+      : super(PaymentsRediectRoute.name,
             path: '/pagos/paymentsredirect',
             args: PaymentsRediectRouteArgs(code: code, payment: payment),
             rawQueryParams: {'code': code, 'payment': payment});
@@ -297,13 +317,19 @@ class PaymentsRediectRouteArgs {
   final String? code;
 
   final String? payment;
+
+  @override
+  String toString() {
+    return 'PaymentsRediectRouteArgs{code: $code, payment: $payment}';
+  }
 }
 
-/// generated route for [PagoInscripcionPage]
+/// generated route for
+/// [PagoInscripcionPage]
 class PagoInscripcionRoute extends PageRouteInfo<PagoInscripcionRouteArgs> {
   PagoInscripcionRoute(
       {required String? code1, required String? code2, required String? code3})
-      : super(name,
+      : super(PagoInscripcionRoute.name,
             path: '/inscripciones/pagoInscripcion',
             args: PagoInscripcionRouteArgs(
                 code1: code1, code2: code2, code3: code3),
@@ -321,47 +347,60 @@ class PagoInscripcionRouteArgs {
   final String? code2;
 
   final String? code3;
+
+  @override
+  String toString() {
+    return 'PagoInscripcionRouteArgs{code1: $code1, code2: $code2, code3: $code3}';
+  }
 }
 
-/// generated route for [TramitesPage]
+/// generated route for
+/// [TramitesPage]
 class TramitesRoute extends PageRouteInfo<void> {
-  const TramitesRoute() : super(name, path: '/tramites');
+  const TramitesRoute() : super(TramitesRoute.name, path: '/tramites');
 
   static const String name = 'TramitesRoute';
 }
 
-/// generated route for [NoposeerBienPage]
+/// generated route for
+/// [NoposeerBienPage]
 class NoposeerBienRoute extends PageRouteInfo<void> {
-  const NoposeerBienRoute() : super(name, path: '/noposeerbien');
+  const NoposeerBienRoute()
+      : super(NoposeerBienRoute.name, path: '/noposeerbien');
 
   static const String name = 'NoposeerBienRoute';
 }
 
-/// generated route for [AjustesPage]
+/// generated route for
+/// [AjustesPage]
 class AjustesRoute extends PageRouteInfo<void> {
-  const AjustesRoute() : super(name, path: '/ajustes');
+  const AjustesRoute() : super(AjustesRoute.name, path: '/ajustes');
 
   static const String name = 'AjustesRoute';
 }
 
-/// generated route for [PerfilPage]
+/// generated route for
+/// [PerfilPage]
 class PerfilRoute extends PageRouteInfo<void> {
-  const PerfilRoute() : super(name, path: '/perfil');
+  const PerfilRoute() : super(PerfilRoute.name, path: '/perfil');
 
   static const String name = 'PerfilRoute';
 }
 
-/// generated route for [ContraseniaPage]
+/// generated route for
+/// [ContraseniaPage]
 class ContraseniaRoute extends PageRouteInfo<void> {
-  const ContraseniaRoute() : super(name, path: '/actualizarContrasenia');
+  const ContraseniaRoute()
+      : super(ContraseniaRoute.name, path: '/actualizarContrasenia');
 
   static const String name = 'ContraseniaRoute';
 }
 
-/// generated route for [PagoPage]
+/// generated route for
+/// [PagoPage]
 class PagoRoute extends PageRouteInfo<PagoRouteArgs> {
   PagoRoute({String? urlIframe})
-      : super(name,
+      : super(PagoRoute.name,
             path: '/pagos/procesar', args: PagoRouteArgs(urlIframe: urlIframe));
 
   static const String name = 'PagoRoute';
@@ -371,74 +410,92 @@ class PagoRouteArgs {
   const PagoRouteArgs({this.urlIframe});
 
   final String? urlIframe;
+
+  @override
+  String toString() {
+    return 'PagoRouteArgs{urlIframe: $urlIframe}';
+  }
 }
 
-/// generated route for [PropiedadPage]
+/// generated route for
+/// [PropiedadPage]
 class PropiedadRoute extends PageRouteInfo<void> {
-  const PropiedadRoute() : super(name, path: '/propiedad');
+  const PropiedadRoute() : super(PropiedadRoute.name, path: '/propiedad');
 
   static const String name = 'PropiedadRoute';
 }
 
-/// generated route for [InscripcionesPage]
+/// generated route for
+/// [InscripcionesPage]
 class InscripcionesRoute extends PageRouteInfo<void> {
-  const InscripcionesRoute() : super(name, path: '/inscripciones');
+  const InscripcionesRoute()
+      : super(InscripcionesRoute.name, path: '/inscripciones');
 
   static const String name = 'InscripcionesRoute';
 }
 
-/// generated route for [PersonalPage]
+/// generated route for
+/// [PersonalPage]
 class PersonalRoute extends PageRouteInfo<void> {
-  const PersonalRoute() : super(name, path: '/fichaPersonal');
+  const PersonalRoute() : super(PersonalRoute.name, path: '/fichaPersonal');
 
   static const String name = 'PersonalRoute';
 }
 
-/// generated route for [MercantilPage]
+/// generated route for
+/// [MercantilPage]
 class MercantilRoute extends PageRouteInfo<void> {
-  const MercantilRoute() : super(name, path: '/mercantil');
+  const MercantilRoute() : super(MercantilRoute.name, path: '/mercantil');
 
   static const String name = 'MercantilRoute';
 }
 
-/// generated route for [CarpetaCiudadanaPage]
+/// generated route for
+/// [CarpetaCiudadanaPage]
 class CarpetaCiudadanaRoute extends PageRouteInfo<void> {
-  const CarpetaCiudadanaRoute() : super(name, path: '/carpetaCiudadana');
+  const CarpetaCiudadanaRoute()
+      : super(CarpetaCiudadanaRoute.name, path: '/carpetaCiudadana');
 
   static const String name = 'CarpetaCiudadanaRoute';
 }
 
-/// generated route for [MisTramitesPage]
+/// generated route for
+/// [MisTramitesPage]
 class MisTramitesRoute extends PageRouteInfo<void> {
-  const MisTramitesRoute() : super(name, path: '/misTramites');
+  const MisTramitesRoute() : super(MisTramitesRoute.name, path: '/misTramites');
 
   static const String name = 'MisTramitesRoute';
 }
 
-/// generated route for [BuscarPage]
+/// generated route for
+/// [BuscarPage]
 class BuscarRoute extends PageRouteInfo<void> {
-  const BuscarRoute() : super(name, path: '/consultarTramite');
+  const BuscarRoute() : super(BuscarRoute.name, path: '/consultarTramite');
 
   static const String name = 'BuscarRoute';
 }
 
-/// generated route for [RepositorioPage]
+/// generated route for
+/// [RepositorioPage]
 class RepositorioRoute extends PageRouteInfo<void> {
-  const RepositorioRoute() : super(name, path: '/misDocumentos');
+  const RepositorioRoute()
+      : super(RepositorioRoute.name, path: '/misDocumentos');
 
   static const String name = 'RepositorioRoute';
 }
 
-/// generated route for [NosotrosPage]
+/// generated route for
+/// [NosotrosPage]
 class NosotrosRoute extends PageRouteInfo<void> {
-  const NosotrosRoute() : super(name, path: '/acercaDe');
+  const NosotrosRoute() : super(NosotrosRoute.name, path: '/acercaDe');
 
   static const String name = 'NosotrosRoute';
 }
 
-/// generated route for [MisFacturasPage]
+/// generated route for
+/// [MisFacturasPage]
 class MisFacturasRoute extends PageRouteInfo<void> {
-  const MisFacturasRoute() : super(name, path: '/misFacturas');
+  const MisFacturasRoute() : super(MisFacturasRoute.name, path: '/misFacturas');
 
   static const String name = 'MisFacturasRoute';
 }

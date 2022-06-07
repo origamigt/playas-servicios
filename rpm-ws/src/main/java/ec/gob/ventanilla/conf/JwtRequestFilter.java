@@ -35,13 +35,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        response.setHeader("Access-Control-Allow-Origin", "*");
+      //  response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Requested-With, remember-me");
         System.out.println(request.getRequestURI());
-        if (!request.getRequestURI().contains("/rpm-ventanilla/api/autentificacion")
+     /*   if (!request.getRequestURI().contains("/rpm-ventanilla/api/autentificacion")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/usuario/loginUser")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/actosInscricipciones")
                 && !request.getRequestURI().contains("/rpm-ventanilla/api/pagos/verificarPago")
@@ -65,8 +65,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             final String requestTokenHeader = request.getHeader("Authorization");
             String username = null;
             String jwtToken = null;
-// JWT Token is in the form "Bearer token". Remove Bearer word and get
-// only the Token
             if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer")) {
                 jwtToken = requestTokenHeader.substring(7);
                 try {
@@ -80,22 +78,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 logger.warn("JWT Token does not begin with Bearer String");
             }
 
-// Once we get the token validate it.
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
-// if token is valid configure Spring Security to manually set
-// authentication
                 if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken
                             .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-// After setting the Authentication in the context, we specify
-// that the current user is authenticated. So it passes the
-// Spring Security Configurations successfully.
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     chain.doFilter(request, response);
                 }
@@ -103,7 +95,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         } else {
             chain.doFilter(request, response);
-        }
+        }*/
+     //   UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+       //         userDetails, null, userDetails.getAuthorities());
+        //usernamePasswordAuthenticationToken
+//                .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+// After setting the Authentication in the context, we specify
+// that the current user is authenticated. So it passes the
+// Spring Security Configurations successfully.
+    //    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        chain.doFilter(request, response);
     }
 
 }
