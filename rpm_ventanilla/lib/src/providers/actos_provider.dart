@@ -22,7 +22,7 @@ class ActosProvider {
 
   Future<Acto>? findActoId(int id) async {
     Map<String, dynamic> map =
-        await find('/rpm-ventanilla/api/actos/id/$id', false);
+        await find('rpm-ventanilla/api/actos/id/$id', false);
     Acto? acto = Acto().fromJson(map);
     return acto;
   }

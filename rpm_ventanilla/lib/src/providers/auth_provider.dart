@@ -63,9 +63,9 @@ class AuthProvider with ChangeNotifier {
     usr.clave = password;
     usr.usuario = email;
     usr.habilitado = true;
-    String path = '/rpm-ventanilla/api/autentificacion';
+    String path = 'rpm-ventanilla/api/autentificacion';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
 
     http.Response response = await http.post(uri,
         body: json.encode({"username": email, "password": password}),
@@ -80,9 +80,9 @@ class AuthProvider with ChangeNotifier {
       var jwt = map['token'];
       await spDelete(kJWT);
       await spSaveValue(kJWT, jwt);
-      path = '/rpm-ventanilla/api/usuario/loginUser';
+      path = 'rpm-ventanilla/api/usuario/loginUser';
       uri =
-          isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+          isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
       response =
           await http.post(uri, body: json.encode(usr), headers: headerNoAuth);
 
@@ -122,11 +122,11 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     String path = tipo
-        ? '/rpm-ventanilla/api/usuario/consultar'
-        : '/rpm-ventanilla/api/usuario/consultar/recuperar';
+        ? 'rpm-ventanilla/api/usuario/consultar'
+        : 'rpm-ventanilla/api/usuario/consultar/recuperar';
 
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
 
     http.Response response = await http.post(uri,
         body: json.encode(registrationData), headers: headerNoAuth);
@@ -171,9 +171,9 @@ class AuthProvider with ChangeNotifier {
 
     _registeredInStatus = StatusRegistro.CodigoEnviando;
     notifyListeners();
-    String path = '/rpm-ventanilla/api/correo/generarCodigoRegistro';
+    String path = 'rpm-ventanilla/api/correo/generarCodigoRegistro';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
 
     http.Response response = await http.post(uri,
         body: json.encode(verificacion), headers: headerNoAuth);
@@ -230,9 +230,9 @@ class AuthProvider with ChangeNotifier {
     Map<String, dynamic> verificacion = CodigoVerificacion().jsonRegistro(cv);
     _registeredInStatus = StatusRegistro.ValidarCodCargando;
     notifyListeners();
-    String path = '/rpm-ventanilla/api/correo/validarCodigoRegistro';
+    String path = 'rpm-ventanilla/api/correo/validarCodigoRegistro';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
     http.Response response = await http.post(uri,
         body: json.encode(verificacion), headers: headerNoAuth);
 
@@ -270,9 +270,9 @@ class AuthProvider with ChangeNotifier {
 
     _registeredInStatus = StatusRegistro.ValidarCodCargando;
     notifyListeners();
-    String path = '/rpm-ventanilla/api/correo/validarCodigo';
+    String path = 'rpm-ventanilla/api/correo/validarCodigo';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
     http.Response response = await http.post(uri,
         body: json.encode(verificacion), headers: headerNoAuth);
 
@@ -308,9 +308,9 @@ class AuthProvider with ChangeNotifier {
     _registeredInStatus = StatusRegistro.ClaveActualizando;
     notifyListeners();
     print(json.encode(registrationData));
-    String path = '/rpm-ventanilla/api/usuario/actualizarContrasenia';
+    String path = 'rpm-ventanilla/api/usuario/actualizarContrasenia';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
     http.Response response = await http.post(uri,
         body: json.encode(registrationData), headers: headerNoAuth);
     if (response != null) {

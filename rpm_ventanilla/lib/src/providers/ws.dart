@@ -4,14 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:playas/src/configs/rpm_preferences.dart';
 import 'package:playas/src/models/user.dart';
 
-//const String dominio = 'http://192.168.100.134:9090/';
-//const String dominio = 'http://localhost:9090/';
-//const SERVER_IP = '127.0.0.1:8085';
-//const SERVER_IP = '192.168.100.134:8085';
-//const isDev = true;
-
 const String dominio = 'https://tramitesenlinea.rmpplayas.gob.ec/';
-const SERVER_IP = 'rpv.digital';
+const SERVER_IP = 'ventanilla.rmpplayas.gob.ec';
+const CONTEXT = '/servicios/';
 const isDev = false;
 //const SERVER_IP = '192.168.1.24:8718';
 //const SERVER_IP = '190.57.139.138';
@@ -70,7 +65,7 @@ signOut() async {
 findAll(String url, bool auth) async {
   try {
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
+        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, CONTEXT + url);
     //print(uri.path);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
@@ -84,7 +79,7 @@ findAll(String url, bool auth) async {
 findAllResponse(String url, bool auth) async {
   try {
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
+        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, CONTEXT + url);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
     return response;
@@ -97,7 +92,7 @@ findAllResponse(String url, bool auth) async {
 find(String url, bool auth) async {
   try {
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
+        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, CONTEXT + url);
     print(uri.toString());
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
@@ -121,7 +116,7 @@ findParameters(
   try {
     Uri uri = isDev
         ? Uri.http(SERVER_IP, url, queryParameters)
-        : Uri.https(SERVER_IP, '/ws/' + url, queryParameters);
+        : Uri.https(SERVER_IP, CONTEXT + url, queryParameters);
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     http.Response response = await http.get(uri, headers: header);
 
@@ -143,7 +138,7 @@ save(String url, Object data, bool auth) async {
   http.Response? response;
   try {
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, '/ws/' + url);
+        isDev ? Uri.http(SERVER_IP, url) : Uri.https(SERVER_IP, CONTEXT + url);
 
     Map<String, String>? header = auth ? await mapHeaderAuth() : headerNoAuth;
     response = await http
@@ -164,9 +159,9 @@ tokenAuth() async {
 
 Future<String> updateJWT(String? username, String? pass) async {
   try {
-    String path = '/rpm-ventanilla/api/autentificacion';
+    String path = 'rpm-ventanilla/api/autentificacion';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
 
     http.Response response = await http.post(uri,
         body: json.encode({"username": username, "password": pass}),

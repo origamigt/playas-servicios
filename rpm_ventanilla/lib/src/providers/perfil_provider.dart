@@ -91,9 +91,9 @@ class PerfilProvider extends ChangeNotifier {
     _status = StatusPerfil.Searching;
     notifyListeners();
     print(json.encode(registrationData));
-    String path = '/rpm-ventanilla/api/usuario/actualizarContrasenia';
+    String path = 'rpm-ventanilla/api/usuario/actualizarContrasenia';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws/$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
     http.Response response = await http.post(uri,
         body: json.encode(registrationData), headers: headerNoAuth);
     if (response != null) {

@@ -21,9 +21,9 @@ class TerminosProvider {
   }
 
   Future<String?> findTerminosCondiciones() async {
-    String path = '/rpm-ventanilla/api/terminosCondicion';
+    String path = 'rpm-ventanilla/api/terminosCondicion';
     Uri uri =
-        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, '/ws$path');
+        isDev ? Uri.http(SERVER_IP, path) : Uri.https(SERVER_IP, CONTEXT + path);
     String? terminos = await _procesarRespuesta(uri);
     return terminos;
   }
