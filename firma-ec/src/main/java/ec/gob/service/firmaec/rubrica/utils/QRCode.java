@@ -50,7 +50,7 @@ public class QRCode {
 
         try {
 
-            BufferedImage bufferedImage = qr.generateQR(text, 300, 300);
+            java.awt.image.BufferedImage bufferedImage = qr.generateQR(text, 300, 300);
             ImageIO.write(bufferedImage, "png", file);
             System.out.println("QRCode Generated: " + file.getAbsolutePath());
 

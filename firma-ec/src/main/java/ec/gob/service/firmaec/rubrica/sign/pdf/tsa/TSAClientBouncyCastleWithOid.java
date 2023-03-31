@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package ec.gob.service.firmaec.rubrica.sign.pdf.tsa;
+package io.rubrica.sign.pdf.tsa;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -89,8 +89,8 @@ public class TSAClientBouncyCastleWithOid extends TSAClientBouncyCastle implemen
      *
      * @param imprint
      * @return
-     * @throws IOException
-     * @throws TSPException
+     * @throws java.io.IOException
+     * @throws org.bouncycastle.tsp.TSPException
      */
     @Override
     public byte[] getTimeStampToken(byte[] imprint) throws IOException, TSPException {
@@ -152,8 +152,8 @@ public class TSAClientBouncyCastleWithOid extends TSAClientBouncyCastle implemen
      *
      * @param imprint
      * @return
-     * @throws IOException
-     * @throws TSPException
+     * @throws java.io.IOException
+     * @throws org.bouncycastle.tsp.TSPException
      */
     public byte[] getTimeStampToken54(byte[] imprint) throws IOException, TSPException {
         byte[] respBytes = null;

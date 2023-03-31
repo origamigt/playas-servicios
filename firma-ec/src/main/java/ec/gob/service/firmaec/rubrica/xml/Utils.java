@@ -90,7 +90,7 @@ public final class Utils {
         String transformType;
         String transformBody;
         String transformSubtype;
-        Filter xPath2TransformFilter;
+        XPathType.Filter xPath2TransformFilter;
         TransformParameterSpec transformParam;
 
         for (int i = 0; i < numTransforms; i++) {

@@ -472,7 +472,7 @@ public class ODFSigner implements Signer {
         }
     }
 
-    private static byte[] canonicalizeXml(Element element, String algorithm) throws IOException {
+    private static byte[] canonicalizeXml(org.w3c.dom.Element element, String algorithm) throws IOException {
         nu.xom.Element xomElement = DOMConverter.convert(element);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer canonicalizer = new Canonicalizer(baos, algorithm);

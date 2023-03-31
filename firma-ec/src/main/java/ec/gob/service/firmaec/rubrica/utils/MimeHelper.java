@@ -224,7 +224,7 @@ public final class MimeHelper {
             // comprobamos
             // si los datos son XML en realidad
             if (this.mimeInfo == null || "text/xml".equals(this.mimeType)) {
-                if (ec.gob.service.firmaec.rubrica.xml.FileUtils.isXML(this.data)) {
+                if (FileUtils.isXML(this.data)) {
                     this.mimeType = "text/xml";
                 }
             }
@@ -251,7 +251,7 @@ public final class MimeHelper {
      *
      * @return Extensi&oacute;n para un fichero de datos.
      */
-    public String getExtension() {
+    public String getExtension() throws IOException {
 
         String extension = null;
 
@@ -267,13 +267,7 @@ public final class MimeHelper {
         // con una
         // estructura concreta)
         if (extension != null && extension.equals("zip")) {
-            try {
-                extension = OfficeAnalizer.getExtension(this.data);
-            } catch (final IOException e) {
-                logger.severe(
-                        "No se ha podido comprobar si el ZIP corresponde a un ODF o a un OOXML, se tomara como ZIP: " //$NON-NLS-1$
-                        + e);
-            }
+            extension = OfficeAnalizer.getExtension(this.data); //$NON-NLS-1$
         }
 
         return extension;

@@ -25,35 +25,35 @@ import java.util.List;
  * @author mfernandez
  */
 public class Documento {
-    private Boolean firmaValida;//validez de todas las firmas
-    private Boolean documentoValido;//validez de todo el documento
+    private Boolean signValidate;//validez de todas las firmas
+    private Boolean docValidate;//validez de todo el documento
     private List<Certificado> certificados;//si la lista de certificados se encuentra en null, el documento no contiene firmas
     private String error;
 
     public Documento() {
     }
 
-    public Documento(Boolean firmaValida, Boolean documentoValido, List<Certificado> certificados, String error) {
-        this.firmaValida = firmaValida;
-        this.documentoValido = documentoValido;
+    public Documento(Boolean signValidate, Boolean docValidate, List<Certificado> certificados, String error) {
+        this.signValidate = signValidate;
+        this.docValidate = docValidate;
         this.certificados = certificados;
         this.error = error;
     }
 
-    public Boolean getFirmaValida() {
-        return firmaValida;
+    public Boolean getSignValidate() {
+        return signValidate;
     }
 
-    public void setFirmaValida(Boolean firmaValida) {
-        this.firmaValida = firmaValida;
+    public void setSignValidate(Boolean signValidate) {
+        this.signValidate = signValidate;
     }
 
-    public Boolean getDocumentoValido() {
-        return documentoValido;
+    public Boolean getDocValidate() {
+        return docValidate;
     }
 
-    public void setDocumentoValido(Boolean documentoValido) {
-        this.documentoValido = documentoValido;
+    public void setDocValidate(Boolean docValidate) {
+        this.docValidate = docValidate;
     }
 
     public List<Certificado> getCertificados() {
@@ -72,8 +72,8 @@ public class Documento {
     @Override
     public String toString() {
         return "\tDocumento\n"
-                + "\t[signValidate=" + firmaValida + "\n"
-                + "\tdocValidate=" + documentoValido + "\n"
+                + "\t[signValidate=" + signValidate + "\n"
+                + "\tdocValidate=" + docValidate + "\n"
                 + "\terror=" + error + "\n"
                 + "\t]"
                 + "\n----------";

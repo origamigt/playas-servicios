@@ -4,5 +4,5 @@ eureka:
     leaseExpirationDurationInSeconds: 3
     appname: FIRMAEC-SERVICES
   client:
-    serviceUrl:
-      defaultZone: http://192.168.200.15:8710/eureka/
+    register-with-eureka: false
+    fetch-registry: false

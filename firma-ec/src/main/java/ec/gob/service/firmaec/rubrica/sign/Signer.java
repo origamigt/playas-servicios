@@ -29,7 +29,7 @@ import ec.gob.service.firmaec.rubrica.exceptions.RubricaException;
 /**
  * Permite la firma digital de documentos.
  *
- * @author origamigt
+ * @author Ricardo Arguello <ricardo.arguello@soportelibre.com>
  */
 public interface Signer {
 

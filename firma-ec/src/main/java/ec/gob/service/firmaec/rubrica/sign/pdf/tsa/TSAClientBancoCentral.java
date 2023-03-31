@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package ec.gob.service.firmaec.rubrica.sign.pdf.tsa;
+package io.rubrica.sign.pdf.tsa;
 
 import com.lowagie.text.pdf.TSAClient;
 

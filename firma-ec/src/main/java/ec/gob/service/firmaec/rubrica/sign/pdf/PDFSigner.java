@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2020 
  * Authors: Ricardo Arguello, Misael Fernández
  *
  * This program is free software: you can redistribute it and/or modify
@@ -84,9 +84,9 @@ public class PDFSigner implements Signer {
      * <li><i>SHA512withRSA</i></li>
      *
      * @param xParams
-     * @throws RubricaException
-     * @throws IOException
-     * @throws BadPasswordException
+     * @throws io.rubrica.exceptions.RubricaException
+     * @throws java.io.IOException
+     * @throws com.lowagie.text.exceptions.BadPasswordException
      */
     @Override
     public byte[] sign(byte[] data, String algorithm, PrivateKey key, Certificate[] certChain, Properties xParams)
@@ -205,11 +205,20 @@ public class PDFSigner implements Signer {
                 PdfTemplate pdfTemplate = sap.getLayer(0);
                 float width = pdfTemplate.getBoundingBox().getWidth();
                 float height = pdfTemplate.getBoundingBox().getHeight();
-                System.out.println("PdfTemplate width " + width + " height " + height);
-                pdfTemplate.rectangle(0, 0, width, height - 10);
+                pdfTemplate.rectangle(0, 0, width, height);
+                // Color de fondo
+                // pdfTemplate.setColorFill(Color.LIGHT_GRAY);
+                // pdfTemplate.fill();
                 // Color de fondo
                 switch (typeSig) {
                     case "QR": {
+                        // Creating the appearance for layer 2
+                        // Nombre Firmante
+                        // nombreFirmante = nombreFirmante+" "+nombreFirmante;
+                        // nombreFirmante="PRUEBA QUIPUX MISAEL FERNANDEZ";
+                        //nombreFirmante = "RAUL JAVIER JARA INIGUEZ";
+                        // nombreFirmante = "PRUEBA MV PRUEBA F PRUEBA C";
+                        // nombreFirmante="JOSE DAVID GAMBOA VERA";
                         PdfTemplate pdfTemplate1 = sap.getLayer(2);
                         Font font = new Font(Font.COURIER, fontSize + (fontSize / 2), Font.BOLD, Color.BLACK);
                         float maxFontSize = getMaxFontSize(com.lowagie.text.pdf.BaseFont.createFont(),
@@ -217,37 +226,30 @@ public class PDFSigner implements Signer {
                         font.setSize(maxFontSize);
                         fontLeading = maxFontSize;
 
-                        System.out.println("fontLeading: " + fontLeading);
-                        System.out.println("font.setSize: " + font.getSize());
-
-                        Paragraph paragraph = new Paragraph("Firmado electrónicamente por:\n", new Font(Font.COURIER, fontSize + 2, Font.NORMAL, Color.BLACK));
+                        Paragraph paragraph = new Paragraph("Firmado electrónicamente por:\n",
+                                new Font(Font.COURIER, fontSize / 1.25f, Font.NORMAL, Color.BLACK));
                         paragraph.add(new Paragraph(nombreFirmante.trim(), font));
-                        //paragraph.add(new Paragraph("", new Font(Font.COURIER, fontSize, Font.NORMAL, Color.BLACK)));
-
                         paragraph.setAlignment(Paragraph.ALIGN_LEFT);
                         paragraph.setLeading(fontLeading);
-
                         ColumnText columnText = new ColumnText(pdfTemplate1);
-                        columnText.setSimpleColumn((width / 3) + 3, 40, width, height);
+                        columnText.setSimpleColumn((width / 3) + 3, 0, width, height);
                         columnText.addElement(paragraph);
                         columnText.go();
-                        // Imagen QR
+                        // Imagen
                         java.awt.image.BufferedImage bufferedImage = null;
                         // QR
                         String text = "FIRMADO POR: " + nombreFirmante.trim() + "\n";
-                        //text = text + "RAZON: " + reason + "\n";
-                        //text = text + "LOCALIZACION: " + location + "\n";
+                        text = text + "RAZON: " + reason + "\n";
+                        text = text + "LOCALIZACION: " + location + "\n";
                         text = text + "FECHA: " + signTime + "\n";
-                        text = text + "VALIDAR CON: www.firmadigital.gob.ec" + "\n";
-                        text = text + "2.6.0" + "\n";
                         text = text + infoQR;
                         try {
-                            bufferedImage = QRCode.generateQR(text, 270, 270);
+                            bufferedImage = QRCode.generateQR(text, (int) height, (int) height);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         // QR
-                        PdfTemplate pdfTemplateImage = sap.getLayer(0);
+                        PdfTemplate pdfTemplateImage = sap.getLayer(2);
                         ColumnText columnTextImage = new ColumnText(pdfTemplateImage);
                         columnTextImage.setSimpleColumn(0, 0, width / 3, height);
                         columnTextImage.setAlignment(Paragraph.ALIGN_CENTER);
@@ -351,10 +353,10 @@ public class PDFSigner implements Signer {
         }
         System.out.println("repeat: " + repeat);
         System.out.println("fontSize: " + fontSize);
-        if (repeat > 70) {
+        if (repeat > 60) {
             multiply = 1;
         }
-        if (repeat <= 70 && repeat > 20) {
+        if (repeat <= 60 && repeat > 20) {
             multiply = 2;
         }
         if (repeat <= 20 && repeat > 10) {

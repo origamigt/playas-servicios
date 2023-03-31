@@ -133,7 +133,7 @@ public final class OfficeAnalizer {
     static String getMimeType(final byte[] data) throws IOException {
         ZipFile zipFile = null;
         try {
-            zipFile = ec.gob.service.firmaec.rubrica.xml.FileUtils.createTempZipFile(data);
+            zipFile = FileUtils.createTempZipFile(data);
             String mimetype = ZIP_MIMETYPE;
             String tempMimetype = null;
             if (isODFFile(zipFile)) {
@@ -216,7 +216,7 @@ public final class OfficeAnalizer {
      * @throws IOException SI ocurren problemas leyendo el fichero
      */
     public static boolean isOOXMLDocument(final byte[] document) throws IOException {
-        final ZipFile zipFile = ec.gob.service.firmaec.rubrica.xml.FileUtils.createTempZipFile(document);
+        final ZipFile zipFile = FileUtils.createTempZipFile(document);
         final boolean ret = isOOXMLFile(zipFile);
         zipFile.close();
         return ret;

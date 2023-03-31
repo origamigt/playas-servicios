@@ -400,7 +400,7 @@ public class Utils {
             List<Certificado> certificados = new ArrayList<>();
             documento = new Documento(true, false, certificados, null);
             Signer signer = new PDFSigner();
-            List<SignInfo> signInfos;
+            java.util.List<SignInfo> signInfos;
             signInfos = signer.getSigners(FileUtils.fileConvertToByteArray(pdf));
             if (signInfos == null || signInfos.isEmpty()) {
                 return new Documento(false, false, certificados, "Documento sin firmas");
@@ -408,7 +408,7 @@ public class Utils {
                 for (SignInfo signInfo : signInfos) {
                     Certificado certificado = signInfoToCertificado(signInfo);
                     try {
-                        List<String> signatureNames = signatureUtil.getSignatureNames();
+                        java.util.List<String> signatureNames = signatureUtil.getSignatureNames();
                         for (String signatureName : signatureNames) {
                             // <editor-fold defaultstate="collapsed" desc="Tested Code">
                             //
@@ -438,7 +438,7 @@ public class Utils {
                             //
                             // </editor-fold>
                             // Retorma la firma en formato PKCS7
-                            PdfPKCS7 pdfPKCS7 = signatureUtil.readSignatureData(signatureName);
+                            PdfPKCS7 pdfPKCS7 = signatureUtil.verifySignature(signatureName);
                             // Validacion Sellado de Tiempo
                             TimeStampToken tsToken = pdfPKCS7.getTimeStampToken();
                             if (tsToken != null) { // Timestamping Change Openpdf to itext
@@ -447,15 +447,15 @@ public class Utils {
                             }
                             for (X509Certificate certificate : signInfo.getCerts()) {
                                 if (pdfPKCS7.getSigningCertificate().equals(certificate)) {
-                                    certificado.setMotivoDocumento(pdfPKCS7.getReason());
-                                    certificado.setLocalizacionDocumento(pdfPKCS7.getLocation());
-                                    certificado.setFirmaVerificada(pdfPKCS7.verifySignatureIntegrityAndAuthenticity());
+                                    certificado.setDocReason(pdfPKCS7.getReason());
+                                    certificado.setDocLocation(pdfPKCS7.getLocation());
+                                    certificado.setSignVerify(pdfPKCS7.verifySignatureIntegrityAndAuthenticity());
                                     //documento sin ser modificado
-                                    if (!documento.getDocumentoValido()) {
-                                        documento.setDocumentoValido(signatureUtil.signatureCoversWholeDocument(signatureName));
+                                    if (!documento.getDocValidate()) {
+                                        documento.setDocValidate(signatureUtil.signatureCoversWholeDocument(signatureName));
                                     }
                                     // Obtiene KeyUsages
-                                    certificado.setClavesUso(validacionKeyUsages(pdfPKCS7.getSigningCertificate()));
+                                    certificado.setKeyUsages(validacionKeyUsages(pdfPKCS7.getSigningCertificate()));
                                     certificado = isTimeStamping(signatureUtil, signatureName, certificado);
                                     if (certificado.getDatosUsuario().getSelladoTiempo()) {
                                         certificado.setDatosUsuario(infoCertificado(certificado.getDatosUsuario(), signInfo));
@@ -487,27 +487,41 @@ public class Utils {
                     certificados.add(certificado);
                 }
 
-                if (certificados != null || !certificados.isEmpty()) {
-                    for (Certificado certificado : certificados) {
-                        if (!certificado.getDatosUsuario().getSelladoTiempo()) {//certificados digitales
-                            //certificado digital sin ser revocado, integridad de la firma, dentro de fecha de figencia, válido por CA
-                            if (certificado.getRevocado() != null || !certificado.getFirmaVerificada() || !certificado.getValidado() || !certificado.getDatosUsuario().isCertificadoDigitalValido()) {
-                                documento.setFirmaValida(false);
-                                break;
-                            }
-                        } else {// sellos de tiempo
-                            //dentro de fecha de figencia, válido por CA
-                            if (!certificado.getValidado() || !certificado.getDatosUsuario().isCertificadoDigitalValido()) {
-                                documento.setFirmaValida(false);
-                                break;
-                            }
-                        }
-                    }
-                }
+                documento.setSignValidate(validarCertificados(certificados, true));
                 documento.setCertificados(certificados);
             }
         }
         return documento;
+    }
+
+    private static boolean validarCertificados(List<Certificado> certificados, boolean pdf) {
+        boolean retorno = true;
+        if (certificados != null || !certificados.isEmpty()) {
+            for (Certificado certificado : certificados) {
+                if (!certificado.getDatosUsuario().getSelladoTiempo()) {//certificados digitales
+                    //certificado digital sin ser revocado, integridad de la firma, dentro de fecha de figencia, válido por CA
+                    boolean revocado = validarFirma(certificado.getValidFrom(), certificado.getValidTo(), certificado.getGenerated(), certificado.getRevocated());
+                    if (pdf) {
+                        if (!revocado || !certificado.getSignVerify() || !certificado.getValidated() || !certificado.getDatosUsuario().isCertificadoDigitalValido()) {
+                            retorno = false;
+                            break;
+                        }
+                    } else {
+                        if (!revocado || !certificado.getValidated() || !certificado.getDatosUsuario().isCertificadoDigitalValido()) {
+                            retorno = false;
+                            break;
+                        }
+                    }
+                } else {// sellos de tiempo
+                    //dentro de fecha de figencia, válido por CA
+                    if (!certificado.getValidated() || !certificado.getDatosUsuario().isCertificadoDigitalValido()) {
+                        retorno = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return retorno;
     }
 
     private static void infoPDF(PdfDocument pdfDocument) {
@@ -587,7 +601,9 @@ public class Utils {
                 certificados.add(signInfoToCertificado(signInfo));
             }
         }
+        documento = new Documento(true, false, null, null);
         documento.setCertificados(certificados);
+        documento.setSignValidate(validarCertificados(documento.getCertificados(), false));
         return documento;
     }
 
@@ -620,7 +636,7 @@ public class Utils {
             nombre = subjectX500name.getRDNs(BCStyle.CN)[0].getFirst().getValue().toString();//CommonName
             cedula = subjectX500name.getRDNs(BCStyle.SERIALNUMBER)[0].getFirst().getValue().toString();//SerialNumber
             entidadCertificadora = issuerX500name.getRDNs(BCStyle.O)[0].getFirst().getValue().toString();//OrganizationName
-        } catch (ArrayIndexOutOfBoundsException aioobe) {
+        } catch (java.lang.ArrayIndexOutOfBoundsException aioobe) {
         }
         datosUsuario.setCedula(cedula);
         datosUsuario.setNombre(nombre);
@@ -702,8 +718,10 @@ public class Utils {
             byte[] archivoOriginal = verificador.verify(docByteArray);
             String nombreArchivo = FileUtils.crearNombreVerificado(file, FileUtils.getExtension(archivoOriginal));
             FileUtils.saveByteArrayToDisc(archivoOriginal, nombreArchivo);
-            //FileUtils.abrirDocumento(nombreArchivo);
+            FileUtils.abrirDocumento(nombreArchivo);
+            documento = new Documento(true, false, null, null);
             documento.setCertificados(Utils.datosP7mToCertificado(verificador.certificados, verificador.fechasFirmados));
+            documento.setSignValidate(validarCertificados(documento.getCertificados(), false));
             return documento;
         } else {
             if (extDocumento.toLowerCase().equals(".pdf")) {
@@ -722,7 +740,7 @@ public class Utils {
                     //SRI
                 } catch (NullPointerException | InvalidFormatException exception) {
                     List<Certificado> certificados = new ArrayList<>();
-                    return new Documento(false, false, certificados, "El archivo no es un PDF");
+                    return new Documento(false, false, certificados, "El archivo no es un XML");
                 }
                 return documento;
             }
@@ -763,14 +781,18 @@ public class Utils {
         return xml;
     }
 
-    public static String validarFirma(Calendar fechaDesde, Calendar fechaHasta, Calendar fechaFirmado, Calendar fechaRevocado) {
-        String retorno = "Válida";
-        if (fechaFirmado.compareTo(fechaDesde) >= 0 && fechaFirmado.compareTo(fechaHasta) <= 0) {
-            if (fechaRevocado != null && fechaRevocado.compareTo(fechaFirmado) <= 0) {
-                retorno = "Inválida";
-            }
+    public static boolean validarFirma(Calendar fechaDesde, Calendar fechaHasta, Calendar fechaFirmado, Calendar fechaRevocado) {
+        boolean retorno = true;
+        if (fechaRevocado == null) {
+            retorno = true;
         } else {
-            retorno = "Inválida";
+            if (fechaFirmado.compareTo(fechaDesde) >= 0 && fechaFirmado.compareTo(fechaHasta) <= 0) {
+                if (fechaRevocado != null && fechaRevocado.compareTo(fechaFirmado) <= 0) {
+                    retorno = false;
+                }
+            } else {
+                retorno = false;
+            }
         }
         return retorno;
     }
@@ -782,7 +804,7 @@ public class Utils {
      * @param certificate The X509Certificate which is to be checked
      * @return True, if the verification was successful, false otherwise
      * @throws java.security.InvalidKeyException
-     * @throws EntidadCertificadoraNoValidaException
+     * @throws io.rubrica.exceptions.EntidadCertificadoraNoValidaException
      */
     public static boolean verifySignature(X509Certificate certificate) throws java.security.InvalidKeyException, EntidadCertificadoraNoValidaException {
         return verifySignature(certificate, CertEcUtils.getRootCertificate(certificate));

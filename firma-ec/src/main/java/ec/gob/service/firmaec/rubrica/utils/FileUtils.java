@@ -96,7 +96,7 @@ public class FileUtils {
     }
 
     public static String crearNombreFirmado(File documento, String extension) throws IOException {
-        String nombre = crearNombre(documento) + "_signed" + extension;
+        String nombre = crearNombre(documento) + "-signed" + extension;
         if (new File(nombre).exists()) {
             nombre = crearNombreFirmado(new File(nombre + "_new"), extension);
         }
@@ -109,7 +109,7 @@ public class FileUtils {
         if (extension.isEmpty()) {
             extension = getExtension(nombre);
         }
-        return nombre + "_verified_" + hora + extension;
+        return nombre + "-verified-" + hora + extension;
     }
 
     private static String crearNombre(File documento) {
@@ -147,14 +147,14 @@ public class FileUtils {
 
     public static String rutaFichero(javax.swing.filechooser.FileNameExtensionFilter filtro) {
         String ruta = "";
-        javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser(new File(System.getProperty("user.home")));
+        javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser(new java.io.File(System.getProperty("user.home")));
         jFileChooser.setAcceptAllFileFilterUsed(false);
         jFileChooser.setEnabled(false);
         jFileChooser.setFileFilter(filtro);
 
         int resultado = jFileChooser.showOpenDialog(null);
         if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
-            File file = new File(jFileChooser.getSelectedFile().toString());
+            java.io.File file = new java.io.File(jFileChooser.getSelectedFile().toString());
             if (file.exists() && file.isFile()) {
                 for (String filtre : filtro.getExtensions()) {
                     if (getFileExtension(file).equals(filtre)) {
@@ -168,7 +168,7 @@ public class FileUtils {
 
     public static java.util.List<String> rutaFicheros(javax.swing.filechooser.FileNameExtensionFilter filtro) {
         java.util.List<String> ruta = new java.util.ArrayList<>();
-        javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser(new File(System.getProperty("user.home")));
+        javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser(new java.io.File(System.getProperty("user.home")));
         jFileChooser.setAcceptAllFileFilterUsed(false);
         jFileChooser.setEnabled(false);
         jFileChooser.setFileFilter(filtro);
@@ -176,7 +176,7 @@ public class FileUtils {
 
         int resultado = jFileChooser.showOpenDialog(null);
         if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
-            File[] files = jFileChooser.getSelectedFiles();
+            java.io.File[] files = jFileChooser.getSelectedFiles();
             for (File file : files) {
                 if (file.exists() && file.isFile()) {
                     for (String filtre : filtro.getExtensions()) {

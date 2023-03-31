@@ -66,9 +66,9 @@ public class UtilsCrlOcsp {
      * @throws IOException
      * @throws RubricaException si hay un error de conexion con el CRL bota
      * esto, si es por OCSP y falla la conexion intenta por CRL
-     * @throws CRLValidationException
-     * @throws EntidadCertificadoraNoValidaException
-     * @throws ConexionValidarCRLException
+     * @throws io.rubrica.exceptions.CRLValidationException
+     * @throws io.rubrica.exceptions.EntidadCertificadoraNoValidaException
+     * @throws io.rubrica.exceptions.ConexionValidarCRLException
      */
     public static String validarCertificado(X509Certificate cert) throws EntidadCertificadoraNoValidaException, IOException, RubricaException, ConexionValidarCRLException, CRLValidationException {
         String fechaRevocado = null;
@@ -96,7 +96,6 @@ public class UtilsCrlOcsp {
                 fechaRevocado = validarCRL(cert);
             }
         }
-        System.out.println("fechaRevocado: " + fechaRevocado);
         return fechaRevocado;
     }
 
@@ -117,7 +116,6 @@ public class UtilsCrlOcsp {
             LOGGER.getLogger(UtilsCrlOcsp.class.getName()).log(Level.SEVERE, null, ex);
 //            throw new ConexionFirmadorApiException("Fallo la validacion por el servicio del API");
         }
-        System.out.println("validarFechaRevocado - fechaRevocado: "+ fechaRevocado);
         return fechaRevocado;
     }
 

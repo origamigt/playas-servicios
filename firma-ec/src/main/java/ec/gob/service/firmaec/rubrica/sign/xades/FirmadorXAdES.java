@@ -494,9 +494,6 @@ public final class FirmadorXAdES {
             xmlSignature.sign(Arrays.asList(certChain), pk, algoUri, referenceList,
                     "Signature-" + UUID.randomUUID().toString(), addKeyInfoKeyValue, addKeyInfoKeyName,
                     addKeyInfoX509IssuerSerial, keepKeyInfoUnsigned);
-        } catch (NoSuchAlgorithmException e) {
-            throw new UnsupportedOperationException(
-                    "Los formatos de firma XML no soportan el algoritmo de firma '" + algorithm + "':" + e, e);
         } catch (final Exception e) {
             throw new RubricaException("Error al generar la firma XAdES: " + e, e);
         }

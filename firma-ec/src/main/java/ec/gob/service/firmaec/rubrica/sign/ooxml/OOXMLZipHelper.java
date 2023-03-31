@@ -111,7 +111,7 @@ class OOXMLZipHelper {
                     final XPath xpath = XPathFactory.newInstance().newXPath();
                     xpath.setNamespaceContext(new NamespaceContext() {
 
-                        
+
                         @Override
                         public String getPrefix(final String namespaceURI) {
                             throw new UnsupportedOperationException();
@@ -158,7 +158,7 @@ class OOXMLZipHelper {
                     final XPath xpath = XPathFactory.newInstance().newXPath();
                     xpath.setNamespaceContext(new NamespaceContext() {
 
-                       
+
 
                         @Override
                         public String getPrefix(final String namespaceURI) {

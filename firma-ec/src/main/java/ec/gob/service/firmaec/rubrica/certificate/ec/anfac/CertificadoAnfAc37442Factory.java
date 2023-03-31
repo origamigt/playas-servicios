@@ -38,11 +38,11 @@ public class CertificadoAnfAc37442Factory {
             throw new IllegalStateException("Este no es un certificado emitido por ANF AC Ecuador");
         }
 
-        if (certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_PERSONA_NATURAL)) {
+        if (certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_PERSONA_NATURAL) || certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_PERSONA_NATURAL_TOKEN)) {
             return new CertificadoPersonaNaturalAnfAc37442(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_PERSONA_JURIDICA)) {
+        } else if (certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_PERSONA_JURIDICA) || certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_PERSONA_JURIDICA_TOKEN)) {
             return new CertificadoPersonaJuridicaAnfAc37442(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_FUNCIONARIO_PUBLICO)) {
+        } else if (certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_FUNCIONARIO_PUBLICO) || certificateHasPolicy(certificado, CertificadoAnfAc37442.OID_CERTIFICADO_FUNCIONARIO_PUBLICO_TOKEN)) {
             return new CertificadoFuncionarioPublicoAnfAc37442(certificado);
         } else {
             throw new RuntimeException("Certificado ANF AC Ecuador de tipo desconocido!");

@@ -2,7 +2,7 @@ server:
   port: 8781
 spring:
   profiles:
-    active: dev
+    active: prod
 logging:
   file:
-    name: D:/servers_files/logs/firmaec.log
+    name: /opt/servicios/logs/firmaec.log

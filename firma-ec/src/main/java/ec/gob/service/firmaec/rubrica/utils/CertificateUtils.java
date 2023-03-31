@@ -66,7 +66,7 @@ public class CertificateUtils {
      *
      * @param cert
      * @return
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static List<String> getCrlDistributionPoints(X509Certificate cert) throws IOException {
         byte[] crldpExt = cert.getExtensionValue(Extension.cRLDistributionPoints.getId());
@@ -95,7 +95,7 @@ public class CertificateUtils {
      *
      * @param cert
      * @return
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static List<String> getAuthorityInformationAccess(X509Certificate cert) throws IOException {
         byte[] authInfoExt = cert.getExtensionValue(Extension.authorityInfoAccess.getId());

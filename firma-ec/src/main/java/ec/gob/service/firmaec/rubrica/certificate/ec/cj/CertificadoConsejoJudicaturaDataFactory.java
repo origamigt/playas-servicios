@@ -17,6 +17,13 @@
  */
 package ec.gob.service.firmaec.rubrica.certificate.ec.cj;
 
+import static ec.gob.service.firmaec.rubrica.certificate.ec.cj.CertificadoConsejoJudicatura.OID_CERTIFICADO_DEPARTAMENTO_EMPRESA;
+import static ec.gob.service.firmaec.rubrica.certificate.ec.cj.CertificadoConsejoJudicatura.OID_CERTIFICADO_EMPRESA;
+import static ec.gob.service.firmaec.rubrica.certificate.ec.cj.CertificadoConsejoJudicatura.OID_CERTIFICADO_MIEMBRO_EMPRESA;
+import static ec.gob.service.firmaec.rubrica.certificate.ec.cj.CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_JURIDICA_PRIVADA;
+import static ec.gob.service.firmaec.rubrica.certificate.ec.cj.CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_JURIDICA_PUBLICA;
+import static ec.gob.service.firmaec.rubrica.certificate.ec.cj.CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_NATURAL;
+import static ec.gob.service.firmaec.rubrica.certificate.ec.cj.CertificadoConsejoJudicatura.OID_SELLADO_TIEMPO;
 import static ec.gob.service.firmaec.rubrica.utils.BouncyCastleUtils.certificateHasPolicy;
 
 import java.security.cert.X509Certificate;
@@ -30,29 +37,29 @@ import java.security.cert.X509Certificate;
 public class CertificadoConsejoJudicaturaDataFactory {
 
     public static boolean esCertificadoDelConsejoJudicatura(X509Certificate certificado) {
-        return (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_NATURAL)
-                || certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_JURIDICA_PRIVADA)
-                || certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_JURIDICA_PUBLICA)
-                || certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_MIEMBRO_EMPRESA)
-                || certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_EMPRESA)
-                || certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_DEPARTAMENTO_EMPRESA)
-                || certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_SELLADO_TIEMPO));
+        return (certificateHasPolicy(certificado, OID_CERTIFICADO_PERSONA_NATURAL)
+                || certificateHasPolicy(certificado, OID_CERTIFICADO_PERSONA_JURIDICA_PRIVADA)
+                || certificateHasPolicy(certificado, OID_CERTIFICADO_PERSONA_JURIDICA_PUBLICA)
+                || certificateHasPolicy(certificado, OID_CERTIFICADO_MIEMBRO_EMPRESA)
+                || certificateHasPolicy(certificado, OID_CERTIFICADO_EMPRESA)
+                || certificateHasPolicy(certificado, OID_CERTIFICADO_DEPARTAMENTO_EMPRESA)
+                || certificateHasPolicy(certificado, OID_SELLADO_TIEMPO));
     }
 
     public static CertificadoConsejoJudicatura construir(X509Certificate certificado) {
-        if (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_NATURAL)) {
+        if (certificateHasPolicy(certificado, OID_CERTIFICADO_PERSONA_NATURAL)) {
             return new CertificadoPersonaNaturalConsejoJudicatura(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_JURIDICA_PRIVADA)) {
+        } else if (certificateHasPolicy(certificado, OID_CERTIFICADO_PERSONA_JURIDICA_PRIVADA)) {
             return new CertificadoPersonaJuridicaPrivadaConsejoJudicatura(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_PERSONA_JURIDICA_PUBLICA)) {
+        } else if (certificateHasPolicy(certificado, OID_CERTIFICADO_PERSONA_JURIDICA_PUBLICA)) {
             return new CertificadoPersonaJuridicaPublicaConsejoJudicatura(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_MIEMBRO_EMPRESA)) {
+        } else if (certificateHasPolicy(certificado, OID_CERTIFICADO_MIEMBRO_EMPRESA)) {
             return new CertificadoMiembroEmpresaConsejoJudicatura(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_EMPRESA)) {
+        } else if (certificateHasPolicy(certificado, OID_CERTIFICADO_EMPRESA)) {
             return new CertificadoEmpresaConsejoJudicatura(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_CERTIFICADO_DEPARTAMENTO_EMPRESA)) {
+        } else if (certificateHasPolicy(certificado, OID_CERTIFICADO_DEPARTAMENTO_EMPRESA)) {
             return new CertificadoDepartamentoEmpresaConsejoJudicatura(certificado);
-        } else if (certificateHasPolicy(certificado, CertificadoConsejoJudicatura.OID_SELLADO_TIEMPO)) {
+        } else if (certificateHasPolicy(certificado, OID_SELLADO_TIEMPO)) {
             return new CertificadoPersonaNaturalConsejoJudicatura(certificado);
         } else {
             throw new RuntimeException("Certificado del Consejo de la Judicatura de tipo desconocido!");

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020
+ * Copyright (C) 2020 
  * Authors: Ricardo Arguello, Misael Fernández
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /**
  * Utilidad para menejar properties
- *
+ * 
  * @author mfernandez
  */
 public class PropertiesUtils {

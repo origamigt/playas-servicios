@@ -68,8 +68,8 @@ public class X509CertificateUtils {
     }
 
     public boolean validarX509Certificate(X509Certificate x509Certificate) throws RubricaException, KeyStoreException, EntidadCertificadoraNoValidaException, InvalidKeyException, CertificadoInvalidoException, IOException, HoraServidorException {
-        boolean retorno = true;
-        /*int diasAnticipacion = 30;
+        boolean retorno = false;
+        int diasAnticipacion = 30;
         if (x509Certificate != null) {
             Date fechaHora = TiempoUtils.getFechaHora();
 
@@ -98,7 +98,7 @@ public class X509CertificateUtils {
             } else {
                 retorno = true;
             }
-        }*/
+        }
         return retorno;
     }
 }

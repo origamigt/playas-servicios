@@ -18,8 +18,12 @@
 package ec.gob.service.firmaec.rubrica.utils;
 
 import ec.gob.service.firmaec.rubrica.exceptions.HoraServidorException;
-
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +34,7 @@ import java.util.logging.Logger;
 
 /**
  * Utilidades para manejar tiempos
- *
+ * 
  * @author mfernandez
  */
 public class TiempoUtils {
@@ -58,7 +62,6 @@ public class TiempoUtils {
     }
 
     public static String getFechaHoraServidor() throws IOException {
-        return ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         /*String fecha_hora_url = PropertiesUtils.getConfig().getProperty("fecha_hora_url");
         System.out.println("fecha_hora_url: " + fecha_hora_url);
         if (fecha_hora_url.isEmpty()) {
@@ -77,7 +80,7 @@ public class TiempoUtils {
                 try (InputStream is = con.getInputStream();) {
                     InputStreamReader reader = new InputStreamReader(is);
                     BufferedReader in = new BufferedReader(reader);
-No se ha podido obtener el UID, se devolvera el fragmento mas significativo
+
                     String inputLine;
                     StringBuilder response = new StringBuilder();
 
@@ -91,5 +94,6 @@ No se ha podido obtener el UID, se devolvera el fragmento mas significativo
                 throw new RuntimeException(PropertiesUtils.getMessages().getProperty("mensaje.error.problema_red"));
             }
         }*/
+        return ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 }
