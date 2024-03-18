@@ -79,7 +79,7 @@ public class X509CertificateUtils {
             }
             if (fechaHora.compareTo(x509Certificate.getNotBefore()) <= 0 || fechaHora.compareTo(x509Certificate.getNotAfter()) >= 0) {
                 caducado = true;
-            } else {
+            } /*else {
                 java.util.Calendar calendarRecordatorio = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("America/Guayaquil"));
                 calendarRecordatorio.setTime(x509Certificate.getNotAfter());
                 calendarRecordatorio.add(java.util.Calendar.DATE, -diasAnticipacion);
@@ -87,14 +87,17 @@ public class X509CertificateUtils {
                     java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     javax.swing.JOptionPane.showMessageDialog(null, PropertiesUtils.getMessages().getProperty("mensaje.advertencia.certificado_advertencia") + simpleDateFormat.format(x509Certificate.getNotAfter().getTime()), "Advertencia", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 }
-            }
+            }*/
 
             if (!Utils.verifySignature(x509Certificate)) {
                 desconocido = true;
             }
 
             if ((revocado != null) || caducado || desconocido) {
-                javax.swing.JOptionPane.showMessageDialog(null, PropertiesUtils.getMessages().getProperty("mensaje.error.certificado_invalido"), "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+                /*javax.swing.JOptionPane.showMessageDialog(null, 
+                        PropertiesUtils.getMessages().getProperty("mensaje.error.certificado_invalido"), 
+                        "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);*/
+                retorno = false;
             } else {
                 retorno = true;
             }

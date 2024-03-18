@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /**
  * Utilidad para menejar properties
- * 
+ *
  * @author mfernandez
  */
 public class PropertiesUtils {
@@ -42,8 +42,13 @@ public class PropertiesUtils {
     public static Properties getMessages() {
         messages = new Properties();
         try {
-            File file = ResourceUtils.getFile(MESSAGES);
-            messages.load(new FileInputStream(file));
+            String OS = System.getProperty("os.name").toLowerCase();
+            if (OS.contains("win")) {
+                File file = ResourceUtils.getFile(MESSAGES);
+                messages.load(new FileInputStream(file));
+            } else {
+                messages.load(new ClassPathResource(MESSAGES).getInputStream());
+            }
         } catch (IOException ex) {
             Logger.getLogger(PropertiesUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,7 +60,7 @@ public class PropertiesUtils {
         try {
             String OS = System.getProperty("os.name").toLowerCase();
             if (OS.contains("win")) {
-                File file =  ResourceUtils.getFile(CONFIG);
+                File file = ResourceUtils.getFile(CONFIG);
                 config.load(new FileInputStream(file));
             } else {
                 config.load(new ClassPathResource(CONFIG).getInputStream());
