@@ -14,5 +14,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SriRucRepository extends JpaRepository<SriRuc, Long> {
 
     SriRuc findFirstByEstadoContribuyenteAndVerificado(String estadoContribuyente, Boolean verificado);
-    
+
+    SriRuc findFirstByEstadoContribuyenteAndTipoContribuyenteAndVerificado(String estadoContribuyente,
+            String tipoContribuyente, Boolean verificado);
+
 }

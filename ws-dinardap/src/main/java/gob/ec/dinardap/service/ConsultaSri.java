@@ -29,15 +29,15 @@ public class ConsultaSri {
 
     public void consultarEntidades() {
         try {
-            SriRuc entidad = repo.findFirstByEstadoContribuyenteAndVerificado("ACTIVO", Boolean.FALSE);
-            if (entidad.getNumeroRuc().length() == 13) {
-                entidad = service.datosSRI(entidad);
-                if (entidad != null) {
-                    entidad.setVerificado(Boolean.TRUE);
-                    entidad.setFechaVerificacion(new Date());
-                    entidad = repo.save(entidad);
-                    System.out.println("ruc: " + entidad.getNumeroRuc() + ", correo: " + entidad.getCorreo());
-                }
+            //SriRuc entidad = repo.findFirstByEstadoContribuyenteAndVerificado("ACTIVO", Boolean.FALSE);
+            SriRuc entidad = repo.findFirstByEstadoContribuyenteAndTipoContribuyenteAndVerificado("ACTIVO",
+                    "SOCIEDADES", Boolean.FALSE);
+            entidad = service.datosSRI(entidad);
+            if (entidad != null) {
+                entidad.setVerificado(Boolean.TRUE);
+                entidad.setFechaVerificacion(new Date());
+                entidad = repo.save(entidad);
+                System.out.println("ruc: " + entidad.getNumeroRuc() + ", correo: " + entidad.getCorreo());
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error: {0}", e.getMessage());

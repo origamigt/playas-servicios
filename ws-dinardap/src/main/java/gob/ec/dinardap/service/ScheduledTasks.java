@@ -21,9 +21,18 @@ public class ScheduledTasks {
 
     @Autowired
     private ConsultaSri servicio;
+    
+    @Scheduled(cron = "*/10 * 22-23 * * *")
+    public void taskAutoGeneratev1() {
+        try {
+            servicio.consultarEntidades();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error: {0}", e.getMessage());
+        }
+    }
 
-    @Scheduled(cron = "*/10 * * * * *")
-    public void taskAutoGenerate() {
+    @Scheduled(cron = "*/10 * 0-6 * * *")
+    public void taskAutoGeneratev2() {
         try {
             servicio.consultarEntidades();
         } catch (Exception e) {

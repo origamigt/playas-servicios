@@ -229,12 +229,12 @@ public class ServicioDINARDAP {
             List<Entidad> entidades = response.getPaquete().getEntidades().getEntidad();
             for (Entidad entidad : entidades) {
                 //filas
-                //System.out.println("Información de:" + entidad.getNombre());
+                //System.out.println("Información de: " + entidad.getNombre());
                 for (Fila fila : entidad.getFilas().getFila()) {
                     //columnas
                     for (Columna columna : fila.getColumnas().getColumna()) {
                         //se obtiene los valores de cada columna
-                        //System.out.println(columna.getCampo() + " = " + columna.getValor());
+                        //System.out.println(columna.getCampo() + ":" + columna.getValor());
                         switch (columna.getCampo()) {
                             case "email":
                                 sriruc.setCorreo(columna.getValor());
