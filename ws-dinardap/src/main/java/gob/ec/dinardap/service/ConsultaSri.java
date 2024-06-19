@@ -30,8 +30,10 @@ public class ConsultaSri {
     public void consultarEntidades() {
         try {
             //SriRuc entidad = repo.findFirstByEstadoContribuyenteAndVerificado("ACTIVO", Boolean.FALSE);
-            SriRuc entidad = repo.findFirstByEstadoContribuyenteAndTipoContribuyenteAndVerificado("ACTIVO",
-                    "SOCIEDADES", Boolean.FALSE);
+            /*SriRuc entidad = repo.findFirstByEstadoContribuyenteAndTipoContribuyenteAndVerificado("ACTIVO",
+                    "SOCIEDADES", Boolean.FALSE);*/
+            SriRuc entidad = repo.findFirstByEstadoContribuyenteAndTipoContribuyenteAndEstadoEstablecimientoAndVerificado("ACTIVO",
+                    "SOCIEDADES", "ABI", Boolean.FALSE);
             entidad = service.datosSRI(entidad);
             if (entidad != null) {
                 entidad.setVerificado(Boolean.TRUE);

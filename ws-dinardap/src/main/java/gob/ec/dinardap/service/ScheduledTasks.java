@@ -22,7 +22,7 @@ public class ScheduledTasks {
     @Autowired
     private ConsultaSri servicio;
     
-    @Scheduled(cron = "*/10 * 22-23 * * *")
+    @Scheduled(cron = "*/20 * 21-23 * * *")
     public void taskAutoGeneratev1() {
         try {
             servicio.consultarEntidades();
@@ -31,7 +31,7 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(cron = "*/10 * 0-6 * * *")
+    @Scheduled(cron = "*/20 * 0-6 * * *")
     public void taskAutoGeneratev2() {
         try {
             servicio.consultarEntidades();

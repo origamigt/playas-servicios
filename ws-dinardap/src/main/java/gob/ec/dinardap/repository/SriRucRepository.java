@@ -17,5 +17,8 @@ public interface SriRucRepository extends JpaRepository<SriRuc, Long> {
 
     SriRuc findFirstByEstadoContribuyenteAndTipoContribuyenteAndVerificado(String estadoContribuyente,
             String tipoContribuyente, Boolean verificado);
+    
+    SriRuc findFirstByEstadoContribuyenteAndTipoContribuyenteAndEstadoEstablecimientoAndVerificado(String estadoContribuyente,
+            String tipoContribuyente, String estadoEstablecimiento, Boolean verificado);
 
 }
