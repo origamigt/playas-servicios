@@ -239,6 +239,12 @@ public class ServicioDINARDAP {
                             case "email":
                                 sriruc.setCorreo(columna.getValor());
                                 break;
+                            case "telefonoDomicilio":
+                                sriruc.setTelefonoDomicilio(columna.getValor());
+                                break;
+                            case "telefonoTrabajo":
+                                sriruc.setTelefonoTrabajo(columna.getValor());
+                                break;
                             case "cargo":
                                 sriruc.setCargoRepresentante(columna.getValor());
                                 break;

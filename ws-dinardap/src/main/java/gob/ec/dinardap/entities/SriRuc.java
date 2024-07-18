@@ -60,6 +60,8 @@ public class SriRuc implements Serializable{
     private String cargoRepresentante;
     private String identificacionRepresentante;
     private String nombreRepresentante;
+    private String telefonoDomicilio;
+    private String telefonoTrabajo;
 
     public SriRuc() {
     }
@@ -282,6 +284,22 @@ public class SriRuc implements Serializable{
 
     public void setNombreRepresentante(String nombreRepresentante) {
         this.nombreRepresentante = nombreRepresentante;
+    }
+
+    public String getTelefonoDomicilio() {
+        return telefonoDomicilio;
+    }
+
+    public void setTelefonoDomicilio(String telefonoDomicilio) {
+        this.telefonoDomicilio = telefonoDomicilio;
+    }
+
+    public String getTelefonoTrabajo() {
+        return telefonoTrabajo;
+    }
+
+    public void setTelefonoTrabajo(String telefonoTrabajo) {
+        this.telefonoTrabajo = telefonoTrabajo;
     }
 
     @Override
